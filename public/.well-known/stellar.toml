@@ -11,8 +11,8 @@ ACCOUNTS=[
 ORG_NAME="Genesis Heritage Trust"
 ORG_DBA="Atlantis Bank"
 ORG_URL="https://genesistrust.online"
-ORG_LOGO="https://genesistrust.online/logo.png"
-ORG_DESCRIPTION="Genesis Heritage Trust operates Atlantis Bank digital asset infrastructure, including SUSDC, AFIP onboarding, and Stellar settlement operations."
+ORG_LOGO="https://genesistrust.online/globe.svg"
+ORG_DESCRIPTION="Genesis Heritage Trust operates Atlantis Bank digital asset infrastructure, including SUSDC, AFIP onboarding, Stellar settlement, and tokenized asset infrastructure."
 ORG_SUPPORT_EMAIL="atlantisbank@walla.co.il"
 
 [[CURRENCIES]]
@@ -21,6 +21,8 @@ issuer="GCNVCJFLW6WSZOKPQPDBWKAOLEZVTGMSLKRL66RWIONM4BVJVCXAJDIU"
 display_decimals=7
 name="Atlantis Synthetic USD Coin"
 desc="SUSDC is a Stellar-based digital settlement asset issued by Genesis Heritage Trust for Atlantis Bank ecosystem operations."
+image="https://genesistrust.online/globe.svg"
+conditions="SUSDC is used for Atlantis Bank ecosystem settlement, AFIP onboarding, treasury operations, and merchant payment infrastructure."
 is_asset_anchored=true
 anchor_asset_type="fiat"
 anchor_asset="USD"
