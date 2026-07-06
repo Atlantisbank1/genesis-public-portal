@@ -17,7 +17,7 @@ export default function GenesisWorkspace() {
     <section className="workspace">
       <aside className="workspaceSidebar">
         <div className="workspaceBrand">
-          <img src="/SUSDC.PNG" alt="SUSDC" />
+         <img src="/SUSDC.png" alt="SUSDC" />
           <strong>Genesis OS</strong>
         </div>
 
