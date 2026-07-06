@@ -340,4 +340,6 @@ footer {
     flex-direction: column;
     align-items: flex-start;
   }
+
+@import "../styles/workspace.css";
 }
