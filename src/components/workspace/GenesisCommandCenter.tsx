@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { ModuleRegistry } from "../../kernel/ModuleRegistry";
+import { GenesisApplications } from "../../kernel/ApplicationManager";
 
 export default function GenesisCommandCenter() {
-  const visibleModules = ModuleRegistry.filter((module) => module.visible);
+  const applications = GenesisApplications.getVisible();
 
   return (
     <section className="section" id="command-center">
@@ -11,27 +11,23 @@ export default function GenesisCommandCenter() {
       <h2>Applications</h2>
 
       <p>
-        Genesis OS applications are registered through the Genesis Kernel. Each
-        module can be enabled, versioned, routed and expanded without changing
-        the command center.
+        Genesis OS applications are managed by the Genesis Kernel and displayed
+        dynamically through the Application Manager.
       </p>
 
       <div className="commandGrid">
-        {visibleModules.map((module) => (
+        {applications.map((app) => (
           <Link
-            key={module.id}
-            href={module.enabled ? module.route : "#command-center"}
-            className={`commandTile ${module.enabled ? "" : "disabled"}`}
+            key={app.id}
+            href={app.enabled ? app.route : "#command-center"}
+            className={`commandTile ${app.enabled ? "" : "disabled"}`}
           >
-            <span className="commandIcon">{module.icon}</span>
-
-            <strong>{module.title}</strong>
-
-            <p>{module.description}</p>
-
+            <span className="commandIcon">{app.icon}</span>
+            <strong>{app.title}</strong>
+            <p>{app.description}</p>
             <small>
-              {module.category} · v{module.version} ·{" "}
-              {module.enabled ? "Online" : "Preparing"}
+              {app.category} · v{app.version} ·{" "}
+              {app.enabled ? "Online" : "Preparing"}
             </small>
           </Link>
         ))}
