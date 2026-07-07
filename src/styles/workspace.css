@@ -102,4 +102,63 @@
   .workspaceGrid {
     grid-template-columns: 1fr;
   }
+
+.commandGrid {
+  margin-top: 34px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 18px;
+}
+
+.commandTile {
+  display: block;
+  min-height: 190px;
+  padding: 24px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.1);
+  transition: .25s;
+}
+
+.commandTile:hover {
+  transform: translateY(-3px);
+  border-color: rgba(214,170,75,.45);
+  background: rgba(214,170,75,.08);
+}
+
+.commandTile.disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.commandIcon {
+  display: block;
+  font-size: 34px;
+  margin-bottom: 18px;
+}
+
+.commandTile strong {
+  display: block;
+  color: #ffffff;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.commandTile p {
+  font-size: 15px;
+  color: #d7e2ee;
+  line-height: 1.6;
+}
+
+.commandTile small {
+  display: block;
+  margin-top: 18px;
+  color: #9db1c5;
+}
+
+@media (max-width: 900px) {
+  .commandGrid {
+    grid-template-columns: 1fr;
+  }
+}
 }
