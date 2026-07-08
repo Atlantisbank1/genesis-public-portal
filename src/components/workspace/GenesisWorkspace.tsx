@@ -2,6 +2,7 @@ import { GenesisAssets } from "../../config/assets";
 import { GenesisConfig } from "../../config/genesis";
 import { GenesisNetwork } from "../../config/network";
 import GenesisCommandCenter from "./GenesisCommandCenter";
+import GenesisAssetRegistry from "./GenesisAssetRegistry";
 import GenesisSystemStatus from "./GenesisSystemStatus";
 
 export default function GenesisWorkspace() {
@@ -59,6 +60,7 @@ export default function GenesisWorkspace() {
         </div>
 
         <GenesisSystemStatus />
+                <GenesisAssetRegistry />
         <GenesisCommandCenter />
       </div>
     </section>
