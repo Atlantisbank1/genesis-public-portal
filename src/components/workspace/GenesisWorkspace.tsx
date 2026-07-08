@@ -3,6 +3,7 @@ import { GenesisConfig } from "../../config/genesis";
 import { GenesisNetwork } from "../../config/network";
 import GenesisAssetRegistry from "./GenesisAssetRegistry";
 import GenesisCommandCenter from "./GenesisCommandCenter";
+import GenesisGatewayStatus from "./GenesisGatewayStatus";
 import GenesisRuntimePanel from "./GenesisRuntimePanel";
 import GenesisServiceRegistry from "./GenesisServiceRegistry";
 import GenesisSystemStatus from "./GenesisSystemStatus";
@@ -63,6 +64,7 @@ export default function GenesisWorkspace() {
         </div>
 
         <GenesisSystemStatus />
+        <GenesisGatewayStatus />
         <GenesisRuntimePanel />
         <GenesisAssetRegistry />
         <GenesisServiceRegistry />
