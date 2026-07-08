@@ -1,8 +1,10 @@
 import { GenesisAssets } from "../../config/assets";
 import { GenesisConfig } from "../../config/genesis";
 import { GenesisNetwork } from "../../config/network";
-import GenesisCommandCenter from "./GenesisCommandCenter";
 import GenesisAssetRegistry from "./GenesisAssetRegistry";
+import GenesisCommandCenter from "./GenesisCommandCenter";
+import GenesisRuntimePanel from "./GenesisRuntimePanel";
+import GenesisServiceRegistry from "./GenesisServiceRegistry";
 import GenesisSystemStatus from "./GenesisSystemStatus";
 
 export default function GenesisWorkspace() {
@@ -18,6 +20,7 @@ export default function GenesisWorkspace() {
 
         <nav className="workspaceMenu">
           <a href="#system-status">System Status</a>
+          <a href="#asset-registry">Assets</a>
           <a href="#command-center">Command Center</a>
           <a href="/wallet">Wallet</a>
           <a href="/vault">Capital Vault</a>
@@ -60,7 +63,9 @@ export default function GenesisWorkspace() {
         </div>
 
         <GenesisSystemStatus />
-                <GenesisAssetRegistry />
+        <GenesisRuntimePanel />
+        <GenesisAssetRegistry />
+        <GenesisServiceRegistry />
         <GenesisCommandCenter />
       </div>
     </section>
