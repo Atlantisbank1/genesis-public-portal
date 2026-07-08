@@ -1,24 +1,21 @@
 import { GenesisSDK } from "../../gateway/GenesisSDK";
 
 export default async function GenesisGatewayStatus() {
-  const health = await GenesisSDK.health();
+  const healthList = await GenesisSDK.health();
 
   return (
     <section className="section">
       <p className="eyebrow">GENESIS GATEWAY</p>
 
-      <h2>Gateway Status</h2>
+      <h2>Gateway Providers</h2>
 
       <div className="metricGrid">
-        <article className="metricCard">
-          <span>{health.service}</span>
-          <strong>{health.status}</strong>
-        </article>
-
-        <article className="metricCard">
-          <span>Last Update</span>
-          <strong>{health.timestamp ?? "Unavailable"}</strong>
-        </article>
+        {healthList.map((health) => (
+          <article className="metricCard" key={health.service}>
+            <span>{health.service}</span>
+            <strong>{health.status}</strong>
+          </article>
+        ))}
       </div>
     </section>
   );

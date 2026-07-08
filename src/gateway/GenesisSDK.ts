@@ -1,11 +1,24 @@
+import { Gateway } from "./Gateway";
 import { AtlantisProvider } from "./AtlantisProvider";
+
+let initialized = false;
+
+function initialize() {
+  if (initialized) return;
+
+  Gateway.register(AtlantisProvider);
+
+  initialized = true;
+}
 
 export const GenesisSDK = {
   async health() {
-    return AtlantisProvider.getHealth();
+    initialize();
+    return Gateway.getHealth();
   },
 
   async assets() {
-    return AtlantisProvider.getAssets();
+    initialize();
+    return Gateway.getAssets();
   },
 };

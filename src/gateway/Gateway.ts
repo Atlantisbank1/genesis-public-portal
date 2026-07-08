@@ -1,4 +1,4 @@
-import { GatewayProvider } from "./types";
+import { AssetInfo, GatewayProvider, HealthInfo } from "./types";
 
 class GenesisGateway {
   private providers: GatewayProvider[] = [];
@@ -9,6 +9,20 @@ class GenesisGateway {
 
   getProviders() {
     return this.providers;
+  }
+
+  async getHealth(): Promise<HealthInfo[]> {
+    return Promise.all(
+      this.providers.map((provider) => provider.getHealth())
+    );
+  }
+
+  async getAssets(): Promise<AssetInfo[]> {
+    const assets = await Promise.all(
+      this.providers.map((provider) => provider.getAssets())
+    );
+
+    return assets.flat();
   }
 }
 
