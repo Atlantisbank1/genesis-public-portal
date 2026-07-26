@@ -12,18 +12,30 @@ ORG_NAME="Genesis Heritage Trust"
 ORG_DBA="Atlantis Bank"
 ORG_URL="https://genesistrust.online"
 ORG_LOGO="https://genesistrust.online/SUSDC.png"
-ORG_DESCRIPTION="Genesis Heritage Trust operates Atlantis Bank digital asset infrastructure, including SUSDC, AFIP onboarding, Stellar settlement, and tokenized asset infrastructure."
-ORG_SUPPORT_EMAIL="atlantisbank@walla.co.il"
+ORG_DESCRIPTION="Genesis Heritage Trust operates Atlantis Bank digital asset infrastructure, including SUSDC, ROYAL, AFIP onboarding, Stellar settlement, treasury operations, and tokenized asset infrastructure."
+ORG_SUPPORT_EMAIL="genesisheritagetrust@proton.me"
 
 [[CURRENCIES]]
 code="SUSDC"
 issuer="GCNVCJFLW6WSZOKPQPDBWKAOLEZVTGMSLKRL66RWIONM4BVJVCXAJDIU"
 display_decimals=7
-name="Atlantis Synthetic USD Coin"
-desc="SUSDC is a Stellar-based digital settlement asset issued by Genesis Heritage Trust for Atlantis Bank ecosystem operations."
-image="https://genesistrust.online/SUSDC.png"
-conditions="SUSDC is used for Atlantis Bank ecosystem settlement, AFIP onboarding, treasury operations, and merchant payment infrastructure."
-is_asset_anchored=true
-anchor_asset_type="fiat"
-anchor_asset="USD"
+name="Atlantis SUSDC"
+desc="SUSDC is a Stellar-based digital settlement asset issued for the Atlantis Bank ecosystem. Its treasury support and reference framework is based on the ROYAL reserve asset."
+image="https://genesistrust.online/assets/susdc.png"
+conditions="SUSDC issuance, circulation, redemption, and settlement are governed by Atlantis Bank treasury policy. ROYAL is the designated reserve and reference asset supporting SUSDC. This metadata statement does not by itself create an automatic on-chain redemption right."
+is_asset_anchored=false
+is_unlimited=true
 status="live"
+
+[[CURRENCIES]]
+code="ROYAL"
+issuer="GCNVCJFLW6WSZOKPQPDBWKAOLEZVTGMSLKRL66RWIONM4BVJVCXAJDIU"
+display_decimals=7
+name="ROYAL Gold Reference Asset"
+desc="ROYAL is the Genesis reserve and reference asset used by Atlantis Bank. Its monetary reference policy tracks one troy ounce of gold and supports the SUSDC treasury framework."
+image="https://genesistrust.online/assets/royal.png"
+conditions="ROYAL valuation and use are governed by Genesis Heritage Trust and Atlantis Bank treasury policy. A gold reference value does not by itself constitute a promise of direct physical-gold redemption."
+is_asset_anchored=false
+is_unlimited=true
+status="live"
+
