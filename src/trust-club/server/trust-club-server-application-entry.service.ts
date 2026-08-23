@@ -22,6 +22,10 @@ import {
   executeTrustClubCertifiedGatewayOperation,
 } from './trust-club-certified-gateway-execution.service';
 
+import {
+  getTrustClubSystemRolesForUser,
+} from './trust-club-system-role.service';
+
 import type {
   TrustClubServerApplicationEntryInput,
   TrustClubServerApplicationEntryResult,
@@ -29,34 +33,21 @@ import type {
 
 /**
  * TRUST-CLUB-V1
- * PHASE 5.24
+ * PHASE 6.7-I.4O.3
  *
  * Server Application Entry Orchestration Service
  *
  * Purpose:
  *
  * Coordinates one internal Trust Club server application request
- * through the already established and certified execution chain:
+ * through the already established and certified execution chain.
  *
- * Phase 5.18
- * Authentication Source -> Authentication Context
+ * System Role authority is resolved from persisted server-side
+ * state for the authenticated user before Authorization Context
+ * assembly.
  *
- * Phase 5.19
- * Authentication Context -> Authorization Context
- *
- * Phase 5.20
- * Authorized Application Gateway Boundary
- *
- * Phase 5.21
- * Authorized Operation Delegation
- *
- * Phase 5.22
- * Controlled Execution Preparation
- *
- * Phase 5.23
- * Certified Application Gateway Execution
- *
- * This service intentionally introduces orchestration only.
+ * This service does NOT grant or revoke System Roles.
+ * It consumes the existing read-only persisted role resolver.
  *
  * It does NOT:
  * - authenticate users independently;
@@ -65,6 +56,8 @@ import type {
  * - establish Trust relationships;
  * - grant Trust roles;
  * - grant system roles;
+ * - revoke system roles;
+ * - accept caller-supplied System Roles as authority;
  * - resolve entitlements;
  * - activate entitlements;
  * - create independent authorization authority;
@@ -113,6 +106,9 @@ export const TRUST_CLUB_SERVER_APPLICATION_ENTRY_SERVICE_PERSISTENCE_RULE =
 export const TRUST_CLUB_SERVER_APPLICATION_ENTRY_SERVICE_EXPOSURE_RULE =
   'SERVER_APPLICATION_ENTRY_SERVICE_DOES_NOT_CREATE_PUBLIC_APPLICATION_EXPOSURE' as const;
 
+export const TRUST_CLUB_SERVER_APPLICATION_ENTRY_SERVICE_SYSTEM_ROLE_RULE =
+  'SERVER_APPLICATION_ENTRY_SERVICE_RESOLVES_SYSTEM_ROLES_FROM_PERSISTED_SERVER_SIDE_STATE' as const;
+
 function entryNotReady(
   input:
     TrustClubServerApplicationEntryInput,
@@ -134,13 +130,17 @@ function entryNotReady(
  *
  * Every readiness boundary fails closed.
  *
+ * System Roles are resolved from persisted server-side state
+ * only after Authentication Context has been established.
+ *
  * No certified Gateway execution is attempted unless:
  *
  * 1. Authentication Context has been established;
- * 2. Authorization Context has been established;
- * 3. Phase 5.20 confirms Authorization Context presence;
- * 4. Phase 5.21 establishes DELEGATION_READY;
- * 5. Phase 5.22 establishes EXECUTION_READY.
+ * 2. persisted System Roles have been resolved;
+ * 3. Authorization Context has been established;
+ * 4. Phase 5.20 confirms Authorization Context presence;
+ * 5. Phase 5.21 establishes DELEGATION_READY;
+ * 6. Phase 5.22 establishes EXECUTION_READY.
  *
  * Phase 5.23 remains the only execution dispatcher to the
  * certified Phase 5.15 Application Gateway.
@@ -158,11 +158,30 @@ export async function executeTrustClubServerApplicationEntry(
         input.authenticationSource.request,
     });
 
+  if (
+    !authenticationContext.authenticated ||
+    authenticationContext.authenticatedUserId ===
+      null
+  ) {
+    return entryNotReady(
+      input,
+    );
+  }
+
+  const systemRoles =
+    await getTrustClubSystemRolesForUser(
+      authenticationContext.authenticatedUserId,
+    );
+
   const authorizationContext =
     integrateTrustClubAuthenticationWithAuthorization({
       authenticationContext,
 
       ...input.authorizationDomainState,
+
+      systemRoleContext: {
+        systemRoles,
+      },
     });
 
   const authorizedGateway =

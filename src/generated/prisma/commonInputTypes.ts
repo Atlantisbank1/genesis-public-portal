@@ -267,6 +267,23 @@ export type EnumTrustClubEligibilityReasonCodeNullableWithAggregatesFilter<$Pris
   _max?: Prisma.NestedEnumTrustClubEligibilityReasonCodeNullableFilter<$PrismaModel>
 }
 
+export type EnumTrustClubSystemRoleFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubSystemRole | Prisma.EnumTrustClubSystemRoleFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubSystemRole[] | Prisma.ListEnumTrustClubSystemRoleFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubSystemRole[] | Prisma.ListEnumTrustClubSystemRoleFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubSystemRoleFilter<$PrismaModel> | $Enums.TrustClubSystemRole
+}
+
+export type EnumTrustClubSystemRoleWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubSystemRole | Prisma.EnumTrustClubSystemRoleFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubSystemRole[] | Prisma.ListEnumTrustClubSystemRoleFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubSystemRole[] | Prisma.ListEnumTrustClubSystemRoleFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubSystemRoleWithAggregatesFilter<$PrismaModel> | $Enums.TrustClubSystemRole
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTrustClubSystemRoleFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTrustClubSystemRoleFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -531,6 +548,23 @@ export type NestedEnumTrustClubEligibilityReasonCodeNullableWithAggregatesFilter
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTrustClubEligibilityReasonCodeNullableFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTrustClubEligibilityReasonCodeNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumTrustClubSystemRoleFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubSystemRole | Prisma.EnumTrustClubSystemRoleFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubSystemRole[] | Prisma.ListEnumTrustClubSystemRoleFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubSystemRole[] | Prisma.ListEnumTrustClubSystemRoleFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubSystemRoleFilter<$PrismaModel> | $Enums.TrustClubSystemRole
+}
+
+export type NestedEnumTrustClubSystemRoleWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubSystemRole | Prisma.EnumTrustClubSystemRoleFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubSystemRole[] | Prisma.ListEnumTrustClubSystemRoleFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubSystemRole[] | Prisma.ListEnumTrustClubSystemRoleFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubSystemRoleWithAggregatesFilter<$PrismaModel> | $Enums.TrustClubSystemRole
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTrustClubSystemRoleFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTrustClubSystemRoleFilter<$PrismaModel>
 }
 
 

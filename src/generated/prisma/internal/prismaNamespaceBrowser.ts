@@ -59,6 +59,7 @@ export const ModelName = {
   Verification: 'Verification',
   TrustClubMember: 'TrustClubMember',
   TrustClubEligibilityRecord: 'TrustClubEligibilityRecord',
+  TrustClubSystemRoleAssignment: 'TrustClubSystemRoleAssignment',
   TrustClubStandardTrustFormation: 'TrustClubStandardTrustFormation'
 } as const
 
@@ -196,6 +197,19 @@ export const TrustClubEligibilityRecordScalarFieldEnum = {
 } as const
 
 export type TrustClubEligibilityRecordScalarFieldEnum = (typeof TrustClubEligibilityRecordScalarFieldEnum)[keyof typeof TrustClubEligibilityRecordScalarFieldEnum]
+
+
+export const TrustClubSystemRoleAssignmentScalarFieldEnum = {
+  assignmentId: 'assignmentId',
+  userId: 'userId',
+  role: 'role',
+  grantedAt: 'grantedAt',
+  grantedBy: 'grantedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TrustClubSystemRoleAssignmentScalarFieldEnum = (typeof TrustClubSystemRoleAssignmentScalarFieldEnum)[keyof typeof TrustClubSystemRoleAssignmentScalarFieldEnum]
 
 
 export const TrustClubStandardTrustFormationScalarFieldEnum = {

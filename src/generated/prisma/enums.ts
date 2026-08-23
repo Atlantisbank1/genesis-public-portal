@@ -108,3 +108,10 @@ export const TrustClubEligibilityReasonCode = {
 } as const
 
 export type TrustClubEligibilityReasonCode = (typeof TrustClubEligibilityReasonCode)[keyof typeof TrustClubEligibilityReasonCode]
+
+
+export const TrustClubSystemRole = {
+  TRUST_CLUB_ADMIN: 'TRUST_CLUB_ADMIN'
+} as const
+
+export type TrustClubSystemRole = (typeof TrustClubSystemRole)[keyof typeof TrustClubSystemRole]

@@ -82,6 +82,11 @@ export type TrustClubMember = Prisma.TrustClubMemberModel
  */
 export type TrustClubEligibilityRecord = Prisma.TrustClubEligibilityRecordModel
 /**
+ * Model TrustClubSystemRoleAssignment
+ * 
+ */
+export type TrustClubSystemRoleAssignment = Prisma.TrustClubSystemRoleAssignmentModel
+/**
  * Model TrustClubStandardTrustFormation
  * 
  */

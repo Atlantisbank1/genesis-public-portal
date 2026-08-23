@@ -87,6 +87,10 @@ enum TrustClubEligibilityReasonCode {
   OTHER_REVIEWED_CAUSE
 }
 
+enum TrustClubSystemRole {
+  TRUST_CLUB_ADMIN
+}
+
 model TrustClubActionRecord {
   actionId          String                @id
   actionType        TrustClubActionType
@@ -136,10 +140,11 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  sessions                   Session[]
-  accounts                   Account[]
-  trustClubMember            TrustClubMember?
-  trustClubEligibilityRecord TrustClubEligibilityRecord?
+  sessions                       Session[]
+  accounts                       Account[]
+  trustClubMember                TrustClubMember?
+  trustClubEligibilityRecord     TrustClubEligibilityRecord?
+  trustClubSystemRoleAssignments TrustClubSystemRoleAssignment[]
 
   @@unique([email])
   @@map("user")
@@ -234,6 +239,22 @@ model TrustClubEligibilityRecord {
   @@index([reasonCode])
   @@index([internalCaseReference])
   @@map("trust_club_eligibility_records")
+}
+
+model TrustClubSystemRoleAssignment {
+  assignmentId String              @id @default(cuid())
+  userId       String
+  role         TrustClubSystemRole
+  grantedAt    DateTime            @default(now())
+  grantedBy    String?
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, role])
+  @@index([role])
+  @@map("trust_club_system_role_assignments")
 }
 
 model TrustClubStandardTrustFormation {

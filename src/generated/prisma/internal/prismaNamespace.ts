@@ -405,6 +405,7 @@ export const ModelName = {
   Verification: 'Verification',
   TrustClubMember: 'TrustClubMember',
   TrustClubEligibilityRecord: 'TrustClubEligibilityRecord',
+  TrustClubSystemRoleAssignment: 'TrustClubSystemRoleAssignment',
   TrustClubStandardTrustFormation: 'TrustClubStandardTrustFormation'
 } as const
 
@@ -421,7 +422,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "trustClubActionRecord" | "trustClubActionOutcome" | "user" | "session" | "account" | "verification" | "trustClubMember" | "trustClubEligibilityRecord" | "trustClubStandardTrustFormation"
+    modelProps: "trustClubActionRecord" | "trustClubActionOutcome" | "user" | "session" | "account" | "verification" | "trustClubMember" | "trustClubEligibilityRecord" | "trustClubSystemRoleAssignment" | "trustClubStandardTrustFormation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1017,6 +1018,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TrustClubSystemRoleAssignment: {
+      payload: Prisma.$TrustClubSystemRoleAssignmentPayload<ExtArgs>
+      fields: Prisma.TrustClubSystemRoleAssignmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TrustClubSystemRoleAssignmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSystemRoleAssignmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TrustClubSystemRoleAssignmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSystemRoleAssignmentPayload>
+        }
+        findFirst: {
+          args: Prisma.TrustClubSystemRoleAssignmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSystemRoleAssignmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TrustClubSystemRoleAssignmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSystemRoleAssignmentPayload>
+        }
+        findMany: {
+          args: Prisma.TrustClubSystemRoleAssignmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSystemRoleAssignmentPayload>[]
+        }
+        create: {
+          args: Prisma.TrustClubSystemRoleAssignmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSystemRoleAssignmentPayload>
+        }
+        createMany: {
+          args: Prisma.TrustClubSystemRoleAssignmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TrustClubSystemRoleAssignmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSystemRoleAssignmentPayload>[]
+        }
+        delete: {
+          args: Prisma.TrustClubSystemRoleAssignmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSystemRoleAssignmentPayload>
+        }
+        update: {
+          args: Prisma.TrustClubSystemRoleAssignmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSystemRoleAssignmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.TrustClubSystemRoleAssignmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TrustClubSystemRoleAssignmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TrustClubSystemRoleAssignmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSystemRoleAssignmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.TrustClubSystemRoleAssignmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSystemRoleAssignmentPayload>
+        }
+        aggregate: {
+          args: Prisma.TrustClubSystemRoleAssignmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTrustClubSystemRoleAssignment>
+        }
+        groupBy: {
+          args: Prisma.TrustClubSystemRoleAssignmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TrustClubSystemRoleAssignmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TrustClubSystemRoleAssignmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TrustClubSystemRoleAssignmentCountAggregateOutputType> | number
+        }
+      }
+    }
     TrustClubStandardTrustFormation: {
       payload: Prisma.$TrustClubStandardTrustFormationPayload<ExtArgs>
       fields: Prisma.TrustClubStandardTrustFormationFieldRefs
@@ -1250,6 +1325,19 @@ export const TrustClubEligibilityRecordScalarFieldEnum = {
 export type TrustClubEligibilityRecordScalarFieldEnum = (typeof TrustClubEligibilityRecordScalarFieldEnum)[keyof typeof TrustClubEligibilityRecordScalarFieldEnum]
 
 
+export const TrustClubSystemRoleAssignmentScalarFieldEnum = {
+  assignmentId: 'assignmentId',
+  userId: 'userId',
+  role: 'role',
+  grantedAt: 'grantedAt',
+  grantedBy: 'grantedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TrustClubSystemRoleAssignmentScalarFieldEnum = (typeof TrustClubSystemRoleAssignmentScalarFieldEnum)[keyof typeof TrustClubSystemRoleAssignmentScalarFieldEnum]
+
+
 export const TrustClubStandardTrustFormationScalarFieldEnum = {
   actionId: 'actionId',
   trustName: 'trustName',
@@ -1430,6 +1518,20 @@ export type ListEnumTrustClubEligibilityReasonCodeFieldRefInput<$PrismaModel> = 
 
 
 /**
+ * Reference to a field of type 'TrustClubSystemRole'
+ */
+export type EnumTrustClubSystemRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TrustClubSystemRole'>
+    
+
+
+/**
+ * Reference to a field of type 'TrustClubSystemRole[]'
+ */
+export type ListEnumTrustClubSystemRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TrustClubSystemRole[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1601,6 +1703,7 @@ export type GlobalOmitConfig = {
   verification?: Prisma.VerificationOmit
   trustClubMember?: Prisma.TrustClubMemberOmit
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordOmit
+  trustClubSystemRoleAssignment?: Prisma.TrustClubSystemRoleAssignmentOmit
   trustClubStandardTrustFormation?: Prisma.TrustClubStandardTrustFormationOmit
 }
 

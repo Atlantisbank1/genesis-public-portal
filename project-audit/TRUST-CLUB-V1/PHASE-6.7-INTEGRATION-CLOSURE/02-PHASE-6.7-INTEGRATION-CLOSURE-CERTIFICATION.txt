@@ -1,0 +1,225 @@
+﻿============================================================
+TRUST CLUB V1
+PHASE 6.7
+INTEGRATION CLOSURE CERTIFICATION
+============================================================
+
+CERTIFICATION STATUS:
+PASS
+
+CERTIFIED AT UTC:
+2026-08-23T19:28:04.289Z
+
+------------------------------------------------------------
+CERTIFIED BASELINE
+------------------------------------------------------------
+
+HEAD:
+3ae6618c60b872cdbc037d432fda494525f0b05d
+
+STAGED FILE COUNT:
+0
+
+------------------------------------------------------------
+CERTIFIED SUBJECT
+------------------------------------------------------------
+
+TRUST CLUB V1 PHASE 6.7
+SYSTEM ROLE FOUNDATION AND
+SERVER APPLICATION ENTRY INTEGRATION
+
+------------------------------------------------------------
+SYSTEM ROLE FOUNDATION
+------------------------------------------------------------
+
+TRUST CLUB SYSTEM ROLE ENUM:
+CERTIFIED
+
+TRUST_CLUB_ADMIN:
+CERTIFIED
+
+PERSISTED SYSTEM ROLE ASSIGNMENT MODEL:
+CERTIFIED
+
+USER / ROLE UNIQUENESS:
+CERTIFIED
+
+USER FOREIGN KEY:
+CERTIFIED
+
+------------------------------------------------------------
+SERVER-AUTHORITATIVE ROLE RESOLUTION
+------------------------------------------------------------
+
+PERSISTED SYSTEM ROLE SERVICE:
+CERTIFIED
+
+PERSISTENCE READ:
+findMany
+
+PERSISTENCE WRITE:
+NONE
+
+AUTHENTICATED USER ID:
+AUTHORITATIVE ROLE LOOKUP KEY
+
+CALLER-SUPPLIED SYSTEM ROLE CONTEXT:
+NOT AUTHORITATIVE
+
+PERSISTED SYSTEM ROLE CONTEXT:
+SERVER AUTHORITATIVE
+
+------------------------------------------------------------
+APPLICATION ENTRY
+------------------------------------------------------------
+
+AUTHENTICATION:
+REQUIRED BEFORE ROLE RESOLUTION
+
+SYSTEM ROLE RESOLUTION:
+CERTIFIED
+
+AUTHORIZATION CONTEXT ASSEMBLY:
+CERTIFIED
+
+CERTIFIED GATEWAY INTEGRATION:
+VERIFIED BY PREVIOUS LOCKED RUNTIME UNIT
+
+------------------------------------------------------------
+PERSISTENCE ARTIFACT CONSISTENCY
+------------------------------------------------------------
+
+PRISMA SCHEMA:
+CERTIFIED
+
+MIGRATION:
+CERTIFIED
+
+GENERATED ENUM:
+CERTIFIED
+
+GENERATED MODEL:
+CERTIFIED
+
+SCHEMA / MIGRATION / GENERATED CLIENT:
+CONSISTENT
+
+------------------------------------------------------------
+ENGINEERING VERIFICATION
+------------------------------------------------------------
+
+PRISMA VALIDATE:
+PASS
+
+NEXT.JS PRODUCTION BUILD:
+PASS
+
+TYPESCRIPT:
+PASS
+
+STATIC PAGE GENERATION:
+18 / 18
+
+------------------------------------------------------------
+RUNTIME FOUNDATION
+------------------------------------------------------------
+
+PHASE 6.7-I.4O.11:
+CERTIFIED AND LOCKED
+
+AUTHENTICATED READ_ACTION:
+CERTIFIED
+
+BETTER AUTH SESSION:
+VERIFIED
+
+CERTIFIED GATEWAY:
+VERIFIED
+
+DATABASE IMMUTABILITY:
+VERIFIED
+
+------------------------------------------------------------
+PRIMARY CERTIFICATION EVIDENCE
+------------------------------------------------------------
+
+FILE:
+01-PHASE-6.7-INTEGRATION-CLOSURE-EVIDENCE.txt
+
+SHA256:
+21C950B725667A11B91E9D004141D7E8AB1429F0D1EFD6502B15D7F898B6F87A
+
+STATUS:
+VERIFIED
+
+------------------------------------------------------------
+CERTIFICATION BOUNDARY
+------------------------------------------------------------
+
+THIS CERTIFICATION ESTABLISHES:
+
+1. The Trust Club System Role persistence foundation exists
+   consistently across schema, migration and generated client.
+
+2. TRUST_CLUB_ADMIN is represented by the persisted system
+   role foundation.
+
+3. System roles are resolved server-side using the
+   authenticated user's persisted identity.
+
+4. Caller-supplied system-role context is not authoritative
+   for the certified application-entry authorization path.
+
+5. The System Role Service is read-only within the certified
+   boundary.
+
+6. The current integration state passes Prisma validation
+   and the Next.js production build.
+
+7. The previously certified authenticated READ_ACTION
+   runtime path remains a separate locked runtime evidence
+   unit supporting this integration closure.
+
+THIS CERTIFICATION DOES NOT AUTHORIZE:
+
+- ROLE ASSIGNMENT CREATION
+- ROLE ASSIGNMENT UPDATE
+- ROLE ASSIGNMENT DELETION
+- MEMBERSHIP MODIFICATION
+- SUBSCRIPTION MODIFICATION
+- PAYMENT EXECUTION
+- BANKING EXECUTION
+- ATLANTIS ACCESS
+- DATABASE WRITES
+- NEW MIGRATION EXECUTION
+- SOURCE MODIFICATION
+- PRISMA GENERATION
+- STAGING
+- COMMIT
+- PUSH
+
+------------------------------------------------------------
+FINAL CERTIFICATION
+------------------------------------------------------------
+
+PHASE 6.7 INTEGRATION CLOSURE:
+CERTIFIED - PASS
+
+SYSTEM ROLE FOUNDATION:
+CERTIFIED
+
+SERVER-AUTHORITATIVE ROLE RESOLUTION:
+CERTIFIED
+
+APPLICATION ENTRY INTEGRATION:
+CERTIFIED
+
+PERSISTENCE CONSISTENCY:
+CERTIFIED
+
+PRODUCTION BUILD:
+CERTIFIED
+
+============================================================
+END OF CERTIFICATION
+============================================================
