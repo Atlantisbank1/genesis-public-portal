@@ -1,0 +1,254 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TrustClubActionType {
+  CREATE_STANDARD_TRUST
+  VIEW_TRUST
+  UPDATE_STANDARD_RECORD
+  ADD_ASSET
+  REMOVE_ASSET
+  ACCEPT_CONTRIBUTION
+  RECORD_INCOME
+  RECORD_EXPENSE
+  MAKE_DISTRIBUTION
+  CREATE_TRUSTEE_RESOLUTION
+  ADD_BENEFICIARY
+  CHANGE_BENEFICIARY
+  CHANGE_TRUSTEE
+  CHANGE_PROTECTOR
+  ENTER_CONTRACT
+  MAKE_INVESTMENT
+  AMEND_TRUST
+  REQUEST_BANKING_ACTIVATION
+  REQUEST_EXTERNAL_IDENTIFICATION
+  REQUEST_PROFESSIONAL_REVIEW
+  REQUEST_TRUST_TERMINATION
+}
+
+enum TrustClubActionStatus {
+  DRAFT
+  DISCLOSURE_REQUIRED
+  CONSENT_REQUIRED
+  READY
+  PENDING_REVIEW
+  AUTHORIZED
+  IN_PROGRESS
+  INTERNAL_COMPLETE
+  EXTERNAL_PENDING
+  COMPLETE
+  REJECTED
+  CANCELLED
+}
+
+enum TrustClubActionOutcomeType {
+  INTERNAL_COMPLETION
+  EXTERNAL_PENDING
+  COMPLETED
+  REJECTED
+  CANCELLED
+}
+
+enum TrustClubMemberStatus {
+  PENDING
+  ACTIVE
+  GRACE
+  SUSPENDED
+  CANCELLED
+}
+
+enum TrustClubSubscriptionStatus {
+  PENDING
+  ACTIVE
+  GRACE
+  SUSPENDED
+  CANCELLED
+}
+
+enum TrustClubEligibilityStatus {
+  ELIGIBLE
+  REVIEW_REQUIRED
+  RESTRICTED
+}
+
+enum TrustClubEligibilityReasonCode {
+  BREACH_OF_TRUST
+  SERIOUS_MISCONDUCT
+  ABUSE_OF_MEMBER
+  FRAUD_OR_DECEPTION
+  SECURITY_THREAT
+  ABUSE_OF_SERVICE
+  FORMAL_INTERNAL_RESTRICTION
+  OTHER_REVIEWED_CAUSE
+}
+
+model TrustClubActionRecord {
+  actionId          String                @id
+  actionType        TrustClubActionType
+  status            TrustClubActionStatus
+  requestedByUserId String
+  memberId          String
+  trustId           String?
+  createdAt         String
+  updatedAt         String
+
+  outcomes          TrustClubActionOutcome[]
+  standardFormation TrustClubStandardTrustFormation?
+
+  @@index([requestedByUserId])
+  @@index([memberId])
+  @@index([trustId])
+  @@index([status])
+  @@map("trust_club_action_records")
+}
+
+model TrustClubActionOutcome {
+  persistenceId     String                     @id @default(cuid())
+  actionId          String
+  actionType        TrustClubActionType
+  actionStatus      TrustClubActionStatus
+  outcomeType       TrustClubActionOutcomeType
+  recordedAt        String
+  outcomeCode       String?
+  outcomeReason     String?
+  externalReference String?
+
+  action TrustClubActionRecord @relation(fields: [actionId], references: [actionId], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([actionId])
+  @@index([actionStatus])
+  @@index([outcomeType])
+  @@index([recordedAt])
+  @@map("trust_club_action_outcomes")
+}
+
+model User {
+  id            String   @id
+  name          String
+  email         String
+  emailVerified Boolean  @default(false)
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sessions                   Session[]
+  accounts                   Account[]
+  trustClubMember            TrustClubMember?
+  trustClubEligibilityRecord TrustClubEligibilityRecord?
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  issuer                String
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([issuer, accountId], map: "account_issuer_accountId_uidx")
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model TrustClubMember {
+  memberId           String                      @id @default(cuid())
+  userId             String                      @unique
+  status             TrustClubMemberStatus       @default(PENDING)
+  subscriptionStatus TrustClubSubscriptionStatus @default(PENDING)
+  planCode           String                      @default("STANDARD_MEMBERSHIP")
+  createdAt          DateTime                    @default(now())
+  updatedAt          DateTime                    @updatedAt
+  activatedAt        DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([subscriptionStatus])
+  @@map("trust_club_members")
+}
+
+model TrustClubEligibilityRecord {
+  eligibilityId         String                          @id @default(cuid())
+  userId                String                          @unique
+  status                TrustClubEligibilityStatus      @default(REVIEW_REQUIRED)
+  reasonCode            TrustClubEligibilityReasonCode?
+  internalCaseReference String?
+  internalNotes         String?
+  effectiveAt           DateTime                        @default(now())
+  reviewedBy            String?
+  reviewedAt            DateTime?
+  liftedAt              DateTime?
+  createdAt             DateTime                        @default(now())
+  updatedAt             DateTime                        @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([reasonCode])
+  @@index([internalCaseReference])
+  @@map("trust_club_eligibility_records")
+}
+
+model TrustClubStandardTrustFormation {
+  actionId                   String   @id
+  trustName                  String?
+  trustPurpose               String?
+  settlorName                String?
+  trusteeName                String?
+  beneficiaryName            String?
+  protectorName              String?
+  initialPropertyDescription String?
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+
+  action TrustClubActionRecord @relation(fields: [actionId], references: [actionId], onDelete: Restrict, onUpdate: Cascade)
+
+  @@map("trust_club_standard_trust_formations")
+}
