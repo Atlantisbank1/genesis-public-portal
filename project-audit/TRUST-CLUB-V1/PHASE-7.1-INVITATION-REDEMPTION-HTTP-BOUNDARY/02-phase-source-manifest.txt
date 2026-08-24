@@ -1,0 +1,74 @@
+TRUST CLUB V1
+PHASE 7.1
+INVITATION REDEMPTION HTTP BOUNDARY
+PHASE SOURCE MANIFEST
+
+============================================================
+CERTIFIED BASELINE
+============================================================
+
+BASELINE PHASE:
+7.0
+
+BASELINE HEAD:
+dfe41d2ef31b8695b69c95582ba5e03acf44b59b
+
+============================================================
+AUTHORIZED PHASE 7.1 PRODUCTION SOURCE
+============================================================
+
+SOURCE FILE COUNT:
+1
+
+01
+src/app/api/trust-club/invitations/redeem/route.ts
+
+============================================================
+SOURCE BOUNDARY
+============================================================
+
+NEW HTTP ROUTE:
+POST /api/trust-club/invitations/redeem
+
+PHASE 7.0 REDEMPTION ENGINE MODIFICATION:
+NONE
+
+PRISMA SCHEMA MODIFICATION:
+NONE
+
+DATABASE MIGRATION:
+NONE
+
+MEMBERSHIP ACTIVATION IMPLEMENTATION:
+NONE
+
+USER CREATION IMPLEMENTATION:
+NONE
+
+SESSION CREATION IMPLEMENTATION:
+NONE
+
+============================================================
+EVIDENCE FILES
+============================================================
+
+01-core-verification-record.txt
+02-phase-source-manifest.txt
+03-sha256-evidence-register.txt
+
+============================================================
+MANIFEST RESULT
+============================================================
+
+AUTHORIZED PRODUCTION SOURCE COUNT:
+1
+
+SOURCE BOUNDARY:
+VERIFIED
+
+RESULT:
+PASS
+
+============================================================
+END OF PHASE SOURCE MANIFEST
+============================================================

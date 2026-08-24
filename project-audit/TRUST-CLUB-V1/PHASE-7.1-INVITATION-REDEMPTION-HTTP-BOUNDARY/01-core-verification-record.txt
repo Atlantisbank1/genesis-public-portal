@@ -1,0 +1,353 @@
+TRUST CLUB V1
+PHASE 7.1
+INVITATION REDEMPTION HTTP BOUNDARY
+CORE VERIFICATION RECORD
+
+============================================================
+1. CERTIFIED BASELINE
+============================================================
+
+BASELINE PHASE:
+7.0
+
+BASELINE HEAD:
+dfe41d2ef31b8695b69c95582ba5e03acf44b59b
+
+BASELINE STATUS:
+VERIFIED
+
+CURRENT BRANCH:
+main
+
+============================================================
+2. PHASE 7.1 PRODUCTION SOURCE
+============================================================
+
+AUTHORIZED PRODUCTION TARGET COUNT:
+1
+
+AUTHORIZED PRODUCTION TARGET:
+src/app/api/trust-club/invitations/redeem/route.ts
+
+HTTP METHOD:
+POST ONLY
+
+PUBLIC ROUTE:
+YES
+
+ROUTE:
+POST /api/trust-club/invitations/redeem
+
+============================================================
+3. IMPLEMENTED HTTP BOUNDARY
+============================================================
+
+REQUEST BODY:
+rawToken
+
+REQUEST VALIDATION:
+ZOD
+
+RAW TOKEN:
+TRANSIENT INPUT ONLY
+
+RAW TOKEN STORAGE:
+NONE
+
+RAW TOKEN RESPONSE DISCLOSURE:
+NONE
+
+SUCCESS RESPONSE:
+INVITATION_REDEEMED
+
+SUCCESS HTTP STATUS:
+200
+
+INVALID REQUEST HTTP STATUS:
+400
+
+INVALID TOKEN PUBLIC ERROR:
+TRUST_CLUB_INVITATION_REDEMPTION_INVALID_TOKEN
+
+CACHE CONTROL:
+no-store
+
+PRAGMA:
+no-cache
+
+============================================================
+4. PHASE 7.0 REDEMPTION ENGINE RELATIONSHIP
+============================================================
+
+REDEMPTION ENGINE:
+CERTIFIED PHASE 7.0 COMPONENT
+
+HTTP ROUTE OWNS TOKEN HASHING:
+NO
+
+HTTP ROUTE OWNS INVITATION CONSUMPTION:
+NO
+
+HTTP ROUTE OWNS DATABASE PERSISTENCE:
+NO
+
+HTTP ROUTE DELEGATES TO:
+redeemTrustClubInvitationToken
+
+CERTIFIED PHASE 7.0 SOURCE MODIFIED:
+NO
+
+============================================================
+5. BUILD VERIFICATION
+============================================================
+
+PRISMA SCHEMA VALIDATION:
+PASS
+
+PRISMA CLIENT GENERATION:
+PASS
+
+PRODUCTION BUILD:
+PASS
+
+NEXT.JS ROUTE DISCOVERY:
+PASS
+
+DISCOVERED ROUTE:
+ƒ /api/trust-club/invitations/redeem
+
+POST-BUILD TARGET DIFF CHECK:
+PASS
+
+============================================================
+6. NEGATIVE HTTP RUNTIME VERIFICATION
+============================================================
+
+MISSING RAW TOKEN:
+REJECTED
+
+MISSING RAW TOKEN PUBLIC RESULT:
+TRUST_CLUB_INVITATION_REDEMPTION_INVALID_REQUEST
+
+WHITESPACE RAW TOKEN:
+REJECTED
+
+WHITESPACE RAW TOKEN PUBLIC RESULT:
+TRUST_CLUB_INVITATION_REDEMPTION_INVALID_REQUEST
+
+UNKNOWN NON-EMPTY RAW TOKEN:
+REJECTED
+
+UNKNOWN TOKEN PUBLIC RESULT:
+TRUST_CLUB_INVITATION_REDEMPTION_INVALID_TOKEN
+
+INVALID JSON:
+REJECTED
+
+CACHE PROTECTION:
+VERIFIED
+
+RAW TOKEN RESPONSE LEAK:
+NONE
+
+ROUTE TO REDEMPTION SERVICE:
+VERIFIED
+
+============================================================
+7. POSITIVE END-TO-END HTTP RUNTIME
+============================================================
+
+CONTROLLED FIXTURE:
+CREATED AND REMOVED
+
+INITIAL INVITATION STATUS:
+REQUESTED
+
+APPROVED INVITATION STATUS:
+APPROVED
+
+HTTP REDEMPTION STATUS:
+200
+
+HTTP RESPONSE STATUS:
+INVITATION_REDEEMED
+
+FINAL PERSISTED STATUS:
+CONSUMED
+
+CONSUMEDAT:
+PRESENT
+
+TOKEN HASH:
+PRESERVED
+
+RAW TOKEN RETURNED:
+NO
+
+CACHE-CONTROL:
+no-store
+
+PRAGMA:
+no-cache
+
+REQUESTED -> APPROVED:
+VERIFIED
+
+HTTP POST -> REDEMPTION SERVICE:
+VERIFIED
+
+APPROVED -> CONSUMED:
+VERIFIED
+
+PERSISTED CONSUMED STATE:
+VERIFIED
+
+============================================================
+8. REPLAY PROTECTION
+============================================================
+
+SECOND HTTP REDEMPTION ATTEMPT:
+REJECTED
+
+REPLAY HTTP STATUS:
+400
+
+PUBLIC ERROR:
+TRUST_CLUB_INVITATION_REDEMPTION_INVALID_TOKEN
+
+PERSISTED STATUS AFTER REPLAY:
+CONSUMED
+
+CONSUMEDAT MUTATION:
+NONE
+
+TOKEN HASH MUTATION:
+NONE
+
+REPLAY MUTATION:
+NONE
+
+============================================================
+9. AUTHORITY BOUNDARY
+============================================================
+
+DIRECT PRISMA ACCESS:
+NONE
+
+DIRECT DATABASE WRITE:
+NONE
+
+MEMBERSHIP ACTIVATION AUTHORITY:
+NONE
+
+USER CREATION AUTHORITY:
+NONE
+
+SESSION CREATION AUTHORITY:
+NONE
+
+AUTHENTICATION SESSION DEPENDENCY:
+NONE
+
+RAW TOKEN PERSISTENCE:
+NONE
+
+RAW TOKEN DISCLOSURE:
+NONE
+
+GET METHOD:
+ABSENT
+
+PUT METHOD:
+ABSENT
+
+PATCH METHOD:
+ABSENT
+
+DELETE METHOD:
+ABSENT
+
+PUBLIC ERROR COLLAPSE:
+VERIFIED
+
+============================================================
+10. CERTIFIED PHASE 7.0 PRESERVATION
+============================================================
+
+src/trust-club/invitation/trust-club-invitation.contracts.ts:
+UNCHANGED
+
+src/trust-club/invitation/trust-club-invitation.persistence.ts:
+UNCHANGED
+
+src/trust-club/invitation/trust-club-invitation-token-redemption.contracts.ts:
+UNCHANGED
+
+src/trust-club/invitation/trust-club-invitation-token-redemption.service.ts:
+UNCHANGED
+
+CERTIFIED PHASE 7.0 SOURCE PRESERVATION:
+PASS
+
+============================================================
+11. REPOSITORY STATE
+============================================================
+
+BASELINE HEAD:
+dfe41d2ef31b8695b69c95582ba5e03acf44b59b
+
+PHASE 7.1 PRODUCTION TARGET COUNT:
+1
+
+STAGED FILES:
+0
+
+COMMIT:
+NO
+
+PUSH:
+NO
+
+============================================================
+12. PHASE 7.1 CORE VERIFICATION RESULT
+============================================================
+
+IMPLEMENTATION:
+PASS
+
+PRISMA VALIDATION:
+PASS
+
+PRODUCTION BUILD:
+PASS
+
+HTTP ROUTE DISCOVERY:
+PASS
+
+NEGATIVE HTTP RUNTIME:
+PASS
+
+POSITIVE HTTP RUNTIME:
+PASS
+
+REPLAY PROTECTION:
+PASS
+
+RAW TOKEN SECURITY:
+PASS
+
+CACHE PROTECTION:
+PASS
+
+AUTHORITY BOUNDARY:
+PASS
+
+CERTIFIED PHASE 7.0 PRESERVATION:
+PASS
+
+OVERALL CORE VERIFICATION:
+PASS
+
+============================================================
+END OF CORE VERIFICATION RECORD
+============================================================
