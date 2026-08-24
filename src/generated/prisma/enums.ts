@@ -115,3 +115,15 @@ export const TrustClubSystemRole = {
 } as const
 
 export type TrustClubSystemRole = (typeof TrustClubSystemRole)[keyof typeof TrustClubSystemRole]
+
+
+export const TrustClubInvitationStatus = {
+  REQUESTED: 'REQUESTED',
+  APPROVED: 'APPROVED',
+  CONSUMED: 'CONSUMED',
+  REJECTED: 'REJECTED',
+  REVOKED: 'REVOKED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type TrustClubInvitationStatus = (typeof TrustClubInvitationStatus)[keyof typeof TrustClubInvitationStatus]

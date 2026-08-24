@@ -11,6 +11,7 @@
 export type * from './models/TrustClubActionRecord'
 export type * from './models/TrustClubActionOutcome'
 export type * from './models/User'
+export type * from './models/TrustClubInvitation'
 export type * from './models/Session'
 export type * from './models/Account'
 export type * from './models/Verification'

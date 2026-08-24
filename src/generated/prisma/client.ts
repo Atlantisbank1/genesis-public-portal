@@ -57,6 +57,11 @@ export type TrustClubActionOutcome = Prisma.TrustClubActionOutcomeModel
  */
 export type User = Prisma.UserModel
 /**
+ * Model TrustClubInvitation
+ * 
+ */
+export type TrustClubInvitation = Prisma.TrustClubInvitationModel
+/**
  * Model Session
  * 
  */

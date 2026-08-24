@@ -203,6 +203,7 @@ export type UserWhereInput = {
   trustClubMember?: Prisma.XOR<Prisma.TrustClubMemberNullableScalarRelationFilter, Prisma.TrustClubMemberWhereInput> | null
   trustClubEligibilityRecord?: Prisma.XOR<Prisma.TrustClubEligibilityRecordNullableScalarRelationFilter, Prisma.TrustClubEligibilityRecordWhereInput> | null
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentListRelationFilter
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -218,6 +219,7 @@ export type UserOrderByWithRelationInput = {
   trustClubMember?: Prisma.TrustClubMemberOrderByWithRelationInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordOrderByWithRelationInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentOrderByRelationAggregateInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -236,6 +238,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   trustClubMember?: Prisma.XOR<Prisma.TrustClubMemberNullableScalarRelationFilter, Prisma.TrustClubMemberWhereInput> | null
   trustClubEligibilityRecord?: Prisma.XOR<Prisma.TrustClubEligibilityRecordNullableScalarRelationFilter, Prisma.TrustClubEligibilityRecordWhereInput> | null
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentListRelationFilter
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -277,6 +280,7 @@ export type UserCreateInput = {
   trustClubMember?: Prisma.TrustClubMemberCreateNestedOneWithoutUserInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordCreateNestedOneWithoutUserInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentCreateNestedManyWithoutUserInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -292,6 +296,7 @@ export type UserUncheckedCreateInput = {
   trustClubMember?: Prisma.TrustClubMemberUncheckedCreateNestedOneWithoutUserInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUncheckedCreateNestedOneWithoutUserInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUpdateInput = {
@@ -307,6 +312,7 @@ export type UserUpdateInput = {
   trustClubMember?: Prisma.TrustClubMemberUpdateOneWithoutUserNestedInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUpdateOneWithoutUserNestedInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUpdateManyWithoutUserNestedInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -322,6 +328,7 @@ export type UserUncheckedUpdateInput = {
   trustClubMember?: Prisma.TrustClubMemberUncheckedUpdateOneWithoutUserNestedInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUncheckedUpdateOneWithoutUserNestedInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -384,6 +391,11 @@ export type UserMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type UserNullableScalarRelationFilter = {
+  is?: Prisma.UserWhereInput | null
+  isNot?: Prisma.UserWhereInput | null
+}
+
 export type UserScalarRelationFilter = {
   is?: Prisma.UserWhereInput
   isNot?: Prisma.UserWhereInput
@@ -395,6 +407,22 @@ export type BoolFieldUpdateOperationsInput = {
 
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
+}
+
+export type UserCreateNestedOneWithoutTrustClubInvitationsApprovedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTrustClubInvitationsApprovedInput, Prisma.UserUncheckedCreateWithoutTrustClubInvitationsApprovedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTrustClubInvitationsApprovedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutTrustClubInvitationsApprovedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTrustClubInvitationsApprovedInput, Prisma.UserUncheckedCreateWithoutTrustClubInvitationsApprovedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTrustClubInvitationsApprovedInput
+  upsert?: Prisma.UserUpsertWithoutTrustClubInvitationsApprovedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTrustClubInvitationsApprovedInput, Prisma.UserUpdateWithoutTrustClubInvitationsApprovedInput>, Prisma.UserUncheckedUpdateWithoutTrustClubInvitationsApprovedInput>
 }
 
 export type UserCreateNestedOneWithoutSessionsInput = {
@@ -467,6 +495,82 @@ export type UserUpdateOneRequiredWithoutTrustClubSystemRoleAssignmentsNestedInpu
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTrustClubSystemRoleAssignmentsInput, Prisma.UserUpdateWithoutTrustClubSystemRoleAssignmentsInput>, Prisma.UserUncheckedUpdateWithoutTrustClubSystemRoleAssignmentsInput>
 }
 
+export type UserCreateWithoutTrustClubInvitationsApprovedInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
+  trustClubMember?: Prisma.TrustClubMemberCreateNestedOneWithoutUserInput
+  trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordCreateNestedOneWithoutUserInput
+  trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutTrustClubInvitationsApprovedInput = {
+  id: string
+  name: string
+  email: string
+  emailVerified?: boolean
+  image?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionUncheckedCreateNestedManyWithoutUserInput
+  accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
+  trustClubMember?: Prisma.TrustClubMemberUncheckedCreateNestedOneWithoutUserInput
+  trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUncheckedCreateNestedOneWithoutUserInput
+  trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutTrustClubInvitationsApprovedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTrustClubInvitationsApprovedInput, Prisma.UserUncheckedCreateWithoutTrustClubInvitationsApprovedInput>
+}
+
+export type UserUpsertWithoutTrustClubInvitationsApprovedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTrustClubInvitationsApprovedInput, Prisma.UserUncheckedUpdateWithoutTrustClubInvitationsApprovedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTrustClubInvitationsApprovedInput, Prisma.UserUncheckedCreateWithoutTrustClubInvitationsApprovedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTrustClubInvitationsApprovedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTrustClubInvitationsApprovedInput, Prisma.UserUncheckedUpdateWithoutTrustClubInvitationsApprovedInput>
+}
+
+export type UserUpdateWithoutTrustClubInvitationsApprovedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
+  trustClubMember?: Prisma.TrustClubMemberUpdateOneWithoutUserNestedInput
+  trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUpdateOneWithoutUserNestedInput
+  trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTrustClubInvitationsApprovedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  emailVerified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionUncheckedUpdateManyWithoutUserNestedInput
+  accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
+  trustClubMember?: Prisma.TrustClubMemberUncheckedUpdateOneWithoutUserNestedInput
+  trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUncheckedUpdateOneWithoutUserNestedInput
+  trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateWithoutSessionsInput = {
   id: string
   name: string
@@ -479,6 +583,7 @@ export type UserCreateWithoutSessionsInput = {
   trustClubMember?: Prisma.TrustClubMemberCreateNestedOneWithoutUserInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordCreateNestedOneWithoutUserInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentCreateNestedManyWithoutUserInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutSessionsInput = {
@@ -493,6 +598,7 @@ export type UserUncheckedCreateWithoutSessionsInput = {
   trustClubMember?: Prisma.TrustClubMemberUncheckedCreateNestedOneWithoutUserInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUncheckedCreateNestedOneWithoutUserInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutSessionsInput = {
@@ -523,6 +629,7 @@ export type UserUpdateWithoutSessionsInput = {
   trustClubMember?: Prisma.TrustClubMemberUpdateOneWithoutUserNestedInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUpdateOneWithoutUserNestedInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUpdateManyWithoutUserNestedInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -537,6 +644,7 @@ export type UserUncheckedUpdateWithoutSessionsInput = {
   trustClubMember?: Prisma.TrustClubMemberUncheckedUpdateOneWithoutUserNestedInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUncheckedUpdateOneWithoutUserNestedInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutAccountsInput = {
@@ -551,6 +659,7 @@ export type UserCreateWithoutAccountsInput = {
   trustClubMember?: Prisma.TrustClubMemberCreateNestedOneWithoutUserInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordCreateNestedOneWithoutUserInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentCreateNestedManyWithoutUserInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutAccountsInput = {
@@ -565,6 +674,7 @@ export type UserUncheckedCreateWithoutAccountsInput = {
   trustClubMember?: Prisma.TrustClubMemberUncheckedCreateNestedOneWithoutUserInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUncheckedCreateNestedOneWithoutUserInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutAccountsInput = {
@@ -595,6 +705,7 @@ export type UserUpdateWithoutAccountsInput = {
   trustClubMember?: Prisma.TrustClubMemberUpdateOneWithoutUserNestedInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUpdateOneWithoutUserNestedInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUpdateManyWithoutUserNestedInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -609,6 +720,7 @@ export type UserUncheckedUpdateWithoutAccountsInput = {
   trustClubMember?: Prisma.TrustClubMemberUncheckedUpdateOneWithoutUserNestedInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUncheckedUpdateOneWithoutUserNestedInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutTrustClubMemberInput = {
@@ -623,6 +735,7 @@ export type UserCreateWithoutTrustClubMemberInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordCreateNestedOneWithoutUserInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentCreateNestedManyWithoutUserInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutTrustClubMemberInput = {
@@ -637,6 +750,7 @@ export type UserUncheckedCreateWithoutTrustClubMemberInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUncheckedCreateNestedOneWithoutUserInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutTrustClubMemberInput = {
@@ -667,6 +781,7 @@ export type UserUpdateWithoutTrustClubMemberInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUpdateOneWithoutUserNestedInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUpdateManyWithoutUserNestedInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTrustClubMemberInput = {
@@ -681,6 +796,7 @@ export type UserUncheckedUpdateWithoutTrustClubMemberInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUncheckedUpdateOneWithoutUserNestedInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutTrustClubEligibilityRecordInput = {
@@ -695,6 +811,7 @@ export type UserCreateWithoutTrustClubEligibilityRecordInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   trustClubMember?: Prisma.TrustClubMemberCreateNestedOneWithoutUserInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentCreateNestedManyWithoutUserInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutTrustClubEligibilityRecordInput = {
@@ -709,6 +826,7 @@ export type UserUncheckedCreateWithoutTrustClubEligibilityRecordInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   trustClubMember?: Prisma.TrustClubMemberUncheckedCreateNestedOneWithoutUserInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUncheckedCreateNestedManyWithoutUserInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutTrustClubEligibilityRecordInput = {
@@ -739,6 +857,7 @@ export type UserUpdateWithoutTrustClubEligibilityRecordInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   trustClubMember?: Prisma.TrustClubMemberUpdateOneWithoutUserNestedInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUpdateManyWithoutUserNestedInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTrustClubEligibilityRecordInput = {
@@ -753,6 +872,7 @@ export type UserUncheckedUpdateWithoutTrustClubEligibilityRecordInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   trustClubMember?: Prisma.TrustClubMemberUncheckedUpdateOneWithoutUserNestedInput
   trustClubSystemRoleAssignments?: Prisma.TrustClubSystemRoleAssignmentUncheckedUpdateManyWithoutUserNestedInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserCreateWithoutTrustClubSystemRoleAssignmentsInput = {
@@ -767,6 +887,7 @@ export type UserCreateWithoutTrustClubSystemRoleAssignmentsInput = {
   accounts?: Prisma.AccountCreateNestedManyWithoutUserInput
   trustClubMember?: Prisma.TrustClubMemberCreateNestedOneWithoutUserInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordCreateNestedOneWithoutUserInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserUncheckedCreateWithoutTrustClubSystemRoleAssignmentsInput = {
@@ -781,6 +902,7 @@ export type UserUncheckedCreateWithoutTrustClubSystemRoleAssignmentsInput = {
   accounts?: Prisma.AccountUncheckedCreateNestedManyWithoutUserInput
   trustClubMember?: Prisma.TrustClubMemberUncheckedCreateNestedOneWithoutUserInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUncheckedCreateNestedOneWithoutUserInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUncheckedCreateNestedManyWithoutApprovedByInput
 }
 
 export type UserCreateOrConnectWithoutTrustClubSystemRoleAssignmentsInput = {
@@ -811,6 +933,7 @@ export type UserUpdateWithoutTrustClubSystemRoleAssignmentsInput = {
   accounts?: Prisma.AccountUpdateManyWithoutUserNestedInput
   trustClubMember?: Prisma.TrustClubMemberUpdateOneWithoutUserNestedInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUpdateOneWithoutUserNestedInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUpdateManyWithoutApprovedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutTrustClubSystemRoleAssignmentsInput = {
@@ -825,6 +948,7 @@ export type UserUncheckedUpdateWithoutTrustClubSystemRoleAssignmentsInput = {
   accounts?: Prisma.AccountUncheckedUpdateManyWithoutUserNestedInput
   trustClubMember?: Prisma.TrustClubMemberUncheckedUpdateOneWithoutUserNestedInput
   trustClubEligibilityRecord?: Prisma.TrustClubEligibilityRecordUncheckedUpdateOneWithoutUserNestedInput
+  trustClubInvitationsApproved?: Prisma.TrustClubInvitationUncheckedUpdateManyWithoutApprovedByNestedInput
 }
 
 
@@ -836,12 +960,14 @@ export type UserCountOutputType = {
   sessions: number
   accounts: number
   trustClubSystemRoleAssignments: number
+  trustClubInvitationsApproved: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   accounts?: boolean | UserCountOutputTypeCountAccountsArgs
   trustClubSystemRoleAssignments?: boolean | UserCountOutputTypeCountTrustClubSystemRoleAssignmentsArgs
+  trustClubInvitationsApproved?: boolean | UserCountOutputTypeCountTrustClubInvitationsApprovedArgs
 }
 
 /**
@@ -875,6 +1001,13 @@ export type UserCountOutputTypeCountTrustClubSystemRoleAssignmentsArgs<ExtArgs e
   where?: Prisma.TrustClubSystemRoleAssignmentWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountTrustClubInvitationsApprovedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TrustClubInvitationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -889,6 +1022,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   trustClubMember?: boolean | Prisma.User$trustClubMemberArgs<ExtArgs>
   trustClubEligibilityRecord?: boolean | Prisma.User$trustClubEligibilityRecordArgs<ExtArgs>
   trustClubSystemRoleAssignments?: boolean | Prisma.User$trustClubSystemRoleAssignmentsArgs<ExtArgs>
+  trustClubInvitationsApproved?: boolean | Prisma.User$trustClubInvitationsApprovedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -929,6 +1063,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   trustClubMember?: boolean | Prisma.User$trustClubMemberArgs<ExtArgs>
   trustClubEligibilityRecord?: boolean | Prisma.User$trustClubEligibilityRecordArgs<ExtArgs>
   trustClubSystemRoleAssignments?: boolean | Prisma.User$trustClubSystemRoleAssignmentsArgs<ExtArgs>
+  trustClubInvitationsApproved?: boolean | Prisma.User$trustClubInvitationsApprovedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -942,6 +1077,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     trustClubMember: Prisma.$TrustClubMemberPayload<ExtArgs> | null
     trustClubEligibilityRecord: Prisma.$TrustClubEligibilityRecordPayload<ExtArgs> | null
     trustClubSystemRoleAssignments: Prisma.$TrustClubSystemRoleAssignmentPayload<ExtArgs>[]
+    trustClubInvitationsApproved: Prisma.$TrustClubInvitationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1350,6 +1486,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   trustClubMember<T extends Prisma.User$trustClubMemberArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$trustClubMemberArgs<ExtArgs>>): Prisma.Prisma__TrustClubMemberClient<runtime.Types.Result.GetResult<Prisma.$TrustClubMemberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   trustClubEligibilityRecord<T extends Prisma.User$trustClubEligibilityRecordArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$trustClubEligibilityRecordArgs<ExtArgs>>): Prisma.Prisma__TrustClubEligibilityRecordClient<runtime.Types.Result.GetResult<Prisma.$TrustClubEligibilityRecordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   trustClubSystemRoleAssignments<T extends Prisma.User$trustClubSystemRoleAssignmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$trustClubSystemRoleAssignmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TrustClubSystemRoleAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  trustClubInvitationsApproved<T extends Prisma.User$trustClubInvitationsApprovedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$trustClubInvitationsApprovedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TrustClubInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1886,6 +2023,30 @@ export type User$trustClubSystemRoleAssignmentsArgs<ExtArgs extends runtime.Type
   take?: number
   skip?: number
   distinct?: Prisma.TrustClubSystemRoleAssignmentScalarFieldEnum | Prisma.TrustClubSystemRoleAssignmentScalarFieldEnum[]
+}
+
+/**
+ * User.trustClubInvitationsApproved
+ */
+export type User$trustClubInvitationsApprovedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TrustClubInvitation
+   */
+  select?: Prisma.TrustClubInvitationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TrustClubInvitation
+   */
+  omit?: Prisma.TrustClubInvitationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TrustClubInvitationInclude<ExtArgs> | null
+  where?: Prisma.TrustClubInvitationWhereInput
+  orderBy?: Prisma.TrustClubInvitationOrderByWithRelationInput | Prisma.TrustClubInvitationOrderByWithRelationInput[]
+  cursor?: Prisma.TrustClubInvitationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TrustClubInvitationScalarFieldEnum | Prisma.TrustClubInvitationScalarFieldEnum[]
 }
 
 /**

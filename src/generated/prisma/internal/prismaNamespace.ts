@@ -400,6 +400,7 @@ export const ModelName = {
   TrustClubActionRecord: 'TrustClubActionRecord',
   TrustClubActionOutcome: 'TrustClubActionOutcome',
   User: 'User',
+  TrustClubInvitation: 'TrustClubInvitation',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -422,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "trustClubActionRecord" | "trustClubActionOutcome" | "user" | "session" | "account" | "verification" | "trustClubMember" | "trustClubEligibilityRecord" | "trustClubSystemRoleAssignment" | "trustClubStandardTrustFormation"
+    modelProps: "trustClubActionRecord" | "trustClubActionOutcome" | "user" | "trustClubInvitation" | "session" | "account" | "verification" | "trustClubMember" | "trustClubEligibilityRecord" | "trustClubSystemRoleAssignment" | "trustClubStandardTrustFormation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -645,6 +646,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UserCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UserCountAggregateOutputType> | number
+        }
+      }
+    }
+    TrustClubInvitation: {
+      payload: Prisma.$TrustClubInvitationPayload<ExtArgs>
+      fields: Prisma.TrustClubInvitationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TrustClubInvitationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubInvitationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TrustClubInvitationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubInvitationPayload>
+        }
+        findFirst: {
+          args: Prisma.TrustClubInvitationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubInvitationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TrustClubInvitationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubInvitationPayload>
+        }
+        findMany: {
+          args: Prisma.TrustClubInvitationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubInvitationPayload>[]
+        }
+        create: {
+          args: Prisma.TrustClubInvitationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubInvitationPayload>
+        }
+        createMany: {
+          args: Prisma.TrustClubInvitationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TrustClubInvitationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubInvitationPayload>[]
+        }
+        delete: {
+          args: Prisma.TrustClubInvitationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubInvitationPayload>
+        }
+        update: {
+          args: Prisma.TrustClubInvitationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubInvitationPayload>
+        }
+        deleteMany: {
+          args: Prisma.TrustClubInvitationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TrustClubInvitationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TrustClubInvitationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubInvitationPayload>[]
+        }
+        upsert: {
+          args: Prisma.TrustClubInvitationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubInvitationPayload>
+        }
+        aggregate: {
+          args: Prisma.TrustClubInvitationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTrustClubInvitation>
+        }
+        groupBy: {
+          args: Prisma.TrustClubInvitationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TrustClubInvitationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TrustClubInvitationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TrustClubInvitationCountAggregateOutputType> | number
         }
       }
     }
@@ -1247,6 +1322,24 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const TrustClubInvitationScalarFieldEnum = {
+  id: 'id',
+  normalizedEmail: 'normalizedEmail',
+  status: 'status',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  approvedByUserId: 'approvedByUserId',
+  approvedAt: 'approvedAt',
+  rejectedAt: 'rejectedAt',
+  revokedAt: 'revokedAt',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TrustClubInvitationScalarFieldEnum = (typeof TrustClubInvitationScalarFieldEnum)[keyof typeof TrustClubInvitationScalarFieldEnum]
+
+
 export const SessionScalarFieldEnum = {
   id: 'id',
   expiresAt: 'expiresAt',
@@ -1458,6 +1551,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TrustClubInvitationStatus'
+ */
+export type EnumTrustClubInvitationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TrustClubInvitationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TrustClubInvitationStatus[]'
+ */
+export type ListEnumTrustClubInvitationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TrustClubInvitationStatus[]'>
     
 
 
@@ -1698,6 +1805,7 @@ export type GlobalOmitConfig = {
   trustClubActionRecord?: Prisma.TrustClubActionRecordOmit
   trustClubActionOutcome?: Prisma.TrustClubActionOutcomeOmit
   user?: Prisma.UserOmit
+  trustClubInvitation?: Prisma.TrustClubInvitationOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit

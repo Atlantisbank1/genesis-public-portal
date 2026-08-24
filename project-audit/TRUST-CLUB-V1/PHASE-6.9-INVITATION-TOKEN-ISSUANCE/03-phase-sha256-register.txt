@@ -1,0 +1,59 @@
+TRUST CLUB V1
+PHASE 6.9
+INVITATION TOKEN ISSUANCE
+SHA256 EVIDENCE REGISTER
+
+STATUS:
+CERTIFICATION HASH BASIS - GIT INDEX CANONICAL BYTES
+
+CERTIFIED PRE-PHASE BASELINE HEAD:
+f89a3d171dfc83eca5c28d7a79ddb04e0c91a1ce
+
+HASH ALGORITHM:
+SHA256
+
+HASH BASIS:
+GIT INDEX BLOB BYTES
+
+EOL POLICY:
+INDEX-CANONICAL
+
+BOUNDARY FILE COUNT:
+21
+
+============================================================
+PHASE BOUNDARY SHA256
+============================================================
+
+22bca9b5def901b3e4d5f1b0d749f99090c07fc7cae00f7309127ee6c12e3a09  prisma/schema.prisma
+c5e1654cc9c31d87df77a0da9d8f5dc55c40e10716dfd5e95277f8a17679f0ac  prisma/migrations/20260824_trust_club_invitation_gate/migration.sql
+2aff5d58de03f0eb35c266f4ff575475c2dbb62ad7acaf7e277bb2e91ad19db4  src/trust-club/invitation/trust-club-invitation.contracts.ts
+1bb7270227dbfbd9e10e8efd0f3182a3937e4accb52af645af21e05f5ff55efb  src/trust-club/invitation/trust-club-invitation.persistence.ts
+e506439783aedbcdbebfedfdef9027c3ed444ba47fd382ce1c5481f5e598af1a  src/trust-club/invitation/trust-club-invitation-token-issuance.contracts.ts
+c56c8fa30f58b7f845fe0360e249e949d31f578fc728d52f9eba0aa7c4679fab  src/trust-club/invitation/trust-club-invitation-token-issuance.service.ts
+f8f3804ca68cf8849167e7477a582f4ba814019d61d484cc0c92290101f8aca4  src/app/api/trust-club/admin/invitations/[invitationId]/issue-token/route.ts
+6f822165a14ba647eafaeb2c357789b65f9a9122e8eec04cb90ca96b67cabe66  src/generated/prisma/browser.ts
+31a4ce85dbdff6f659f2d700f522e61502e0c1404ddc6438e20d34160dab1918  src/generated/prisma/client.ts
+99ed9d9dd9642f1426e543fea273d54c3ddf6397d6f9a5c35ef2f8a9e652bf18  src/generated/prisma/commonInputTypes.ts
+82dbca665e300275741873b121dc2b8e141928a882ddacf62c6ed3510f172c04  src/generated/prisma/enums.ts
+53eb9b8b557e7607d174ba4bbcae04e4b172adbaca1e0db7741a69cf9c3ede0e  src/generated/prisma/internal/class.ts
+5d1fa776c39fe5450f6506629b5c702bf599628cb0ac205ae6a23e7e2a285af7  src/generated/prisma/internal/prismaNamespace.ts
+0eff44fc858c7d3d1b245624ed4dd25cd73980c9a890f919d50613b7ea7a4254  src/generated/prisma/internal/prismaNamespaceBrowser.ts
+be9c4a297fea2787825590b97c77c37fbff1ce99973b831bf0ed8c0fc184d883  src/generated/prisma/models.ts
+dca67e386f5450d1ead5c10a6bd5c44411c69a993a9ec9f40b02b745d492d7f6  src/generated/prisma/models/Account.ts
+e10f178c0c714771d99950e5c3cd87886270106329e12273bb428eac3f83b913  src/generated/prisma/models/TrustClubInvitation.ts
+699732a2c4e8c8765dd0fc0db1eba9c63e2bab485e16fb0e7d1dc1cb2e7f285a  src/generated/prisma/models/TrustClubSystemRoleAssignment.ts
+35772b0194bd8e5ac582ae2be523f581d2e74752a888997ee61387ff38f471a7  src/generated/prisma/models/User.ts
+c5e1654cc9c31d87df77a0da9d8f5dc55c40e10716dfd5e95277f8a17679f0ac  project-audit/TRUST-CLUB-V1/PHASE-6.9-INVITATION-MIGRATION-PREVIEW.sql
+798b65524d75e5491f3a5811de40fa574adfaea323d4756112eb86124321cb15  project-audit/TRUST-CLUB-V1/PHASE-6.9-SCHEMA-PRE-INVITATION.backup
+
+============================================================
+CORE EVIDENCE SHA256
+============================================================
+
+6c6830d5dd50208e3ba29a9b57ac69031124743bc3acb11bd9797f352bc521fa  project-audit/TRUST-CLUB-V1/PHASE-6.9-INVITATION-TOKEN-ISSUANCE/01-core-verification-record.txt
+c56104982e8a979470e8deb1df416b08868fe112303af50d95a44389d6dab5b6  project-audit/TRUST-CLUB-V1/PHASE-6.9-INVITATION-TOKEN-ISSUANCE/02-phase-source-manifest.txt
+
+============================================================
+END OF SHA256 EVIDENCE REGISTER
+============================================================

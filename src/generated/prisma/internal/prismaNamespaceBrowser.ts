@@ -54,6 +54,7 @@ export const ModelName = {
   TrustClubActionRecord: 'TrustClubActionRecord',
   TrustClubActionOutcome: 'TrustClubActionOutcome',
   User: 'User',
+  TrustClubInvitation: 'TrustClubInvitation',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -119,6 +120,24 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const TrustClubInvitationScalarFieldEnum = {
+  id: 'id',
+  normalizedEmail: 'normalizedEmail',
+  status: 'status',
+  tokenHash: 'tokenHash',
+  expiresAt: 'expiresAt',
+  approvedByUserId: 'approvedByUserId',
+  approvedAt: 'approvedAt',
+  rejectedAt: 'rejectedAt',
+  revokedAt: 'revokedAt',
+  consumedAt: 'consumedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TrustClubInvitationScalarFieldEnum = (typeof TrustClubInvitationScalarFieldEnum)[keyof typeof TrustClubInvitationScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

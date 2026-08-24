@@ -1,0 +1,282 @@
+TRUST CLUB V1
+PHASE 6.9
+INVITATION TOKEN ISSUANCE
+CORE VERIFICATION RECORD
+
+============================================================
+CERTIFICATION CONTEXT
+============================================================
+
+PHASE:
+6.9
+
+COMPONENT:
+Trust Club Invitation Token Issuance
+
+CERTIFIED PRE-PHASE BASELINE HEAD:
+f89a3d171dfc83eca5c28d7a79ddb04e0c91a1ce
+
+BRANCH:
+main
+
+EVIDENCE STATUS:
+PRE-CERTIFICATION
+
+============================================================
+IMPLEMENTATION BOUNDARY
+============================================================
+
+Primary Phase 6.9 source files verified:
+
+01. prisma/schema.prisma
+02. prisma/migrations/20260824_trust_club_invitation_gate/migration.sql
+03. src/trust-club/invitation/trust-club-invitation.contracts.ts
+04. src/trust-club/invitation/trust-club-invitation.persistence.ts
+05. src/trust-club/invitation/trust-club-invitation-token-issuance.contracts.ts
+06. src/trust-club/invitation/trust-club-invitation-token-issuance.service.ts
+07. src/app/api/trust-club/admin/invitations/[invitationId]/issue-token/route.ts
+
+Primary source file count:
+7
+
+Generated Prisma impact identified:
+11 files
+
+Existing Phase 6.9 audit inputs verified:
+2 files
+
+Total Phase 6.9 source / generated / audit-input boundary:
+20 files
+
+============================================================
+SECURITY CONTRACT
+============================================================
+
+REQUESTED invitation
+-> authenticated session
+-> persisted TRUST_CLUB_ADMIN authority verification
+-> cryptographically secure raw token generation
+-> SHA-256 token hashing
+-> APPROVED persistence
+-> raw token returned at issuance boundary
+
+Raw invitation token persistence:
+PROHIBITED
+
+Token entropy:
+32 cryptographically secure random bytes / 256 bits
+
+Hash algorithm:
+SHA-256
+
+Caller-supplied administrative identity:
+PROHIBITED
+
+Membership activation by token issuance:
+NONE
+
+Public unauthenticated issuance:
+PROHIBITED
+
+============================================================
+RUNTIME VERIFICATION
+============================================================
+
+PERSISTED TRUST_CLUB_ADMIN:
+PASS
+
+AUTHENTICATED ADMINISTRATIVE RUNTIME:
+PASS
+
+INITIAL INVITATION STATUS:
+REQUESTED
+
+FIRST TOKEN ISSUANCE:
+PASS
+
+POST-ISSUANCE STATUS:
+APPROVED
+
+RAW TOKEN RETURNED AT ISSUANCE BOUNDARY:
+VERIFIED
+
+PERSISTED TOKEN HASH:
+VERIFIED
+
+RAW TOKEN PERSISTENCE:
+NONE VERIFIED
+
+ADMINISTRATIVE APPROVER PERSISTENCE:
+VERIFIED
+
+APPROVAL TIMESTAMP PERSISTENCE:
+VERIFIED
+
+============================================================
+REPLAY PROTECTION
+============================================================
+
+SECOND TOKEN ISSUANCE:
+REJECTED
+
+HTTP RESULT:
+409
+
+STATUS AFTER REPLAY:
+APPROVED / UNCHANGED
+
+TOKEN HASH AFTER REPLAY:
+UNCHANGED
+
+APPROVER AFTER REPLAY:
+UNCHANGED
+
+APPROVAL TIMESTAMP AFTER REPLAY:
+UNCHANGED
+
+REPLAY MUTATION DETECTED:
+FALSE
+
+REPLAY REJECTION:
+PASS
+
+============================================================
+CRYPTOGRAPHIC HASH EQUALITY
+============================================================
+
+BROWSER SHA-256:
+4c24ae9e68b5c93cf360a0452e5020983153e9859b1fb73956f6af0cce7c6f1f
+
+DATABASE SHA-256:
+4c24ae9e68b5c93cf360a0452e5020983153e9859b1fb73956f6af0cce7c6f1f
+
+HASH LENGTH:
+64 HEXADECIMAL CHARACTERS
+
+BROWSER / DATABASE HASH:
+EXACT MATCH
+
+CRYPTOGRAPHIC HASH EQUALITY:
+PASS
+
+============================================================
+RUNTIME CLEANUP
+============================================================
+
+REPLAY VERIFICATION FIXTURE:
+DELETED
+
+CRYPTOGRAPHIC EQUALITY FIXTURE:
+DELETED
+
+RUNTIME VERIFICATION FIXTURES REMAINING:
+NONE VERIFIED
+
+TEMPORARY VERIFICATION HARNESS RESIDUE:
+NONE VERIFIED
+
+RUNTIME FIXTURE CLEANUP:
+PASS
+
+============================================================
+FINAL STATIC VERIFICATION
+============================================================
+
+PRISMA VALIDATION:
+PASS
+
+PRISMA VALIDATE EXIT CODE:
+0
+
+PRODUCTION BUILD:
+PASS
+
+PRODUCTION BUILD EXIT CODE:
+0
+
+NEXT.JS COMPILATION:
+PASS
+
+TYPESCRIPT:
+PASS
+
+STATIC PAGE GENERATION:
+PASS
+
+INVITATION TOKEN ISSUANCE ROUTE INCLUDED IN BUILD:
+PASS
+
+ROUTE:
+/api/trust-club/admin/invitations/[invitationId]/issue-token
+
+============================================================
+REPOSITORY CONTROL
+============================================================
+
+PRE-PHASE BASELINE HEAD UNCHANGED DURING VERIFICATION:
+PASS
+
+STAGED FILES DURING FINAL VERIFICATION:
+0
+
+DATABASE WRITE DURING FINAL BUILD / PRISMA VALIDATION:
+NONE
+
+PRODUCTION SOURCE MODIFICATION BY FINAL VERIFICATION:
+NONE
+
+COMMIT DURING VERIFICATION:
+NONE
+
+PUSH DURING VERIFICATION:
+NONE
+
+============================================================
+PHASE 6.9 CORE VERIFICATION RESULT
+============================================================
+
+PERSISTED ADMIN AUTHORITY:
+PASS
+
+AUTHENTICATED ISSUANCE:
+PASS
+
+REQUESTED -> APPROVED TRANSITION:
+PASS
+
+256-BIT TOKEN GENERATION CONTRACT:
+PASS
+
+SHA-256 PERSISTENCE:
+PASS
+
+RAW TOKEN NON-PERSISTENCE:
+PASS
+
+REPLAY REJECTION:
+PASS
+
+POST-REPLAY IMMUTABILITY:
+PASS
+
+CRYPTOGRAPHIC HASH EQUALITY:
+PASS
+
+RUNTIME FIXTURE CLEANUP:
+PASS
+
+PRISMA VALIDATION:
+PASS
+
+PRODUCTION BUILD:
+PASS
+
+TEMPORARY HARNESS RESIDUE:
+NONE
+
+OVERALL CORE VERIFICATION:
+PASS
+
+============================================================
+END OF CORE VERIFICATION RECORD
+============================================================

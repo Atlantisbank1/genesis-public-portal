@@ -174,6 +174,13 @@ export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
+export type EnumTrustClubInvitationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubInvitationStatus | Prisma.EnumTrustClubInvitationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubInvitationStatus[] | Prisma.ListEnumTrustClubInvitationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubInvitationStatus[] | Prisma.ListEnumTrustClubInvitationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubInvitationStatusFilter<$PrismaModel> | $Enums.TrustClubInvitationStatus
+}
+
 export type DateTimeNullableFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null
   in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -183,6 +190,16 @@ export type DateTimeNullableFilter<$PrismaModel = never> = {
   gt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   gte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   not?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+}
+
+export type EnumTrustClubInvitationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubInvitationStatus | Prisma.EnumTrustClubInvitationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubInvitationStatus[] | Prisma.ListEnumTrustClubInvitationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubInvitationStatus[] | Prisma.ListEnumTrustClubInvitationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubInvitationStatusWithAggregatesFilter<$PrismaModel> | $Enums.TrustClubInvitationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTrustClubInvitationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTrustClubInvitationStatusFilter<$PrismaModel>
 }
 
 export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -457,6 +474,13 @@ export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeFilter<$PrismaModel>
 }
 
+export type NestedEnumTrustClubInvitationStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubInvitationStatus | Prisma.EnumTrustClubInvitationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubInvitationStatus[] | Prisma.ListEnumTrustClubInvitationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubInvitationStatus[] | Prisma.ListEnumTrustClubInvitationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubInvitationStatusFilter<$PrismaModel> | $Enums.TrustClubInvitationStatus
+}
+
 export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
   equals?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel> | null
   in?: Date[] | string[] | Prisma.ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -466,6 +490,16 @@ export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
   gt?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   gte?: Date | string | Prisma.DateTimeFieldRefInput<$PrismaModel>
   not?: Prisma.NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+}
+
+export type NestedEnumTrustClubInvitationStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubInvitationStatus | Prisma.EnumTrustClubInvitationStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubInvitationStatus[] | Prisma.ListEnumTrustClubInvitationStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubInvitationStatus[] | Prisma.ListEnumTrustClubInvitationStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubInvitationStatusWithAggregatesFilter<$PrismaModel> | $Enums.TrustClubInvitationStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTrustClubInvitationStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTrustClubInvitationStatusFilter<$PrismaModel>
 }
 
 export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
