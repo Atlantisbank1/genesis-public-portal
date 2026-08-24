@@ -1,0 +1,119 @@
+﻿import "dotenv/config";
+
+import {
+  prisma,
+} from "../../src/lib/prisma";
+
+async function main(): Promise<void> {
+  const actions =
+    await prisma.trustClubAction.findMany({
+      where: {
+        actionType:
+          "CREATE_STANDARD_TRUST",
+      },
+
+      select: {
+        id:
+          true,
+
+        actionType:
+          true,
+
+        status:
+          true,
+
+        createdAt:
+          true,
+
+        updatedAt:
+          true,
+      },
+
+      orderBy: {
+        createdAt:
+          "asc",
+      },
+    });
+
+  const counts =
+    actions.reduce<
+      Record<
+        string,
+        number
+      >
+    >(
+      (
+        accumulator,
+        action,
+      ) => {
+        accumulator[action.status] =
+          (
+            accumulator[action.status] ??
+            0
+          ) + 1;
+
+        return accumulator;
+      },
+      {},
+    );
+
+  const pendingReviewActions =
+    actions.filter(
+      (
+        action,
+      ) =>
+        action.status ===
+        "PENDING_REVIEW",
+    );
+
+  console.log(
+    JSON.stringify(
+      {
+        totalStandardTrustActions:
+          actions.length,
+
+        statusCounts:
+          counts,
+
+        pendingReviewCount:
+          pendingReviewActions.length,
+
+        pendingReviewActions:
+          pendingReviewActions.map(
+            (
+              action,
+            ) => ({
+              id:
+                action.id,
+
+              status:
+                action.status,
+
+              createdAt:
+                action.createdAt,
+
+              updatedAt:
+                action.updatedAt,
+            }),
+          ),
+      },
+      null,
+      2,
+    ),
+  );
+}
+
+main()
+  .finally(
+    async () => {
+      await prisma.$disconnect();
+    },
+  )
+  .catch(
+    (
+      error,
+    ) => {
+      console.error(error);
+      process.exit(1);
+    },
+  );

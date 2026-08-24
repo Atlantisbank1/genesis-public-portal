@@ -1,0 +1,389 @@
+﻿import "dotenv/config";
+
+import {
+  PrismaPg,
+} from "@prisma/adapter-pg";
+
+import {
+  PrismaClient,
+} from "../../src/generated/prisma/client";
+
+import {
+  executeTrustClubStandardTrustFormationAdminReview,
+} from "../../src/trust-club/formation/trust-club-standard-trust-formation-admin-review.operation";
+
+import type {
+  TrustClubAuthenticationSourceAdapter,
+} from "../../src/trust-club/server/trust-club-authentication-source.contracts";
+
+const actionId =
+  "trust-action-b2befa93-4672-48c9-bfa7-9f96c2c41548";
+
+const expectedBeforeUpdatedAt =
+  "2026-08-23T13:44:52.716Z";
+
+const connectionString =
+  process.env.DATABASE_URL;
+
+if (
+  typeof connectionString !== "string" ||
+  connectionString.trim().length === 0
+) {
+  throw new Error(
+    "DATABASE_URL_REQUIRED",
+  );
+}
+
+const adapter =
+  new PrismaPg({
+    connectionString,
+  });
+
+const prisma =
+  new PrismaClient({
+    adapter,
+  });
+
+async function main(): Promise<void> {
+  /*
+   * Resolve an already-persisted TRUST_CLUB_ADMIN.
+   *
+   * This query does not grant or modify any role.
+   */
+  const adminAssignment =
+    await prisma.trustClubSystemRoleAssignment.findFirst({
+      where: {
+        role:
+          "TRUST_CLUB_ADMIN",
+      },
+
+      select: {
+        userId:
+          true,
+      },
+
+      orderBy: {
+        createdAt:
+          "asc",
+      },
+    });
+
+  if (!adminAssignment) {
+    throw new Error(
+      "PERSISTED_TRUST_CLUB_ADMIN_NOT_FOUND",
+    );
+  }
+
+  /*
+   * Capture exact BEFORE state.
+   */
+  const before =
+    await prisma.trustClubActionRecord.findUnique({
+      where: {
+        actionId,
+      },
+
+      select: {
+        actionId:
+          true,
+
+        actionType:
+          true,
+
+        status:
+          true,
+
+        requestedByUserId:
+          true,
+
+        memberId:
+          true,
+
+        trustId:
+          true,
+
+        createdAt:
+          true,
+
+        updatedAt:
+          true,
+      },
+    });
+
+  if (!before) {
+    throw new Error(
+      "AUTHORIZE_TARGET_NOT_FOUND",
+    );
+  }
+
+  if (
+    before.actionType !==
+      "CREATE_STANDARD_TRUST"
+  ) {
+    throw new Error(
+      "AUTHORIZE_TARGET_TYPE_MISMATCH",
+    );
+  }
+
+  if (
+    before.status !==
+      "PENDING_REVIEW"
+  ) {
+    throw new Error(
+      "AUTHORIZE_PRECONDITION_STATUS_MISMATCH",
+    );
+  }
+
+  if (
+    String(before.updatedAt) !==
+      expectedBeforeUpdatedAt
+  ) {
+    throw new Error(
+      "AUTHORIZE_PRECONDITION_UPDATED_AT_MISMATCH",
+    );
+  }
+
+  const outcomeCountBefore =
+    await prisma.trustClubActionOutcome.count({
+      where: {
+        actionId,
+      },
+    });
+
+  if (outcomeCountBefore !== 0) {
+    throw new Error(
+      "AUTHORIZE_PRECONDITION_OUTCOME_COUNT_MISMATCH",
+    );
+  }
+
+  /*
+   * Authentication boundary.
+   *
+   * The adapter supplies only the authenticated identity.
+   * Authorization still resolves the persisted System Role
+   * through the production authorization service.
+   */
+  let authenticationAdapterCallCount =
+    0;
+
+  const authenticationAdapter:
+    TrustClubAuthenticationSourceAdapter = {
+      async resolveAuthenticatedIdentity() {
+        authenticationAdapterCallCount +=
+          1;
+
+        return {
+          status:
+            "AUTHENTICATED",
+
+          identity: {
+            userId:
+              adminAssignment.userId,
+          },
+        };
+      },
+    };
+
+  /*
+   * This is the single authorized write operation.
+   *
+   * No direct Prisma update/upsert is performed here.
+   */
+  const executionResult =
+    await executeTrustClubStandardTrustFormationAdminReview({
+      adapter:
+        authenticationAdapter,
+
+      actionId,
+
+      decision:
+        "AUTHORIZE",
+
+      sourceReference:
+        "PHASE_6_8_STEP_6D_8_CONTROLLED_REAL_ADMIN_AUTHORIZE",
+    });
+
+  if (authenticationAdapterCallCount !== 1) {
+    throw new Error(
+      "AUTHENTICATION_ADAPTER_CALL_COUNT_MISMATCH",
+    );
+  }
+
+  /*
+   * Capture AFTER state.
+   */
+  const after =
+    await prisma.trustClubActionRecord.findUnique({
+      where: {
+        actionId,
+      },
+
+      select: {
+        actionId:
+          true,
+
+        actionType:
+          true,
+
+        status:
+          true,
+
+        requestedByUserId:
+          true,
+
+        memberId:
+          true,
+
+        trustId:
+          true,
+
+        createdAt:
+          true,
+
+        updatedAt:
+          true,
+      },
+    });
+
+  if (!after) {
+    throw new Error(
+      "AUTHORIZE_TARGET_MISSING_AFTER_EXECUTION",
+    );
+  }
+
+  const outcomeCountAfter =
+    await prisma.trustClubActionOutcome.count({
+      where: {
+        actionId,
+      },
+    });
+
+  /*
+   * Verify exact expected database delta.
+   */
+  if (after.status !== "AUTHORIZED") {
+    throw new Error(
+      "AUTHORIZE_POSTCONDITION_STATUS_MISMATCH",
+    );
+  }
+
+  if (
+    String(after.updatedAt) ===
+      String(before.updatedAt)
+  ) {
+    throw new Error(
+      "AUTHORIZE_UPDATED_AT_DID_NOT_CHANGE",
+    );
+  }
+
+  if (after.actionId !== before.actionId) {
+    throw new Error(
+      "AUTHORIZE_ACTION_ID_CHANGED",
+    );
+  }
+
+  if (after.actionType !== before.actionType) {
+    throw new Error(
+      "AUTHORIZE_ACTION_TYPE_CHANGED",
+    );
+  }
+
+  if (
+    after.requestedByUserId !==
+      before.requestedByUserId
+  ) {
+    throw new Error(
+      "AUTHORIZE_REQUESTED_BY_CHANGED",
+    );
+  }
+
+  if (after.memberId !== before.memberId) {
+    throw new Error(
+      "AUTHORIZE_MEMBER_ID_CHANGED",
+    );
+  }
+
+  if (after.trustId !== before.trustId) {
+    throw new Error(
+      "AUTHORIZE_TRUST_ID_CHANGED",
+    );
+  }
+
+  if (
+    String(after.createdAt) !==
+      String(before.createdAt)
+  ) {
+    throw new Error(
+      "AUTHORIZE_CREATED_AT_CHANGED",
+    );
+  }
+
+  if (outcomeCountAfter !== outcomeCountBefore) {
+    throw new Error(
+      "AUTHORIZE_UNEXPECTED_OUTCOME_DELTA",
+    );
+  }
+
+  console.log(
+    JSON.stringify(
+      {
+        adminUserId:
+          adminAssignment.userId,
+
+        authenticationAdapterCallCount,
+
+        decision:
+          "AUTHORIZE",
+
+        before,
+
+        executionResult,
+
+        after,
+
+        outcomeCountBefore,
+        outcomeCountAfter,
+
+        verifiedDelta: {
+          status:
+            "PENDING_REVIEW -> AUTHORIZED",
+
+          updatedAtChanged:
+            true,
+
+          immutableFieldsPreserved:
+            true,
+
+          outcomeDelta:
+            0,
+        },
+      },
+      null,
+      2,
+    ),
+  );
+
+  console.log("");
+
+  console.log(
+    "CONTROLLED REAL ADMIN AUTHORIZE: PASS",
+  );
+}
+
+main()
+  .catch(
+    (
+      error,
+    ) => {
+      console.error(error);
+
+      process.exitCode =
+        1;
+    },
+  )
+  .finally(
+    async () => {
+      await prisma.$disconnect();
+    },
+  );
+
