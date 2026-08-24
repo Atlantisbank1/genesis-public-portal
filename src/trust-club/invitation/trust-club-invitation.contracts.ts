@@ -1,4 +1,4 @@
-﻿/**
+/**
  * TRUST-CLUB-V1
  * PHASE 6.9
  *
@@ -87,6 +87,21 @@ export interface TrustClubInvitationPersistence {
         string;
 
       approvedAt:
+        Date;
+    },
+  ): Promise<
+    TrustClubInvitation
+  >;
+
+  consumeApproved(
+    input: {
+      invitationId:
+        string;
+
+      tokenHash:
+        string;
+
+      consumedAt:
         Date;
     },
   ): Promise<

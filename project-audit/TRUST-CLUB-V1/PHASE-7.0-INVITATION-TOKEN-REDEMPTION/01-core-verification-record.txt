@@ -1,0 +1,201 @@
+TRUST CLUB V1
+PHASE 7.0
+INVITATION TOKEN REDEMPTION
+
+CORE VERIFICATION RECORD
+
+============================================================
+BASELINE
+============================================================
+
+CERTIFIED PHASE 6.9 BASELINE HEAD:
+818fe6a71605f3dd5c568ab5875416fad107469e
+
+PHASE 7.0 SOURCE FILE COUNT:
+4
+
+============================================================
+IMPLEMENTATION BOUNDARY
+============================================================
+
+1. Invitation persistence contract extended with:
+   consumeApproved(...)
+
+2. Invitation persistence implementation extended with:
+   atomic APPROVED -> CONSUMED transition.
+
+3. New redemption contracts introduced.
+
+4. New cryptographic invitation-token redemption service introduced.
+
+5. No Prisma schema change required.
+
+6. No migration required.
+
+7. No public HTTP route introduced.
+
+8. No membership activation introduced.
+
+9. No user creation introduced.
+
+10. No session creation introduced.
+
+============================================================
+CRYPTOGRAPHIC BOUNDARY
+============================================================
+
+RAW TOKEN:
+TRANSIENT ONLY
+
+RAW TOKEN PERSISTED:
+NO
+
+TOKEN HASH ALGORITHM:
+SHA-256
+
+TOKEN HASH SENT TO PERSISTENCE:
+YES
+
+RAW TOKEN SENT TO PERSISTENCE:
+NO
+
+============================================================
+ATOMIC CONSUMPTION VERIFICATION
+============================================================
+
+APPROVED -> CONSUMED:
+PASS
+
+CONSUMEDAT PERSISTENCE:
+PASS
+
+TOKEN HASH PRESERVATION:
+PASS
+
+ATOMIC SINGLE-USE CAS:
+VERIFIED
+
+============================================================
+NEGATIVE PERSISTENCE VERIFICATION
+============================================================
+
+SECOND CONSUMPTION / REPLAY:
+REJECTED
+
+EXPIRED INVITATION CONSUMPTION:
+REJECTED
+
+WRONG TOKEN HASH CONSUMPTION:
+REJECTED
+
+FAILED CONSUMPTION MUTATION:
+NONE
+
+============================================================
+REDEMPTION SERVICE RUNTIME VERIFICATION
+============================================================
+
+SUCCESSFUL TOKEN REDEMPTION:
+PASS
+
+APPROVED -> CONSUMED:
+VERIFIED
+
+REDEMPTION RETURN VALUE:
+VERIFIED
+
+RAW TOKEN PERSISTED:
+NO
+
+SINGLE-USE REPLAY:
+REJECTED
+
+POST-REPLAY STATUS:
+CONSUMED
+
+POST-REPLAY CONSUMEDAT:
+UNCHANGED
+
+POST-REPLAY TOKEN HASH:
+UNCHANGED
+
+UNKNOWN RAW TOKEN:
+REJECTED
+
+UNKNOWN TOKEN ERROR:
+TRUST_CLUB_INVITATION_REDEMPTION_INVALID_TOKEN
+
+EMPTY RAW TOKEN:
+REJECTED
+
+WHITESPACE RAW TOKEN:
+REJECTED
+
+EMPTY TOKEN ERROR:
+TRUST_CLUB_INVITATION_RAW_TOKEN_REQUIRED
+
+============================================================
+BUILD AND SOURCE VERIFICATION
+============================================================
+
+PRISMA VALIDATION:
+PASS
+
+PRODUCTION BUILD:
+PASS
+
+SOURCE DIFF CHECK:
+PASS
+
+REDEMPTION FUNCTION EXPORT:
+VERIFIED
+
+REQUIRED REDEMPTION SYMBOLS:
+PASS
+
+PROHIBITED REDEMPTION SYMBOLS:
+NONE
+
+TEMPORARY PHASE 7.0 HARNESS RESIDUE:
+NONE
+
+============================================================
+BOUNDARY ASSERTIONS
+============================================================
+
+DATABASE SCHEMA CHANGE:
+NONE
+
+MIGRATION:
+NONE
+
+MEMBERSHIP ACTIVATION:
+NONE
+
+USER CREATION:
+NONE
+
+SESSION CREATION:
+NONE
+
+PUBLIC HTTP EXPOSURE:
+NONE
+
+PRODUCTION SOURCE EDIT DURING RUNTIME TESTS:
+NONE
+
+STAGING:
+NO
+
+COMMIT:
+NO
+
+PUSH:
+NO
+
+============================================================
+CORE VERIFICATION RESULT
+============================================================
+
+PHASE 7.0 INVITATION TOKEN REDEMPTION CORE VERIFICATION:
+PASS

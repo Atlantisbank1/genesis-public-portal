@@ -1,4 +1,4 @@
-﻿import {
+import {
   prisma,
 } from '@/lib/prisma';
 
@@ -206,6 +206,112 @@ export const trustClubInvitationPersistence:
       }
 
       return approved;
+    },
+
+    async consumeApproved(
+      input,
+    ): Promise<
+      TrustClubInvitation
+    > {
+      const invitationId =
+        input.invitationId.trim();
+
+      if (
+        invitationId.length ===
+          0
+      ) {
+        throw new Error(
+          'TRUST_CLUB_INVITATION_ID_REQUIRED',
+        );
+      }
+
+      const tokenHash =
+        requireTokenHash(
+          input.tokenHash,
+        );
+
+      if (
+        !Number.isFinite(
+          input.consumedAt.getTime(),
+        )
+      ) {
+        throw new Error(
+          'TRUST_CLUB_INVITATION_CONSUMED_AT_INVALID',
+        );
+      }
+
+      const mutation =
+        await prisma
+          .trustClubInvitation
+          .updateMany({
+            where: {
+              id:
+                invitationId,
+
+              status:
+                'APPROVED',
+
+              tokenHash,
+
+              consumedAt:
+                null,
+
+              rejectedAt:
+                null,
+
+              revokedAt:
+                null,
+
+              expiresAt: {
+                gt:
+                  input.consumedAt,
+              },
+            },
+
+            data: {
+              status:
+                'CONSUMED',
+
+              consumedAt:
+                input.consumedAt,
+            },
+          });
+
+      if (
+        mutation.count !==
+          1
+      ) {
+        throw new Error(
+          'TRUST_CLUB_INVITATION_CONSUMPTION_PRECONDITION_FAILED',
+        );
+      }
+
+      const consumed =
+        await prisma
+          .trustClubInvitation
+          .findUnique({
+            where: {
+              id:
+                invitationId,
+            },
+          });
+
+      if (
+        consumed ===
+          null ||
+        consumed.status !==
+          'CONSUMED' ||
+        consumed.tokenHash !==
+          tokenHash ||
+        consumed.consumedAt ===
+          null
+      ) {
+        throw new Error(
+          'TRUST_CLUB_INVITATION_CONSUMPTION_PERSISTENCE_VERIFICATION_FAILED',
+        );
+      }
+
+      return consumed;
     },
 
     async findById(

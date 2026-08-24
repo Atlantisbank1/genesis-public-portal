@@ -1,0 +1,19 @@
+TRUST CLUB V1
+PHASE 7.0
+INVITATION TOKEN REDEMPTION
+
+PHASE SOURCE MANIFEST
+
+BASELINE HEAD:
+818fe6a71605f3dd5c568ab5875416fad107469e
+
+SOURCE FILE COUNT:
+4
+
+01  src/trust-club/invitation/trust-club-invitation.contracts.ts
+02  src/trust-club/invitation/trust-club-invitation.persistence.ts
+03  src/trust-club/invitation/trust-club-invitation-token-redemption.contracts.ts
+04  src/trust-club/invitation/trust-club-invitation-token-redemption.service.ts
+
+SOURCE BOUNDARY STATUS:
+DEFINED
