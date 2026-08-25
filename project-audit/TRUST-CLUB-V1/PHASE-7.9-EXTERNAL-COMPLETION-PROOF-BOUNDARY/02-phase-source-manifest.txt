@@ -1,0 +1,327 @@
+TRUST CLUB V1
+PHASE 7.9
+STANDARD TRUST EXTERNAL COMPLETION PROOF BOUNDARY
+
+PHASE SOURCE MANIFEST
+
+============================================================
+1. CERTIFIED BASELINE
+============================================================
+
+CERTIFIED PHASE 7.8 HEAD:
+3398c193b9cd7ba3ce5c66c99562a5ea181d17ed
+
+PHASE 7.9 IMPLEMENTATION BASELINE:
+VERIFIED
+
+============================================================
+2. AUTHORIZED APPLICATION SOURCE BOUNDARY
+============================================================
+
+AUTHORIZED APPLICATION SOURCE FILE COUNT:
+2
+
+FILE 1:
+src/trust-club/formation/trust-club-standard-trust-external-completion-proof.contracts.ts
+
+PURPOSE:
+Defines the controlled evidence and verification contracts
+required before Standard Trust final lifecycle completion
+may be considered.
+
+RESPONSIBILITIES:
+- defines VERIFIED and REJECTED verification states;
+- requires actionId;
+- requires externalReference;
+- requires completedAt;
+- exposes verifiedByUserId only as verified result metadata;
+- exposes verifiedAt;
+- prohibits caller-supplied administrative authority;
+- requires certified TRUST_CLUB_ADMIN authority;
+- does not perform lifecycle transition;
+- does not create COMPLETED outcome;
+- does not access persistence;
+- does not execute an external service.
+
+------------------------------------------------------------
+
+FILE 2:
+src/trust-club/formation/trust-club-standard-trust-external-completion-verification.service.ts
+
+PURPOSE:
+Performs controlled administrative verification over supplied
+Standard Trust external-completion evidence.
+
+RESPONSIBILITIES:
+- normalizes required verification inputs;
+- rejects missing actionId;
+- rejects missing externalReference;
+- rejects missing completedAt;
+- consumes certified Admin Review Authorization;
+- requires persisted TRUST_CLUB_ADMIN authority;
+- derives verifiedByUserId from authenticated admin identity;
+- fails closed without verification authority;
+- returns VERIFIED only after administrative authorization;
+- does not write persistence;
+- does not transition Action lifecycle;
+- does not record Action outcomes;
+- does not execute an external service.
+
+============================================================
+3. CERTIFIED AUTHORIZATION DEPENDENCY
+============================================================
+
+AUTHORIZATION SERVICE:
+authorizeTrustClubAdminReview
+
+SYSTEM ROLE:
+TRUST_CLUB_ADMIN
+
+AUTHORITY SOURCE:
+PERSISTED SYSTEM ROLE
+
+CALLER-SUPPLIED ADMIN AUTHORITY:
+PROHIBITED
+
+VERIFIED BY USER ID:
+DERIVED FROM AUTHENTICATED ADMIN IDENTITY
+
+AUTHORIZATION PERSISTENCE WRITE:
+NONE
+
+============================================================
+4. EVIDENCE CONTRACT
+============================================================
+
+ACTION ID:
+REQUIRED
+
+EXTERNAL REFERENCE:
+REQUIRED
+
+COMPLETED AT:
+REQUIRED
+
+VERIFICATION STATUS:
+VERIFIED | REJECTED
+
+VERIFIED BY USER ID:
+OUTPUT ONLY
+
+VERIFIED AT:
+OUTPUT ONLY
+
+GENERAL ACTION OUTCOME CONTRACT:
+UNCHANGED
+
+PRISMA SCHEMA:
+UNCHANGED
+
+DATABASE MIGRATION:
+NONE
+
+============================================================
+5. FAIL-CLOSED REJECTION CONTRACT
+============================================================
+
+ACTION_ID_REQUIRED:
+SUPPORTED
+
+EXTERNAL_REFERENCE_REQUIRED:
+SUPPORTED
+
+COMPLETED_AT_REQUIRED:
+SUPPORTED
+
+VERIFICATION_AUTHORITY_REQUIRED:
+SUPPORTED
+
+NON-ADMIN IDENTITY:
+REJECTED
+
+CALLER-SUPPLIED ADMIN IDENTITY:
+NOT ACCEPTED
+
+============================================================
+6. DIRECT EXECUTION BOUNDARY
+============================================================
+
+DIRECT PRISMA IMPORT:
+NONE
+
+DIRECT PRISMA CLIENT USE:
+NONE
+
+DIRECT REPOSITORY ACCESS:
+NONE
+
+SERVER APPLICATION ENTRY EXECUTION:
+NONE
+
+TRANSITION_ACTION EXECUTION:
+NONE
+
+RECORD_OUTCOME EXECUTION:
+NONE
+
+LIFECYCLE TRANSITION:
+NONE
+
+ACTION OUTCOME RECORDING:
+NONE
+
+PERSISTENCE WRITE:
+NONE
+
+EXTERNAL SERVICE EXECUTION:
+NONE
+
+============================================================
+7. POSITIVE RUNTIME VERIFICATION
+============================================================
+
+RESULT:
+VERIFIED
+
+ADMIN AUTHORITY:
+PERSISTED TRUST_CLUB_ADMIN
+
+VERIFIED BY USER ID:
+DERIVED
+
+EXTERNAL REFERENCE:
+NORMALIZED AND PRESERVED
+
+ACTION STATUS:
+EXTERNAL_PENDING
+
+ACTION RECORD:
+UNCHANGED
+
+OUTCOME COUNT:
+UNCHANGED
+
+OUTCOMES:
+UNCHANGED
+
+LIFECYCLE WRITE:
+NONE
+
+OUTCOME WRITE:
+NONE
+
+RESULT:
+PASS
+
+============================================================
+8. NEGATIVE RUNTIME VERIFICATION
+============================================================
+
+MISSING EXTERNAL REFERENCE:
+REJECTED
+
+REJECTION:
+EXTERNAL_REFERENCE_REQUIRED
+
+NON-ADMIN IDENTITY:
+REJECTED
+
+REJECTION:
+VERIFICATION_AUTHORITY_REQUIRED
+
+ACTION RECORD:
+UNCHANGED
+
+OUTCOME COUNT:
+UNCHANGED
+
+OUTCOMES:
+UNCHANGED
+
+FAIL-CLOSED AUTHORITY:
+PASS
+
+============================================================
+9. PRODUCTION BUILD
+============================================================
+
+NEXT.JS BUILD:
+PASS
+
+TYPESCRIPT:
+PASS
+
+STATIC PAGE GENERATION:
+26 / 26
+
+NEW HTTP ROUTE:
+NONE
+
+============================================================
+10. EXTERNAL COMPLETION LIMITATION
+============================================================
+
+ADMINISTRATIVE EVIDENCE VERIFICATION:
+SUPPORTED
+
+AUTOMATIC EXTERNAL PROVIDER VERIFICATION:
+NONE
+
+EXTERNAL PROVIDER CALL:
+NONE
+
+CRYPTOGRAPHIC PROOF VALIDATION:
+NOT CLAIMED
+
+PAYMENT COMPLETION:
+NOT CLAIMED
+
+BANKING COMPLETION:
+NOT CLAIMED
+
+EXTERNAL REGISTRATION COMPLETION:
+NOT CLAIMED
+
+EXTERNAL_PENDING -> COMPLETE:
+NOT PERFORMED
+
+COMPLETED OUTCOME:
+NOT CREATED
+
+============================================================
+11. EXACT SOURCE DELTA
+============================================================
+
+EXPECTED PHASE 7.9 SOURCE FILE COUNT:
+2
+
+ACTUAL PHASE 7.9 SOURCE FILE COUNT:
+2
+
+MISSING EXPECTED FILE COUNT:
+0
+
+UNEXPECTED PHASE 7.9 SOURCE FILE COUNT:
+0
+
+EXACT TWO-FILE SOURCE BOUNDARY:
+PASS
+
+============================================================
+12. MANIFEST RESULT
+============================================================
+
+PHASE 7.9 SOURCE MANIFEST:
+VERIFIED
+
+AUTHORIZED SOURCE FILE COUNT:
+2
+
+UNEXPECTED SOURCE FILE COUNT:
+0
+
+SOURCE BOUNDARY:
+PASS
+
+FINAL COMPLETION:
+NOT PERFORMED
