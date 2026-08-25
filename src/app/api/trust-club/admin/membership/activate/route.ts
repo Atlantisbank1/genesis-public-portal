@@ -1,0 +1,210 @@
+import {
+  TrustClubBetterAuthSessionAdapter,
+} from '@/trust-club/server/trust-club-better-auth-session.adapter';
+
+import {
+  activateTrustClubMembershipAsAdmin,
+} from '@/trust-club/server/trust-club-membership-activation.service';
+
+interface MembershipActivationRequestBody {
+  targetUserId?:
+    unknown;
+}
+
+function errorResponse(
+  status:
+    number,
+  code:
+    string,
+): Response {
+  return Response.json(
+    {
+      ok:
+        false,
+
+      error:
+        code,
+    },
+    {
+      status,
+    },
+  );
+}
+
+export async function POST(
+  request:
+    Request,
+): Promise<Response> {
+  let body:
+    MembershipActivationRequestBody;
+
+  try {
+    body =
+      await request.json() as
+        MembershipActivationRequestBody;
+  } catch {
+    return errorResponse(
+      400,
+      'TRUST_CLUB_MEMBERSHIP_ACTIVATION_REQUEST_BODY_INVALID',
+    );
+  }
+
+  if (
+    typeof body.targetUserId !==
+      'string' ||
+    body.targetUserId.trim().length ===
+      0
+  ) {
+    return errorResponse(
+      400,
+      'TRUST_CLUB_MEMBERSHIP_ACTIVATION_TARGET_USER_ID_REQUIRED',
+    );
+  }
+
+  const authenticationAdapter =
+    new TrustClubBetterAuthSessionAdapter(
+      request.headers,
+    );
+
+  try {
+    const activated =
+      await activateTrustClubMembershipAsAdmin({
+        authenticationSource: {
+          adapter:
+            authenticationAdapter,
+
+          request: {
+            sourceReference:
+              'trust-club-admin-membership-activation-route',
+          },
+        },
+
+        targetUserId:
+          body.targetUserId,
+      });
+
+    return Response.json(
+      {
+        ok:
+          true,
+
+        membership: {
+          memberId:
+            activated.memberId,
+
+          userId:
+            activated.userId,
+
+          status:
+            activated.status,
+
+          subscriptionStatus:
+            activated.subscriptionStatus,
+
+          planCode:
+            activated.planCode,
+
+          activatedAt:
+            activated.activatedAt,
+        },
+      },
+      {
+        status:
+          200,
+
+        headers: {
+          'Cache-Control':
+            'no-store',
+
+          Pragma:
+            'no-cache',
+        },
+      },
+    );
+  } catch (
+    error
+  ) {
+    const code =
+      error instanceof Error
+        ? error.message
+        : 'TRUST_CLUB_MEMBERSHIP_ACTIVATION_FAILED';
+
+    if (
+      code ===
+        'TRUST_CLUB_MEMBERSHIP_ACTIVATION_AUTHENTICATION_REQUIRED'
+    ) {
+      return errorResponse(
+        401,
+        code,
+      );
+    }
+
+    if (
+      code ===
+        'TRUST_CLUB_MEMBERSHIP_ACTIVATION_ADMIN_SYSTEM_ROLE_REQUIRED'
+    ) {
+      return errorResponse(
+        403,
+        code,
+      );
+    }
+
+    if (
+      code ===
+        'TRUST_CLUB_MEMBERSHIP_ACTIVATION_TARGET_USER_ID_REQUIRED'
+    ) {
+      return errorResponse(
+        400,
+        code,
+      );
+    }
+
+    if (
+      code ===
+        'TRUST_CLUB_MEMBERSHIP_ACTIVATION_ELIGIBILITY_NOT_FOUND' ||
+      code ===
+        'TRUST_CLUB_MEMBERSHIP_ACTIVATION_MEMBERSHIP_NOT_FOUND'
+    ) {
+      return errorResponse(
+        404,
+        code,
+      );
+    }
+
+    if (
+      code ===
+        'TRUST_CLUB_MEMBERSHIP_ACTIVATION_REQUIRES_ELIGIBLE_STATUS' ||
+      code ===
+        'TRUST_CLUB_MEMBERSHIP_ACTIVATION_REQUIRES_PENDING_STATE' ||
+      code ===
+        'TRUST_CLUB_MEMBERSHIP_ACTIVATION_PRECONDITION_FAILED'
+    ) {
+      return errorResponse(
+        409,
+        code,
+      );
+    }
+
+    console.error(
+      'Trust Club membership activation failed.',
+      error,
+    );
+
+    return errorResponse(
+      500,
+      'TRUST_CLUB_MEMBERSHIP_ACTIVATION_FAILED',
+    );
+  }
+}
+
+export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_ROUTE_AUTHENTICATION_RULE =
+  'MEMBERSHIP_ACTIVATION_ROUTE_USES_BETTER_AUTH_REQUEST_HEADERS' as const;
+
+export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_ROUTE_ADMIN_RULE =
+  'MEMBERSHIP_ACTIVATION_ROUTE_DELEGATES_ADMIN_AUTHORITY_TO_CERTIFIED_ADMIN_REVIEW_BOUNDARY' as const;
+
+export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_ROUTE_CALLER_AUTHORITY_RULE =
+  'MEMBERSHIP_ACTIVATION_ROUTE_ACCEPTS_NO_CALLER_SUPPLIED_ADMIN_IDENTITY' as const;
+
+export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_ROUTE_CACHE_RULE =
+  'MEMBERSHIP_ACTIVATION_RESPONSE_IS_NOT_CACHEABLE' as const;

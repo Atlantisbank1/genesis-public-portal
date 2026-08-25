@@ -1,0 +1,288 @@
+TRUST CLUB V1
+PHASE 7.4
+ADMINISTRATIVE MEMBERSHIP ACTIVATION
+
+CORE VERIFICATION RECORD
+
+============================================================
+1. CERTIFIED BASELINE
+============================================================
+
+CERTIFIED PHASE 7.3 HEAD:
+1e4067949a29ac7f47ba99a7150c39f8997428d2
+
+BASELINE GUARD:
+PASS
+
+============================================================
+2. PHASE OBJECTIVE
+============================================================
+
+Phase 7.4 establishes the administrative Membership activation
+boundary for Trust Club.
+
+Approved transition:
+
+ELIGIBLE TARGET USER
++
+PENDING MEMBERSHIP
++
+PENDING SUBSCRIPTION
+->
+AUTHENTICATED PERSISTED TRUST_CLUB_ADMIN
+->
+ACTIVE MEMBERSHIP
++
+ACTIVE SUBSCRIPTION
+
+activatedAt is generated server-side.
+
+============================================================
+3. SOURCE BOUNDARY
+============================================================
+
+SOURCE FILE COUNT:
+3
+
+src/app/api/trust-club/admin/membership/activate/route.ts
+src/trust-club/server/trust-club-membership-activation.contracts.ts
+src/trust-club/server/trust-club-membership-activation.service.ts
+
+MISSING EXPECTED SOURCE FILES:
+0
+
+UNEXPECTED NON-AUDIT SOURCE FILES:
+0
+
+EXACT THREE-FILE SOURCE BOUNDARY:
+PASS
+
+============================================================
+4. SCHEMA / PERSISTENCE MODEL
+============================================================
+
+PRISMA SCHEMA CHANGE:
+NONE
+
+MIGRATION:
+NONE
+
+EXISTING TRUST CLUB MEMBER MODEL:
+SUFFICIENT
+
+SOURCE MEMBERSHIP STATUS:
+PENDING
+
+SOURCE SUBSCRIPTION STATUS:
+PENDING
+
+TARGET MEMBERSHIP STATUS:
+ACTIVE
+
+TARGET SUBSCRIPTION STATUS:
+ACTIVE
+
+ACTIVATED AT FIELD:
+EXISTING / VERIFIED
+
+============================================================
+5. AUTHORIZATION BOUNDARY
+============================================================
+
+BETTER AUTH AUTHENTICATION SOURCE:
+PRESERVED
+
+CERTIFIED ADMIN REVIEW AUTHORIZATION:
+REUSED
+
+PERSISTED TRUST_CLUB_ADMIN REQUIRED:
+YES
+
+CALLER-SUPPLIED ADMIN IDENTITY:
+NONE
+
+TARGET ELIGIBILITY MUST BE:
+ELIGIBLE
+
+============================================================
+6. PERSISTENCE TRANSITION
+============================================================
+
+MEMBERSHIP SOURCE STATUS:
+PENDING
+
+SUBSCRIPTION SOURCE STATUS:
+PENDING
+
+MEMBERSHIP TARGET STATUS:
+ACTIVE
+
+SUBSCRIPTION TARGET STATUS:
+ACTIVE
+
+ATOMIC UPDATE:
+VERIFIED
+
+UPDATE PRECONDITION COUNT:
+EXACTLY 1
+
+ACTIVATED AT:
+SERVER GENERATED
+
+MEMBER ID:
+PRESERVED
+
+PLAN CODE:
+PRESERVED
+
+============================================================
+7. BUILD / HTTP VERIFICATION
+============================================================
+
+NEXT.JS PRODUCTION BUILD:
+PASS
+
+TYPESCRIPT:
+PASS
+
+HTTP ROUTE:
+VERIFIED
+
+/api/trust-club/admin/membership/activate
+
+============================================================
+8. NEGATIVE RUNTIME
+============================================================
+
+UNAUTHENTICATED REQUEST:
+REJECTED
+
+EXPECTED ERROR:
+TRUST_CLUB_MEMBERSHIP_ACTIVATION_AUTHENTICATION_REQUIRED
+
+HTTP STATUS:
+401
+
+AUTHENTICATED NON-ADMIN:
+REJECTED
+
+EXPECTED ERROR:
+TRUST_CLUB_MEMBERSHIP_ACTIVATION_ADMIN_SYSTEM_ROLE_REQUIRED
+
+MEMBERSHIP WRITE DURING NON-ADMIN REJECTION:
+NONE
+
+============================================================
+9. POSITIVE RUNTIME
+============================================================
+
+CONTROLLED PHASE 7.4 FIXTURE:
+CREATED
+
+FIXTURE ELIGIBILITY:
+ELIGIBLE
+
+INITIAL MEMBERSHIP STATUS:
+PENDING
+
+INITIAL SUBSCRIPTION STATUS:
+PENDING
+
+INITIAL ACTIVATED AT:
+NULL
+
+POSITIVE ADMIN ACTIVATION:
+PASS
+
+MEMBERSHIP TRANSITION:
+PENDING -> ACTIVE
+
+SUBSCRIPTION TRANSITION:
+PENDING -> ACTIVE
+
+ACTIVATED AT:
+SERVER GENERATED
+
+MEMBER ID:
+PRESERVED
+
+PLAN CODE:
+PRESERVED
+
+============================================================
+10. REPLAY PROTECTION
+============================================================
+
+SECOND ACTIVATION ATTEMPT:
+REJECTED
+
+EXPECTED ERROR:
+TRUST_CLUB_MEMBERSHIP_ACTIVATION_REQUIRES_PENDING_STATE
+
+PERSISTED MEMBERSHIP AFTER REPLAY:
+UNCHANGED
+
+REPLAY PROTECTION:
+PASS
+
+============================================================
+11. FIXTURE CLEANUP
+============================================================
+
+PHASE 7.4 FIXTURE USER:
+REMOVED
+
+PHASE 7.4 MEMBERSHIP:
+CASCADE REMOVED
+
+PHASE 7.4 ELIGIBILITY:
+CASCADE REMOVED
+
+FIXTURE EMAIL RESIDUE:
+NONE
+
+ADMIN USER:
+PRESERVED
+
+TRUST_CLUB_ADMIN ROLE:
+PRESERVED
+
+FINAL RESIDUE VERIFICATION:
+PASS
+
+============================================================
+12. FINAL RESULT
+============================================================
+
+ADMINISTRATIVE MEMBERSHIP ACTIVATION:
+PASS
+
+AUTHENTICATION BOUNDARY:
+PASS
+
+ADMIN AUTHORITY BOUNDARY:
+PASS
+
+ELIGIBILITY PRECONDITION:
+PASS
+
+ATOMIC MEMBERSHIP TRANSITION:
+PASS
+
+ATOMIC SUBSCRIPTION TRANSITION:
+PASS
+
+POSITIVE RUNTIME:
+PASS
+
+NEGATIVE RUNTIME:
+PASS
+
+REPLAY PROTECTION:
+PASS
+
+FIXTURE CLEANUP:
+PASS
+
+FINAL STATUS:
+READY FOR CERTIFICATION EVIDENCE LOCK PREPARATION

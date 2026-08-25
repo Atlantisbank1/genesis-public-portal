@@ -1,0 +1,169 @@
+TRUST CLUB V1
+PHASE 7.4
+ADMINISTRATIVE MEMBERSHIP ACTIVATION
+
+FINAL CERTIFICATION LOCK
+
+============================================================
+1. CERTIFIED BASELINE
+============================================================
+
+CERTIFIED PHASE 7.3 HEAD:
+1e4067949a29ac7f47ba99a7150c39f8997428d2
+
+============================================================
+2. CERTIFIED COMPONENT
+============================================================
+
+COMPONENT:
+ADMINISTRATIVE MEMBERSHIP ACTIVATION
+
+CERTIFIED TRANSITION:
+
+ELIGIBLE USER
++
+PENDING MEMBERSHIP
++
+PENDING SUBSCRIPTION
+->
+AUTHENTICATED PERSISTED TRUST_CLUB_ADMIN
+->
+ACTIVE MEMBERSHIP
++
+ACTIVE SUBSCRIPTION
+
+============================================================
+3. CERTIFIED SOURCE BOUNDARY
+============================================================
+
+SOURCE FILE COUNT:
+3
+
+src/app/api/trust-club/admin/membership/activate/route.ts
+src/trust-club/server/trust-club-membership-activation.contracts.ts
+src/trust-club/server/trust-club-membership-activation.service.ts
+
+EXACT SOURCE BOUNDARY:
+PASS
+
+============================================================
+4. FINAL SHA256 LOCK REGISTER
+============================================================
+
+fb902d9fc52b786fe74bd4b33267956d0b5af696d844e772637b7c7f84c80040  src/app/api/trust-club/admin/membership/activate/route.ts
+949b48999c943dece6de43af8b59031113a7b54e237b1457fe1a9d5589aa4da9  src/trust-club/server/trust-club-membership-activation.contracts.ts
+34a332560545048b01de726684b05c6f7df73e3ec6bed8fe4fb23eadafa8ce0c  src/trust-club/server/trust-club-membership-activation.service.ts
+cb6242a9b7e996e19af6993b2361c4fa5b622e9d65e8aa7d43c6360dfd4a677b  project-audit/TRUST-CLUB-V1/PHASE-7.4-ADMINISTRATIVE-MEMBERSHIP-ACTIVATION/01-core-verification-record.txt
+88c0c2ddf9d722cfe49b9378cc85c3203b5ecdc8b8a1d14f75962670bb218f5b  project-audit/TRUST-CLUB-V1/PHASE-7.4-ADMINISTRATIVE-MEMBERSHIP-ACTIVATION/02-phase-source-manifest.txt
+666a9ae85de8c2c93304ac2c24f3f7e78b9aa219026bb7c6db85bc8d35baa7c8  project-audit/TRUST-CLUB-V1/PHASE-7.4-ADMINISTRATIVE-MEMBERSHIP-ACTIVATION/03-sha256-evidence-register.txt
+a0bbc9f13f8ba6a07eca26006ede83b9655c2d5b65f7cc81c19f591598d7741b  project-audit/TRUST-CLUB-V1/PHASE-7.4-ADMINISTRATIVE-MEMBERSHIP-ACTIVATION/04-phase-certification.txt
+
+============================================================
+5. LOCKED FILE COUNTS
+============================================================
+
+APPLICATION SOURCE FILES:
+3
+
+PRE-LOCK EVIDENCE / CERTIFICATION FILES:
+4
+
+TOTAL FILES LOCKED BY SHA256:
+7
+
+FINAL LOCK FILE:
+05-final-certification-lock.txt
+
+============================================================
+6. CERTIFIED RESULTS
+============================================================
+
+NEXT.JS PRODUCTION BUILD:
+PASS
+
+TYPESCRIPT:
+PASS
+
+HTTP ROUTE:
+VERIFIED
+
+/api/trust-club/admin/membership/activate
+
+BETTER AUTH AUTHENTICATION AUTHORITY:
+PRESERVED
+
+PERSISTED TRUST_CLUB_ADMIN AUTHORITY:
+VERIFIED
+
+CALLER-SUPPLIED ADMIN IDENTITY:
+NONE
+
+TARGET ELIGIBILITY:
+ELIGIBLE REQUIRED
+
+PENDING MEMBERSHIP PRECONDITION:
+VERIFIED
+
+PENDING SUBSCRIPTION PRECONDITION:
+VERIFIED
+
+ATOMIC MEMBERSHIP ACTIVATION:
+VERIFIED
+
+ATOMIC SUBSCRIPTION ACTIVATION:
+VERIFIED
+
+ACTIVATED AT:
+SERVER GENERATED
+
+MEMBER ID:
+PRESERVED
+
+PLAN CODE:
+PRESERVED
+
+AUTHENTICATED NON-ADMIN REJECTION:
+VERIFIED
+
+POSITIVE ADMIN ACTIVATION:
+VERIFIED
+
+REPLAY PROTECTION:
+VERIFIED
+
+CONTROLLED FIXTURE CLEANUP:
+VERIFIED
+
+FINAL FIXTURE RESIDUE:
+NONE
+
+ADMIN USER:
+PRESERVED
+
+TRUST_CLUB_ADMIN ROLE:
+PRESERVED
+
+PRISMA SCHEMA CHANGE:
+NONE
+
+DATABASE MIGRATION:
+NONE
+
+============================================================
+7. FINAL CERTIFICATION STATE
+============================================================
+
+PHASE 7.4:
+CERTIFIED
+
+CERTIFICATION LOCK:
+COMPLETE
+
+STAGING:
+NOT YET AUTHORIZED
+
+COMMIT:
+NOT YET AUTHORIZED
+
+PUSH:
+NOT YET AUTHORIZED
