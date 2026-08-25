@@ -32,6 +32,12 @@ export default function TrustClubRegisterPage() {
     useState('');
 
   const [
+    rawInvitationToken,
+    setRawInvitationToken,
+  ] =
+    useState('');
+
+  const [
     password,
     setPassword,
   ] =
@@ -67,6 +73,26 @@ export default function TrustClubRegisterPage() {
       null,
     );
 
+    const normalizedName =
+      name.trim();
+
+    const normalizedEmail =
+      email.trim();
+
+    const invitationToken =
+      rawInvitationToken.trim();
+
+    if (
+      invitationToken.length ===
+        0
+    ) {
+      setError(
+        'A valid Trust Club invitation token is required.',
+      );
+
+      return;
+    }
+
     if (
       password !==
         confirmPassword
@@ -82,15 +108,119 @@ export default function TrustClubRegisterPage() {
       true,
     );
 
+    /**
+     * Phase 7.2:
+     *
+     * Establish the Trust Club registration-admission boundary
+     * BEFORE requesting Better Auth account creation.
+     *
+     * This browser-side admission request improves the registration
+     * flow, but it is NOT the security authority by itself.
+     *
+     * Better Auth /sign-up/email is independently protected by the
+     * server-side Phase 7.2 admission hook.
+     */
+    let admissionResponse:
+      Response;
+
+    try {
+      admissionResponse =
+        await fetch(
+          '/api/trust-club/registration/admission',
+          {
+            method:
+              'POST',
+
+            headers: {
+              'Content-Type':
+                'application/json',
+            },
+
+            cache:
+              'no-store',
+
+            body:
+              JSON.stringify({
+                email:
+                  normalizedEmail,
+
+                rawInvitationToken:
+                  invitationToken,
+              }),
+          },
+        );
+    }
+    catch {
+      setError(
+        'Registration admission could not be verified.',
+      );
+
+      setSubmitting(
+        false,
+      );
+
+      return;
+    }
+
+    if (
+      !admissionResponse.ok
+    ) {
+      setError(
+        'Your invitation is not valid for this registration.',
+      );
+
+      setSubmitting(
+        false,
+      );
+
+      return;
+    }
+
+    /**
+     * Better Auth owns account and session creation.
+     *
+     * rawInvitationToken is NOT part of the typed Better Auth
+     * sign-up model. Better Auth officially exposes fetchOptions
+     * for this request, including an onRequest lifecycle hook.
+     *
+     * Phase 7.2 uses that supported request boundary to attach the
+     * transient invitation proof to the outgoing sign-up body.
+     *
+     * The server-side Better Auth before-hook independently verifies
+     * the proof and removes rawInvitationToken before Better Auth
+     * user/account/session processing.
+     */
     const result =
       await signUp.email({
         name:
-          name.trim(),
+          normalizedName,
 
         email:
-          email.trim(),
+          normalizedEmail,
 
         password,
+
+        fetchOptions: {
+          onRequest(
+            context,
+          ) {
+            if (
+              typeof context.body ===
+                'object' &&
+              context.body !==
+                null
+            ) {
+              context.body = {
+                ...context.body,
+
+                rawInvitationToken:
+                  invitationToken,
+              };
+            }
+
+            return context;
+          },
+        },
       });
 
     if (
@@ -110,6 +240,8 @@ export default function TrustClubRegisterPage() {
 
     /**
      * Establish the Trust Club Eligibility boundary immediately.
+     *
+     * Account creation does NOT establish Membership.
      *
      * A newly registered identity normally receives:
      *
@@ -142,6 +274,14 @@ export default function TrustClubRegisterPage() {
       return;
     }
 
+    /**
+     * Remove the transient proof from client state after successful
+     * account creation.
+     */
+    setRawInvitationToken(
+      '',
+    );
+
     router.push(
       '/trust-club/dashboard',
     );
@@ -161,9 +301,9 @@ export default function TrustClubRegisterPage() {
         </h1>
 
         <p className="trustClubAuthIntro">
-          Registration establishes your secure authentication
-          identity. Trust Club service access remains subject to
-          eligibility and Membership review.
+          Registration requires a redeemed Trust Club invitation.
+          Creating an authentication identity does not automatically
+          establish Membership or service eligibility.
         </p>
 
         <form
@@ -200,6 +340,24 @@ export default function TrustClubRegisterPage() {
                   )
               }
               autoComplete="email"
+              required
+            />
+          </label>
+
+          <label>
+            Invitation Token
+
+            <input
+              type="password"
+              value={rawInvitationToken}
+              onChange={
+                (event) =>
+                  setRawInvitationToken(
+                    event.target.value,
+                  )
+              }
+              autoComplete="off"
+              spellCheck={false}
               required
             />
           </label>
@@ -274,3 +432,15 @@ export default function TrustClubRegisterPage() {
     </main>
   );
 }
+
+export const TRUST_CLUB_REGISTER_PAGE_ADMISSION_ORDER_RULE =
+  'REGISTRATION_ADMISSION_REQUEST_PRECEDES_BETTER_AUTH_SIGN_UP' as const;
+
+export const TRUST_CLUB_REGISTER_PAGE_SERVER_AUTHORITY_RULE =
+  'BROWSER_ADMISSION_CHECK_DOES_NOT_REPLACE_SERVER_SIDE_BETTER_AUTH_REGISTRATION_GATE' as const;
+
+export const TRUST_CLUB_REGISTER_PAGE_INVITATION_PROOF_RULE =
+  'RAW_INVITATION_TOKEN_IS_TRANSIENT_REGISTRATION_PROOF' as const;
+
+export const TRUST_CLUB_REGISTER_PAGE_MEMBERSHIP_RULE =
+  'ACCOUNT_REGISTRATION_DOES_NOT_ESTABLISH_TRUST_CLUB_MEMBERSHIP' as const;

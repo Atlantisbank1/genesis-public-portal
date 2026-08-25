@@ -1,0 +1,151 @@
+TRUST CLUB V1
+PHASE 7.2
+INVITATION-GATED REGISTRATION
+
+FINAL CERTIFICATION LOCK
+
+============================================================
+1. CERTIFIED BASELINE
+============================================================
+
+PHASE 7.1 CERTIFIED HEAD:
+a6e8e87f2fcaedebad2085d05228015431f2835c
+
+============================================================
+2. CERTIFIED APPLICATION SOURCE SET
+============================================================
+
+SOURCE FILE COUNT:
+7
+
+src/app/api/trust-club/invitations/request/route.ts
+src/app/api/trust-club/registration/admission/route.ts
+src/app/trust-club/register/page.tsx
+src/lib/auth.ts
+src/trust-club/invitation/trust-club-invitation-request.service.ts
+src/trust-club/invitation/trust-club-registration-admission.contracts.ts
+src/trust-club/invitation/trust-club-registration-admission.service.ts
+
+============================================================
+3. SOURCE SHA256 LOCK
+============================================================
+
+E911AC83BFA82E1FE2DFB731A81ACDFE17C0F98D9B184E2F06FF46DDAF922CFA  src/app/api/trust-club/invitations/request/route.ts
+2E9AC4652D0583F2CF2FB67CFA299BFCE297F3B6451DB0542660663C4A70ECC5  src/app/api/trust-club/registration/admission/route.ts
+13B982A4BE0909CCA466E4CEC31F2E0165FB76F8507CB3A477E9DF04BB1E8832  src/app/trust-club/register/page.tsx
+FA153F45EDFBC7896B237CB47A3896D40050270903FD7D5218C5B6AD9458649A  src/lib/auth.ts
+66D76AD8B435DFBA2A476E85494F1228CCE1D8CFFB5301E25CE35602255131E5  src/trust-club/invitation/trust-club-invitation-request.service.ts
+DD5B1EA453EDC4C2568B61ECF16A69D6983E5DDED37AA4A3A788365472AFEF4E  src/trust-club/invitation/trust-club-registration-admission.contracts.ts
+9FB99249198A185D1D16286792B2E716CD1F8AEC847B18461FDECC8059ACD0F0  src/trust-club/invitation/trust-club-registration-admission.service.ts
+
+============================================================
+4. EVIDENCE SHA256 LOCK
+============================================================
+
+10BAEAB8CE32F8A7AFB7DA6CB723B6893911FC74E9D59A0B90E28B7C61EFF319  01-core-verification-record.txt
+6FC19B61E218038C0A993BD538F51CC95DA5E31AE9B4A2BF26A769D0139EE0DF  02-phase-source-manifest.txt
+98A7104F06D3A8BB748D843DD017C0150938FD83559EC45F0811B861FB892279  03-sha256-evidence-register.txt
+050F9FFC4F10D81B74217037C7DC0EC585B47769E19BA304C7BCA94C471D616D  04-phase-certification.txt
+
+============================================================
+5. CERTIFIED RESULTS
+============================================================
+
+SOURCE BOUNDARY:
+PASS
+
+PRODUCTION BUILD:
+PASS
+
+TYPESCRIPT:
+PASS
+
+NEGATIVE RUNTIME:
+PASS
+
+POSITIVE RUNTIME:
+PASS
+
+SERVER-SIDE REGISTRATION ADMISSION GATE:
+PASS
+
+DIRECT BETTER AUTH SIGN-UP BYPASS PROTECTION:
+PASS
+
+RAW INVITATION TOKEN PERSISTENCE:
+NONE
+
+TRANSIENT SECRET CLEANUP:
+PASS
+
+CONTROLLED TEST FIXTURE CLEANUP:
+PASS
+
+FINAL TEST FIXTURE RESIDUE:
+NONE
+
+ADMIN USER:
+PRESERVED
+
+TRUST_CLUB_ADMIN ROLE:
+PRESERVED
+
+============================================================
+6. AUTHORITY LOCK
+============================================================
+
+BETTER AUTH REMAINS AUTHENTICATION AUTHORITY:
+YES
+
+REGISTRATION ADMISSION CREATES USER:
+NO
+
+REGISTRATION ADMISSION CREATES ACCOUNT:
+NO
+
+REGISTRATION ADMISSION CREATES SESSION:
+NO
+
+REGISTRATION ADMISSION ESTABLISHES MEMBERSHIP:
+NO
+
+REGISTRATION ADMISSION GRANTS TRUST ROLE:
+NO
+
+REGISTRATION ADMISSION AUTHORIZES TRUST ACTION:
+NO
+
+============================================================
+7. FINAL CERTIFICATION STATE
+============================================================
+
+PHASE 7.2:
+CERTIFIED
+
+CERTIFIED COMPONENT:
+INVITATION-GATED REGISTRATION
+
+SOURCE FILE COUNT:
+7
+
+EVIDENCE FILE COUNT BEFORE FINAL LOCK:
+4
+
+FINAL LOCK FILE:
+05-final-certification-lock.txt
+
+CERTIFICATION LOCK STATUS:
+COMPLETE
+
+============================================================
+8. GIT AUTHORITY
+============================================================
+
+STAGING:
+NOT YET AUTHORIZED
+
+COMMIT:
+NOT YET AUTHORIZED
+
+PUSH:
+NOT YET AUTHORIZED

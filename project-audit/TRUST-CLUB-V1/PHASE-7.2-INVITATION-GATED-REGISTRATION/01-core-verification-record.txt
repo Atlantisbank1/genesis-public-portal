@@ -1,0 +1,324 @@
+TRUST CLUB V1
+PHASE 7.2
+INVITATION-GATED REGISTRATION
+
+CORE VERIFICATION RECORD
+
+============================================================
+1. BASELINE
+============================================================
+
+CERTIFIED PHASE 7.1 HEAD:
+a6e8e87f2fcaedebad2085d05228015431f2835c
+
+PHASE 7.2 WORKING BASELINE:
+VERIFIED
+
+============================================================
+2. PHASE OBJECTIVE
+============================================================
+
+Phase 7.2 establishes invitation-gated Trust Club registration.
+
+The approved registration flow is:
+
+Invitation Request
+-> Administrative Token Issuance
+-> Invitation Redemption
+-> Registration Admission
+-> Better Auth Sign-Up
+
+Registration admission is not authentication authority.
+
+Better Auth remains the sole authority for:
+- credential verification;
+- user creation;
+- account creation;
+- session creation.
+
+Trust Club registration admission:
+- requires an already-consumed invitation;
+- binds the invitation proof to normalized email;
+- is time-bounded;
+- does not establish Membership;
+- does not grant Trust roles;
+- does not authorize Trust actions.
+
+============================================================
+3. SOURCE BOUNDARY
+============================================================
+
+EXACT PHASE SOURCE FILE COUNT:
+7
+
+src/app/api/trust-club/invitations/request/route.ts
+src/app/api/trust-club/registration/admission/route.ts
+src/app/trust-club/register/page.tsx
+src/lib/auth.ts
+src/trust-club/invitation/trust-club-invitation-request.service.ts
+src/trust-club/invitation/trust-club-registration-admission.contracts.ts
+src/trust-club/invitation/trust-club-registration-admission.service.ts
+
+MISSING EXPECTED SOURCE FILES:
+0
+
+UNEXPECTED NON-AUDIT SOURCE FILES:
+0
+
+============================================================
+4. SOURCE SHA256 REGISTER
+============================================================
+
+E911AC83BFA82E1FE2DFB731A81ACDFE17C0F98D9B184E2F06FF46DDAF922CFA  src/app/api/trust-club/invitations/request/route.ts
+2E9AC4652D0583F2CF2FB67CFA299BFCE297F3B6451DB0542660663C4A70ECC5  src/app/api/trust-club/registration/admission/route.ts
+13B982A4BE0909CCA466E4CEC31F2E0165FB76F8507CB3A477E9DF04BB1E8832  src/app/trust-club/register/page.tsx
+FA153F45EDFBC7896B237CB47A3896D40050270903FD7D5218C5B6AD9458649A  src/lib/auth.ts
+66D76AD8B435DFBA2A476E85494F1228CCE1D8CFFB5301E25CE35602255131E5  src/trust-club/invitation/trust-club-invitation-request.service.ts
+DD5B1EA453EDC4C2568B61ECF16A69D6983E5DDED37AA4A3A788365472AFEF4E  src/trust-club/invitation/trust-club-registration-admission.contracts.ts
+9FB99249198A185D1D16286792B2E716CD1F8AEC847B18461FDECC8059ACD0F0  src/trust-club/invitation/trust-club-registration-admission.service.ts
+
+============================================================
+5. BUILD VERIFICATION
+============================================================
+
+NEXT.JS PRODUCTION BUILD:
+PASS
+
+TYPESCRIPT:
+PASS
+
+BUILT ROUTES VERIFIED:
+
+/api/trust-club/invitations/request
+/api/trust-club/registration/admission
+/api/auth/[...all]
+
+============================================================
+6. NEGATIVE RUNTIME VERIFICATION
+============================================================
+
+REGISTRATION ADMISSION INVALID REQUEST:
+REJECTED
+
+DIRECT BETTER AUTH SIGN-UP WITHOUT VALID INVITATION PROOF:
+REJECTED
+
+UNKNOWN INVITATION PROOF:
+REJECTED
+
+SERVER-SIDE BETTER AUTH ADMISSION GATE:
+VERIFIED
+
+DIRECT SIGN-UP BYPASS PROTECTION:
+VERIFIED
+
+USER RETURNED ON REJECTED REQUEST:
+NO
+
+AUTH TOKEN RETURNED ON REJECTED REQUEST:
+NO
+
+RAW INVITATION PROOF DISCLOSURE:
+NONE
+
+============================================================
+7. POSITIVE RUNTIME VERIFICATION
+============================================================
+
+INVITATION REQUEST:
+PASS
+
+INITIAL INVITATION STATUS:
+REQUESTED
+
+TOKEN MATERIAL AT REQUEST STAGE:
+NONE
+
+ADMIN AUTHENTICATED ISSUANCE:
+PASS
+
+REQUESTED -> APPROVED:
+VERIFIED
+
+RAW TOKEN:
+ONE-TIME / TRANSIENT / NOT LOGGED
+
+INVITATION REDEMPTION:
+PASS
+
+APPROVED -> CONSUMED:
+VERIFIED
+
+POSITIVE REGISTRATION ADMISSION:
+PASS
+
+EMAIL BINDING:
+VERIFIED
+
+CONSUMED INVITATION PROOF:
+VERIFIED
+
+BETTER AUTH SIGN-UP:
+PASS
+
+BETTER AUTH USER CREATION:
+VERIFIED
+
+BETTER AUTH CREDENTIAL ACCOUNT:
+VERIFIED
+
+============================================================
+8. TRANSIENT SECRET HANDLING
+============================================================
+
+RAW INVITATION TOKEN FILE:
+DESTROYED
+
+ADMIN SESSION COOKIE FILE:
+DESTROYED
+
+TEMPORARY REQUEST / RESPONSE HARNESS FILES:
+DESTROYED
+
+FINAL TRANSIENT FILE RESIDUE:
+0
+
+============================================================
+9. CONTROLLED TEST FIXTURE CLEANUP
+============================================================
+
+TEST INVITATION:
+REMOVED
+
+TEST USER:
+REMOVED
+
+TEST SESSION:
+CASCADE REMOVED
+
+TEST ACCOUNT:
+CASCADE REMOVED
+
+TEST EMAIL RESIDUE:
+NONE
+
+ADMIN USER:
+PRESERVED
+
+TRUST_CLUB_ADMIN ROLE:
+PRESERVED
+
+============================================================
+10. FINAL DATABASE RESIDUE VERIFICATION
+============================================================
+
+TEST USER PRESENT:
+NO
+
+TARGET TEST INVITATION PRESENT:
+NO
+
+USERS FOR TEST EMAIL:
+0
+
+INVITATIONS FOR TEST EMAIL:
+0
+
+ADMIN USER PRESENT:
+YES
+
+ADMIN TRUST_CLUB_ADMIN ROLE ASSIGNMENT COUNT:
+1
+
+FINAL DATABASE VERIFICATION:
+PASS
+
+============================================================
+11. AUTHORITY BOUNDARY
+============================================================
+
+REGISTRATION ADMISSION CREATES USER:
+NO
+
+REGISTRATION ADMISSION CREATES ACCOUNT:
+NO
+
+REGISTRATION ADMISSION CREATES SESSION:
+NO
+
+REGISTRATION ADMISSION ESTABLISHES MEMBERSHIP:
+NO
+
+REGISTRATION ADMISSION GRANTS TRUST ROLE:
+NO
+
+REGISTRATION ADMISSION AUTHORIZES TRUST ACTION:
+NO
+
+BETTER AUTH RETAINS AUTHENTICATION AUTHORITY:
+YES
+
+RAW INVITATION TOKEN PERSISTED BY PHASE 7.2:
+NO
+
+RAW INVITATION TOKEN REMOVED BEFORE BETTER AUTH USER / ACCOUNT / SESSION PROCESSING:
+YES
+
+============================================================
+12. REPOSITORY STATE
+============================================================
+
+HEAD:
+a6e8e87f2fcaedebad2085d05228015431f2835c
+
+HEAD CHANGED DURING PHASE VERIFICATION:
+NO
+
+STAGED FILES:
+0
+
+COMMIT:
+NO
+
+PUSH:
+NO
+
+============================================================
+13. CORE RESULT
+============================================================
+
+PHASE 7.2 INVITATION-GATED REGISTRATION:
+PASS
+
+SOURCE BOUNDARY:
+PASS
+
+BUILD:
+PASS
+
+NEGATIVE RUNTIME:
+PASS
+
+POSITIVE RUNTIME:
+PASS
+
+SERVER-SIDE ADMISSION GATE:
+PASS
+
+DIRECT SIGN-UP BYPASS PROTECTION:
+PASS
+
+TRANSIENT SECRET CLEANUP:
+PASS
+
+CONTROLLED TEST FIXTURE CLEANUP:
+PASS
+
+FINAL DATABASE RESIDUE:
+PASS
+
+ADMIN PRESERVATION:
+PASS
+
+CERTIFICATION STATUS:
+READY FOR EVIDENCE LOCK PREPARATION

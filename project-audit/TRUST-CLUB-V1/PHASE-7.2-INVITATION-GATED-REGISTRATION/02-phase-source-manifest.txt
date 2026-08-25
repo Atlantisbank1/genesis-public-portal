@@ -1,0 +1,53 @@
+TRUST CLUB V1
+PHASE 7.2
+EXACT PHASE SOURCE MANIFEST
+
+CERTIFIED PHASE 7.1 BASELINE HEAD:
+a6e8e87f2fcaedebad2085d05228015431f2835c
+
+PHASE SOURCE FILE COUNT:
+7
+
+TRACKED MODIFIED FILE COUNT:
+2
+
+UNTRACKED NEW FILE COUNT:
+5
+
+============================================================
+EXACT SOURCE SET
+============================================================
+
+TRACKED_MODIFIED  src/app/trust-club/register/page.tsx
+TRACKED_MODIFIED  src/lib/auth.ts
+
+UNTRACKED_NEW  src/app/api/trust-club/invitations/request/route.ts
+UNTRACKED_NEW  src/app/api/trust-club/registration/admission/route.ts
+UNTRACKED_NEW  src/trust-club/invitation/trust-club-invitation-request.service.ts
+UNTRACKED_NEW  src/trust-club/invitation/trust-club-registration-admission.contracts.ts
+UNTRACKED_NEW  src/trust-club/invitation/trust-club-registration-admission.service.ts
+
+============================================================
+BOUNDARY VERIFICATION
+============================================================
+
+EXPECTED SOURCE FILE COUNT:
+7
+
+MISSING EXPECTED FILES:
+0
+
+UNEXPECTED NON-AUDIT FILES:
+0
+
+EXPECTED / ACTUAL SOURCE SET:
+EXACT MATCH
+
+PHASE 7.2 SOURCE BOUNDARY:
+PASS
+
+PROJECT-AUDIT HISTORICAL FILES:
+EXCLUDED FROM APPLICATION SOURCE BOUNDARY
+
+NO APPLICATION SOURCE FILE OUTSIDE THIS SEVEN-FILE SET
+IS AUTHORIZED FOR PHASE 7.2 CERTIFICATION.
