@@ -1,0 +1,259 @@
+TRUST CLUB V1
+PHASE 7.8
+STANDARD TRUST EXTERNAL PENDING
+
+PHASE SOURCE MANIFEST
+
+============================================================
+1. CERTIFIED BASELINE
+============================================================
+
+CERTIFIED PHASE 7.7 HEAD:
+0133519b8695fe1c002e5a9cdb58faec0a0f134e
+
+PHASE 7.8 IMPLEMENTATION BASELINE:
+VERIFIED
+
+============================================================
+2. AUTHORIZED APPLICATION SOURCE BOUNDARY
+============================================================
+
+AUTHORIZED APPLICATION SOURCE FILE COUNT:
+2
+
+FILE 1:
+src/trust-club/formation/trust-club-standard-trust-formation-external-pending.operation.ts
+
+PURPOSE:
+Controlled Standard Trust transition from internal completion
+into the external-pending lifecycle state.
+
+RESPONSIBILITIES:
+- requires CREATE_STANDARD_TRUST action type;
+- requires INTERNAL_COMPLETE source lifecycle state;
+- delegates lifecycle progression through TRANSITION_ACTION;
+- verifies transition to EXTERNAL_PENDING;
+- records EXTERNAL_PENDING through RECORD_OUTCOME;
+- uses the certified input.outcome contract shape;
+- verifies action and outcome invariants;
+- does not directly access Prisma;
+- does not directly access repositories;
+- does not directly access persistence;
+- does not execute an external service;
+- does not prove external completion.
+
+------------------------------------------------------------
+
+FILE 2:
+src/app/api/trust-club/formations/standard-trust/external-pending/route.ts
+
+PURPOSE:
+Authenticated HTTP application boundary for controlled
+Standard Trust external-pending progression.
+
+RESPONSIBILITIES:
+- validates request input;
+- resolves authenticated identity;
+- enforces eligibility;
+- enforces active membership access;
+- verifies CREATE_STANDARD_TRUST action type;
+- verifies user ownership;
+- verifies member ownership;
+- requires INTERNAL_COMPLETE source status;
+- invokes the Phase 7.8 external-pending operation;
+- maps controlled execution results to HTTP responses;
+- does not execute external completion.
+
+============================================================
+3. CERTIFIED EXECUTION DEPENDENCIES
+============================================================
+
+SERVER APPLICATION ENTRY:
+USED
+
+TRANSITION_ACTION:
+USED
+
+RECORD_OUTCOME:
+USED
+
+RECORD_OUTCOME INPUT CONTRACT:
+input.outcome
+
+LIFECYCLE SOURCE STATE:
+INTERNAL_COMPLETE
+
+LIFECYCLE TARGET STATE:
+EXTERNAL_PENDING
+
+OUTCOME TYPE:
+EXTERNAL_PENDING
+
+============================================================
+4. PERSISTENCE BOUNDARY
+============================================================
+
+DIRECT PRISMA ACCESS FROM PHASE 7.8 OPERATION:
+NONE
+
+DIRECT REPOSITORY ACCESS FROM PHASE 7.8 OPERATION:
+NONE
+
+DIRECT PERSISTENCE ACCESS FROM PHASE 7.8 OPERATION:
+NONE
+
+PRISMA SCHEMA MODIFICATION:
+NONE
+
+DATABASE MIGRATION:
+NONE
+
+CONTROLLED PERSISTENCE:
+THROUGH EXISTING CERTIFIED APPLICATION EXECUTION PATHS
+
+============================================================
+5. EXTERNAL EXECUTION BOUNDARY
+============================================================
+
+EXTERNAL SERVICE EXECUTION:
+NONE
+
+EXTERNAL COMPLETION PROOF:
+NONE
+
+PAYMENT EXECUTION:
+NONE
+
+BANKING EXECUTION:
+NONE
+
+EXTERNAL REGISTRATION EXECUTION:
+NONE
+
+FINAL COMPLETE STATUS:
+NOT REACHED
+
+============================================================
+6. EXISTING DOMAIN AUTHORITY PRESERVED
+============================================================
+
+ACTION WORKFLOW POLICY:
+UNCHANGED
+
+ACTION OUTCOME CONTRACT:
+UNCHANGED
+
+OUTCOME CONSISTENCY POLICY:
+UNCHANGED
+
+OUTCOME CREATION SERVICE:
+UNCHANGED
+
+AUTHORIZATION MODEL:
+UNCHANGED
+
+AUTHENTICATION MODEL:
+UNCHANGED
+
+MEMBERSHIP ACCESS MODEL:
+UNCHANGED
+
+============================================================
+7. RUNTIME VERIFICATION
+============================================================
+
+PREFLIGHT:
+PASS
+
+CONTROLLED EXTERNAL PENDING EXECUTION:
+PASS
+
+INTERNAL_COMPLETE -> EXTERNAL_PENDING:
+VERIFIED
+
+EXTERNAL_PENDING OUTCOME CREATION:
+VERIFIED
+
+TRANSITION PERSISTENCE:
+VERIFIED
+
+OUTCOME PERSISTENCE:
+VERIFIED
+
+REPLAY PROTECTION:
+PASS
+
+HTTP AUTHENTICATION BOUNDARY:
+PASS
+
+PRODUCTION BUILD:
+PASS
+
+============================================================
+8. EXACT SOURCE DELTA
+============================================================
+
+EXPECTED NON-AUDIT SOURCE FILE COUNT:
+2
+
+ACTUAL NON-AUDIT SOURCE FILE COUNT:
+2
+
+MISSING EXPECTED FILE COUNT:
+0
+
+UNEXPECTED NON-AUDIT FILE COUNT:
+0
+
+EXACT TWO-FILE SOURCE BOUNDARY:
+PASS
+
+============================================================
+9. PROHIBITED PHASE EXPANSION
+============================================================
+
+ATLANTIS INTEGRATION:
+NONE
+
+PAYMENT EXECUTION:
+NONE
+
+BANKING EXECUTION:
+NONE
+
+EXTERNAL SERVICE EXECUTION:
+NONE
+
+EXTERNAL COMPLETION PROOF:
+NONE
+
+FINAL COMPLETE TRANSITION:
+NONE
+
+NEW DATABASE MODEL:
+NONE
+
+NEW MIGRATION:
+NONE
+
+DIRECT PERSISTENCE IMPLEMENTATION:
+NONE
+
+============================================================
+10. MANIFEST RESULT
+============================================================
+
+PHASE 7.8 SOURCE MANIFEST:
+VERIFIED
+
+AUTHORIZED SOURCE FILE COUNT:
+2
+
+UNEXPECTED SOURCE FILE COUNT:
+0
+
+SOURCE BOUNDARY:
+PASS
+
+EXTERNAL COMPLETION:
+NOT CLAIMED
