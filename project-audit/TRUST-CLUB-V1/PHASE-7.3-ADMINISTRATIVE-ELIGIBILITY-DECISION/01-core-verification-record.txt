@@ -1,0 +1,263 @@
+TRUST CLUB V1
+PHASE 7.3
+ADMINISTRATIVE ELIGIBILITY DECISION
+
+CORE VERIFICATION RECORD
+
+============================================================
+1. CERTIFIED BASELINE
+============================================================
+
+CERTIFIED PHASE 7.2 HEAD:
+785dd396cf967d797da60d1b44a91cad91d1402d
+
+BASELINE GUARD:
+PASS
+
+============================================================
+2. PHASE OBJECTIVE
+============================================================
+
+Phase 7.3 establishes the administrative Eligibility decision
+boundary for Trust Club.
+
+Approved transition:
+
+REVIEW_REQUIRED
+-> authenticated persisted TRUST_CLUB_ADMIN decision
+-> ELIGIBLE or RESTRICTED
+
+Administrative authority is derived from the existing certified
+Admin Review Authorization boundary.
+
+Caller-supplied administrative identity is prohibited.
+
+============================================================
+3. SOURCE BOUNDARY
+============================================================
+
+SOURCE FILE COUNT:
+3
+
+src/app/api/trust-club/admin/eligibility/decision/route.ts
+src/trust-club/server/trust-club-eligibility-decision.contracts.ts
+src/trust-club/server/trust-club-eligibility-decision.service.ts
+
+MISSING EXPECTED SOURCE FILES:
+0
+
+UNEXPECTED NON-AUDIT SOURCE FILES:
+0
+
+EXACT THREE-FILE SOURCE BOUNDARY:
+PASS
+
+============================================================
+4. SCHEMA / PERSISTENCE MODEL
+============================================================
+
+PRISMA SCHEMA CHANGE:
+NONE
+
+MIGRATION:
+NONE
+
+EXISTING ELIGIBILITY MODEL SUPPORT:
+VERIFIED
+
+SUPPORTED TARGET STATUS:
+ELIGIBLE
+RESTRICTED
+
+REVIEW METADATA AVAILABLE:
+reasonCode
+internalCaseReference
+internalNotes
+reviewedBy
+reviewedAt
+effectiveAt
+liftedAt
+
+============================================================
+5. AUTHORIZATION BOUNDARY
+============================================================
+
+BETTER AUTH AUTHENTICATION SOURCE:
+PRESERVED
+
+CERTIFIED ADMIN REVIEW AUTHORIZATION:
+REUSED
+
+PERSISTED TRUST_CLUB_ADMIN REQUIRED:
+YES
+
+CALLER-SUPPLIED ADMIN IDENTITY:
+NONE
+
+SERVICE-LAYER AUTHORIZATION:
+VERIFIED
+
+============================================================
+6. PERSISTENCE TRANSITION
+============================================================
+
+SOURCE STATUS:
+REVIEW_REQUIRED
+
+TARGET STATUS:
+ELIGIBLE OR RESTRICTED
+
+ATOMIC UPDATE:
+VERIFIED
+
+UPDATE PRECONDITION COUNT:
+EXACTLY 1
+
+REPLAY AFTER SOURCE STATUS EXIT:
+BLOCKED
+
+UPSERT:
+NONE
+
+CREATE:
+NONE
+
+DELETE:
+NONE
+
+============================================================
+7. BUILD VERIFICATION
+============================================================
+
+NEXT.JS PRODUCTION BUILD:
+PASS
+
+TYPESCRIPT:
+PASS
+
+HTTP ROUTE:
+VERIFIED
+
+/api/trust-club/admin/eligibility/decision
+
+============================================================
+8. NEGATIVE RUNTIME
+============================================================
+
+UNAUTHENTICATED REQUEST:
+REJECTED
+
+EXPECTED ERROR:
+TRUST_CLUB_ELIGIBILITY_DECISION_AUTHENTICATION_REQUIRED
+
+AUTHENTICATED NON-ADMIN:
+REJECTED
+
+EXPECTED ERROR:
+TRUST_CLUB_ELIGIBILITY_DECISION_ADMIN_SYSTEM_ROLE_REQUIRED
+
+ELIGIBILITY WRITE DURING NON-ADMIN REJECTION:
+NONE
+
+============================================================
+9. POSITIVE RUNTIME
+============================================================
+
+CONTROLLED PHASE 7.3 FIXTURE:
+CREATED
+
+INITIAL STATUS:
+REVIEW_REQUIRED
+
+POSITIVE ADMIN DECISION:
+PASS
+
+TRANSITION:
+REVIEW_REQUIRED -> ELIGIBLE
+
+REVIEWED BY AUTHENTICATED ADMIN:
+VERIFIED
+
+SERVER REVIEW TIMESTAMP:
+VERIFIED
+
+ELIGIBLE REASON CODE:
+NULL
+
+INTERNAL CASE REFERENCE:
+VERIFIED
+
+INTERNAL NOTES:
+VERIFIED
+
+============================================================
+10. REPLAY PROTECTION
+============================================================
+
+SECOND DECISION ATTEMPT:
+REJECTED
+
+EXPECTED ERROR:
+TRUST_CLUB_ELIGIBILITY_DECISION_REQUIRES_REVIEW_REQUIRED_STATUS
+
+PERSISTED RECORD AFTER REPLAY ATTEMPT:
+UNCHANGED
+
+REPLAY PROTECTION:
+PASS
+
+============================================================
+11. FIXTURE CLEANUP
+============================================================
+
+PHASE 7.3 FIXTURE USER:
+REMOVED
+
+PHASE 7.3 ELIGIBILITY:
+CASCADE REMOVED
+
+FIXTURE EMAIL RESIDUE:
+NONE
+
+ADMIN USER:
+PRESERVED
+
+TRUST_CLUB_ADMIN ROLE:
+PRESERVED
+
+FINAL RESIDUE VERIFICATION:
+PASS
+
+============================================================
+12. FINAL RESULT
+============================================================
+
+ADMINISTRATIVE ELIGIBILITY DECISION:
+PASS
+
+AUTHENTICATION BOUNDARY:
+PASS
+
+ADMIN AUTHORITY BOUNDARY:
+PASS
+
+SOURCE PRECONDITION:
+PASS
+
+ATOMIC TRANSITION:
+PASS
+
+POSITIVE RUNTIME:
+PASS
+
+NEGATIVE RUNTIME:
+PASS
+
+REPLAY PROTECTION:
+PASS
+
+FIXTURE CLEANUP:
+PASS
+
+FINAL STATUS:
+READY FOR CERTIFICATION EVIDENCE LOCK PREPARATION

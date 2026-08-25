@@ -1,0 +1,45 @@
+TRUST CLUB V1
+PHASE 7.3
+ADMINISTRATIVE ELIGIBILITY DECISION
+
+SHA256 EVIDENCE REGISTER
+
+CERTIFIED PHASE 7.2 BASELINE HEAD:
+785dd396cf967d797da60d1b44a91cad91d1402d
+
+HASH ALGORITHM:
+SHA256
+
+REGISTERED FILE COUNT:
+5
+
+============================================================
+REGISTER
+============================================================
+
+1f512e7b073ba3b5963d79dedc5e44ebba995b50056b8ef6adb8c602589b11dc  src/app/api/trust-club/admin/eligibility/decision/route.ts
+7f4385e5851be25c8d73b1fc7a4228d219ae6adc422dfbd3b7654c129e921988  src/trust-club/server/trust-club-eligibility-decision.contracts.ts
+aa07fd6de449c6d7bbcf594268c1ad9a6affa3167ef4f51eb37d9b01e7ce61a1  src/trust-club/server/trust-club-eligibility-decision.service.ts
+fa379f0caa0ae9b85722722b2862f13b8784a6683374f13b2d24d85ef1b3b9d5  project-audit/TRUST-CLUB-V1/PHASE-7.3-ADMINISTRATIVE-ELIGIBILITY-DECISION/01-core-verification-record.txt
+225140ab7cd104f9ca7d24129ca1a43422b86a0eee703c1b485679cab9809d1e  project-audit/TRUST-CLUB-V1/PHASE-7.3-ADMINISTRATIVE-ELIGIBILITY-DECISION/02-phase-source-manifest.txt
+
+============================================================
+REGISTER STATUS
+============================================================
+
+APPLICATION SOURCE FILES:
+3
+
+PRE-CERTIFICATION EVIDENCE FILES:
+2
+
+TOTAL REGISTERED FILES:
+5
+
+SHA256 EVIDENCE REGISTER:
+COMPLETE
+
+NOTE:
+This register records the Phase 7.3 application source and
+pre-certification evidence state before creation of the
+certification and final lock records.

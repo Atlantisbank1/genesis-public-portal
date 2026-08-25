@@ -1,0 +1,261 @@
+TRUST CLUB V1
+PHASE 7.3
+ADMINISTRATIVE ELIGIBILITY DECISION
+
+PHASE CERTIFICATION
+
+============================================================
+1. CERTIFIED BASELINE
+============================================================
+
+CERTIFIED PHASE 7.2 HEAD:
+785dd396cf967d797da60d1b44a91cad91d1402d
+
+BASELINE VERIFICATION:
+PASS
+
+============================================================
+2. CERTIFIED PHASE OBJECTIVE
+============================================================
+
+Phase 7.3 establishes the administrative Trust Club Eligibility
+decision boundary.
+
+Certified transition:
+
+REVIEW_REQUIRED
+-> authenticated persisted TRUST_CLUB_ADMIN
+-> ELIGIBLE or RESTRICTED
+
+============================================================
+3. CERTIFIED SOURCE BOUNDARY
+============================================================
+
+SOURCE FILE COUNT:
+3
+
+src/app/api/trust-club/admin/eligibility/decision/route.ts
+src/trust-club/server/trust-club-eligibility-decision.contracts.ts
+src/trust-club/server/trust-club-eligibility-decision.service.ts
+
+MISSING EXPECTED FILES:
+0
+
+UNEXPECTED NON-AUDIT FILES:
+0
+
+EXACT SOURCE BOUNDARY:
+PASS
+
+============================================================
+4. CERTIFIED AUTHENTICATION / ADMIN AUTHORITY
+============================================================
+
+BETTER AUTH AUTHENTICATION AUTHORITY:
+PRESERVED
+
+CERTIFIED ADMIN REVIEW AUTHORIZATION:
+REUSED
+
+PERSISTED TRUST_CLUB_ADMIN REQUIRED:
+YES
+
+CALLER-SUPPLIED ADMIN IDENTITY:
+PROHIBITED
+
+SERVICE-LAYER ADMIN AUTHORIZATION:
+VERIFIED
+
+============================================================
+5. CERTIFIED ELIGIBILITY TRANSITION
+============================================================
+
+SOURCE STATUS:
+REVIEW_REQUIRED
+
+TARGET STATUS:
+ELIGIBLE OR RESTRICTED
+
+ATOMIC UPDATE PRECONDITION:
+VERIFIED
+
+UPDATE COUNT:
+EXACTLY 1
+
+REVIEWED BY:
+AUTHENTICATED TRUST_CLUB_ADMIN
+
+REVIEWED AT:
+SERVER GENERATED
+
+EFFECTIVE AT:
+SERVER GENERATED
+
+REPLAY AFTER SOURCE STATUS EXIT:
+BLOCKED
+
+============================================================
+6. CERTIFIED BUILD RESULT
+============================================================
+
+NEXT.JS PRODUCTION BUILD:
+PASS
+
+TYPESCRIPT:
+PASS
+
+HTTP ROUTE:
+VERIFIED
+
+/api/trust-club/admin/eligibility/decision
+
+============================================================
+7. CERTIFIED NEGATIVE RUNTIME RESULT
+============================================================
+
+UNAUTHENTICATED REQUEST:
+REJECTED
+
+EXPECTED ERROR:
+TRUST_CLUB_ELIGIBILITY_DECISION_AUTHENTICATION_REQUIRED
+
+AUTHENTICATED NON-ADMIN:
+REJECTED
+
+EXPECTED ERROR:
+TRUST_CLUB_ELIGIBILITY_DECISION_ADMIN_SYSTEM_ROLE_REQUIRED
+
+ELIGIBILITY WRITE DURING NON-ADMIN REJECTION:
+NONE
+
+NEGATIVE RUNTIME:
+PASS
+
+============================================================
+8. CERTIFIED POSITIVE RUNTIME RESULT
+============================================================
+
+CONTROLLED PHASE 7.3 FIXTURE:
+VERIFIED
+
+INITIAL STATUS:
+REVIEW_REQUIRED
+
+ADMIN DECISION:
+ELIGIBLE
+
+TRANSITION:
+REVIEW_REQUIRED -> ELIGIBLE
+
+REVIEWED BY AUTHENTICATED ADMIN:
+VERIFIED
+
+SERVER REVIEW TIMESTAMP:
+VERIFIED
+
+ELIGIBLE REASON CODE:
+NULL
+
+PERSISTED DECISION RESULT:
+VERIFIED
+
+POSITIVE RUNTIME:
+PASS
+
+============================================================
+9. CERTIFIED REPLAY PROTECTION
+============================================================
+
+SECOND DECISION ATTEMPT:
+REJECTED
+
+EXPECTED ERROR:
+TRUST_CLUB_ELIGIBILITY_DECISION_REQUIRES_REVIEW_REQUIRED_STATUS
+
+PERSISTED ELIGIBILITY AFTER REPLAY ATTEMPT:
+UNCHANGED
+
+REPLAY PROTECTION:
+PASS
+
+============================================================
+10. CERTIFIED FIXTURE CLEANUP
+============================================================
+
+PHASE 7.3 FIXTURE USER:
+REMOVED
+
+PHASE 7.3 ELIGIBILITY:
+CASCADE REMOVED
+
+FIXTURE EMAIL RESIDUE:
+NONE
+
+ADMIN USER:
+PRESERVED
+
+TRUST_CLUB_ADMIN ROLE:
+PRESERVED
+
+FINAL RESIDUE VERIFICATION:
+PASS
+
+============================================================
+11. SCHEMA / MIGRATION BOUNDARY
+============================================================
+
+PRISMA SCHEMA CHANGE:
+NONE
+
+MIGRATION:
+NONE
+
+EXISTING ELIGIBILITY MODEL:
+SUFFICIENT
+
+============================================================
+12. CERTIFICATION DECISION
+============================================================
+
+PHASE 7.3 ADMINISTRATIVE ELIGIBILITY DECISION:
+CERTIFIED
+
+SOURCE BOUNDARY:
+CERTIFIED
+
+AUTHENTICATION BOUNDARY:
+CERTIFIED
+
+ADMIN AUTHORITY BOUNDARY:
+CERTIFIED
+
+ATOMIC TRANSITION:
+CERTIFIED
+
+NEGATIVE RUNTIME:
+CERTIFIED
+
+POSITIVE RUNTIME:
+CERTIFIED
+
+REPLAY PROTECTION:
+CERTIFIED
+
+FIXTURE CLEANUP:
+CERTIFIED
+
+FINAL STATUS:
+PHASE 7.3 CERTIFIED - READY FOR FINAL CERTIFICATION LOCK
+
+============================================================
+13. GIT AUTHORITY
+============================================================
+
+STAGING:
+NOT YET AUTHORIZED
+
+COMMIT:
+NOT YET AUTHORIZED
+
+PUSH:
+NOT YET AUTHORIZED
