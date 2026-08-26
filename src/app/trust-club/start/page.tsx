@@ -1169,8 +1169,15 @@ export default function StandardTrustFormationPage() {
               </h1>
 
               <p className="trustClubDashboardLead">
-                Complete and save the formation information
-                associated with your existing Standard Trust action.
+                {
+                  actionStatus ===
+                    'DRAFT'
+                    ? 'Complete and save the formation information associated with your existing Standard Trust action.'
+                    : actionStatus ===
+                        'COMPLETE'
+                      ? 'Review the completed Standard Trust formation record associated with your certified formation lifecycle.'
+                      : 'Review the Standard Trust formation information associated with the current controlled lifecycle state.'
+                }
               </p>
             </div>
 
@@ -1184,7 +1191,27 @@ export default function StandardTrustFormationPage() {
 
           <section className="trustClubAccessCard">
             <span className="trustClubAccessState trustClubAccessState-ACTIVE">
-              FORMATION IN PROGRESS
+              {
+                actionStatus ===
+                  'DRAFT'
+                  ? 'FORMATION DRAFT'
+                  : actionStatus ===
+                      'READY'
+                    ? 'READY FOR REVIEW'
+                    : actionStatus ===
+                        'IN_PROGRESS'
+                      ? 'FORMATION IN PROGRESS'
+                      : actionStatus ===
+                          'INTERNAL_COMPLETE'
+                        ? 'INTERNAL FORMATION COMPLETE'
+                        : actionStatus ===
+                            'EXTERNAL_PENDING'
+                          ? 'EXTERNAL COMPLETION PENDING'
+                          : actionStatus ===
+                              'COMPLETE'
+                            ? 'FORMATION COMPLETE'
+                            : 'FORMATION STATUS UNKNOWN'
+              }
             </span>
 
             <h2>
@@ -1192,9 +1219,27 @@ export default function StandardTrustFormationPage() {
             </h2>
 
             <p>
-              Your Standard Trust action remains under controlled
-              formation. Saving this information does not advance
-              the Action lifecycle.
+              {
+                actionStatus ===
+                  'DRAFT'
+                  ? 'Your Standard Trust formation remains in draft. You may continue editing and saving the formation information.'
+                  : actionStatus ===
+                      'READY'
+                    ? 'Your Standard Trust formation is ready for the next controlled lifecycle step. Formation information is now read-only.'
+                    : actionStatus ===
+                        'IN_PROGRESS'
+                      ? 'Your Standard Trust formation is currently progressing through the controlled formation lifecycle.'
+                      : actionStatus ===
+                          'INTERNAL_COMPLETE'
+                        ? 'Internal formation processing is complete. The action remains subject to the next controlled lifecycle step.'
+                        : actionStatus ===
+                            'EXTERNAL_PENDING'
+                          ? 'Internal formation is complete and the action is awaiting verified external completion.'
+                          : actionStatus ===
+                              'COMPLETE'
+                            ? 'Your Standard Trust formation has completed the certified formation lifecycle.'
+                            : 'The current Standard Trust formation lifecycle status could not be projected.'
+              }
             </p>
           </section>
 
@@ -1297,9 +1342,15 @@ export default function StandardTrustFormationPage() {
                         </h2>
 
                         <p>
-                          Enter the current formation information.
-                          You can save and return later while the
-                          Action remains in DRAFT.
+                          {
+                            actionStatus ===
+                              'DRAFT'
+                              ? 'Enter the current formation information. You can save and return later while the Action remains in DRAFT.'
+                              : actionStatus ===
+                                  'COMPLETE'
+                                ? 'This completed Standard Trust formation record is read-only and reflects the formation information preserved through the certified lifecycle.'
+                                : 'The Standard Trust formation information is read-only while the Action is outside DRAFT.'
+                          }
                         </p>
 
                         <div
@@ -1699,54 +1750,69 @@ export default function StandardTrustFormationPage() {
                         }
                       </div>
 
-                      <button
-                        type="button"
-                        className="trustClubButton"
-                        disabled={
-                          formationSaving ||
-                          actionStatus !==
-                            'DRAFT'
-                        }
-                        onClick={
-                          () =>
-                            void handleSaveFormation()
-                        }
-                        style={
-                          formationSaving ||
-                          actionStatus !==
-                            'DRAFT'
-                            ? {
-                                opacity:
-                                  0.38,
-
-                                cursor:
-                                  'not-allowed',
-                              }
-                            : undefined
-                        }
-                      >
-                        {
-                          formationSaving
-                            ? 'Saving...'
-                            : 'Save Formation'
-                        }
-                      </button>
+                      {
+                        actionStatus ===
+                          'DRAFT'
+                          ? (
+                              <button
+                                type="button"
+                                className="trustClubButton"
+                                disabled={
+                                  formationSaving
+                                }
+                                onClick={
+                                  () =>
+                                    void handleSaveFormation()
+                                }
+                              >
+                                {
+                                  formationSaving
+                                    ? 'Saving...'
+                                    : 'Save Formation'
+                                }
+                              </button>
+                            )
+                          : (
+                              <span className="trustClubAccessState trustClubAccessState-ACTIVE">
+                                READ ONLY
+                              </span>
+                            )
+                      }
                     </section>
 
                     <section className="trustClubDashboardActions">
                       <div>
                         <p className="trustClubEyebrow">
-                          RESUME
+                          {
+                            actionStatus ===
+                              'DRAFT'
+                              ? 'RESUME'
+                              : 'FORMATION RECORD'
+                          }
                         </p>
 
                         <h2>
-                          Continue Later
+                          {
+                            actionStatus ===
+                              'DRAFT'
+                              ? 'Continue Later'
+                              : actionStatus ===
+                                  'COMPLETE'
+                                ? 'Completed Formation Record'
+                                : 'Current Formation Record'
+                          }
                         </h2>
 
                         <p>
-                          This Action remains in DRAFT. Reloading this page
-                          will resume the Formation through the authenticated
-                          Formation API.
+                          {
+                            actionStatus ===
+                              'DRAFT'
+                              ? 'This Action remains in DRAFT. Reloading this page will resume the Formation through the authenticated Formation API.'
+                              : actionStatus ===
+                                  'COMPLETE'
+                                ? 'This Action is COMPLETE. The formation record is read-only. Reloading this page will refresh the preserved record through the authenticated Formation API.'
+                                : 'This Action is outside DRAFT. The formation record is read-only. Reloading this page will refresh the current record through the authenticated Formation API.'
+                          }
                         </p>
                       </div>
 
