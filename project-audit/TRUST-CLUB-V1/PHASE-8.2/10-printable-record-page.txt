@@ -1,0 +1,2124 @@
+﻿'use client';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import {
+  useRouter,
+  useSearchParams,
+} from 'next/navigation';
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+
+import {
+  PDFDocument,
+  StandardFonts,
+  rgb,
+} from 'pdf-lib';
+
+interface PrintableRecordResponse {
+  status:
+    'READY';
+
+  record: {
+    documentType:
+      'STANDARD_TRUST_FORMATION_RECORD';
+
+    documentVersion:
+      '1.0';
+
+    generatedAt:
+      string;
+
+    formation: {
+      actionId:
+        string;
+
+      formationStatus:
+        'COMPLETE';
+
+      trustName:
+        string | null;
+
+      trustPurpose:
+        string | null;
+
+      settlorName:
+        string | null;
+
+      trusteeName:
+        string | null;
+
+      beneficiaryName:
+        string | null;
+
+      protectorName:
+        string | null;
+
+      initialPropertyDescription:
+        string | null;
+
+      formationCreatedAt:
+        string;
+
+      formationUpdatedAt:
+        string;
+    };
+
+    membership: {
+      memberId:
+        string;
+
+      status:
+        string;
+
+      subscriptionStatus:
+        string;
+
+      planCode:
+        string;
+
+      activatedAt:
+        string | null;
+    };
+
+    serviceValidity: {
+      status:
+        'NOT_YET_ESTABLISHED';
+
+      validFrom:
+        null;
+
+      validUntil:
+        null;
+
+      paymentStatus:
+        null;
+
+      paymentReference:
+        null;
+
+      paidAt:
+        null;
+    };
+  };
+}
+
+function isPrintableRecordResponse(
+  value:
+    unknown,
+): value is PrintableRecordResponse {
+  if (
+    typeof value !==
+      'object' ||
+    value ===
+      null
+  ) {
+    return false;
+  }
+
+  if (
+    !('status' in value) ||
+    value.status !==
+      'READY' ||
+    !('record' in value)
+  ) {
+    return false;
+  }
+
+  const record =
+    value.record;
+
+  if (
+    typeof record !==
+      'object' ||
+    record ===
+      null
+  ) {
+    return false;
+  }
+
+  return (
+    'documentType' in record &&
+    record.documentType ===
+      'STANDARD_TRUST_FORMATION_RECORD' &&
+    'documentVersion' in record &&
+    record.documentVersion ===
+      '1.0' &&
+    'formation' in record &&
+    'membership' in record &&
+    'serviceValidity' in record
+  );
+}
+
+function displayValue(
+  value:
+    string | null,
+): string {
+  if (
+    value ===
+      null ||
+    value.trim().length ===
+      0
+  ) {
+    return 'Not recorded';
+  }
+
+  return value;
+}
+
+function safePdfFileName(
+  value:
+    string | null,
+): string {
+  const source =
+    displayValue(value)
+      .trim()
+      .replace(
+        /[^a-zA-Z0-9_-]+/g,
+        '-',
+      )
+      .replace(
+        /^[-_]+|[-_]+$/g,
+        '',
+      );
+
+  return source.length > 0
+    ? source
+    : 'Standard-Trust';
+}
+
+function PrintableRecordLoadingFallback() {
+  return (
+    <main className="trustClubDashboardPage">
+      <section className="trustClubDashboardShell">
+        <p className="trustClubEyebrow">
+          GENESIS TRUST CLUB
+        </p>
+
+        <h1>
+          Loading Standard Trust Record
+        </h1>
+
+        <p className="trustClubDashboardLead">
+          Resolving the authenticated completed formation record.
+        </p>
+      </section>
+    </main>
+  );
+}
+
+function TrustClubPrintableRecordContent() {
+  const router =
+    useRouter();
+
+  const searchParams =
+    useSearchParams();
+
+  const actionId =
+    searchParams.get(
+      'actionId',
+    );
+
+  const [
+    record,
+    setRecord,
+  ] =
+    useState<
+      PrintableRecordResponse['record'] |
+      null
+    >(
+      null,
+    );
+
+  const [
+    loading,
+    setLoading,
+  ] =
+    useState(
+      true,
+    );
+
+  const [
+    error,
+    setError,
+  ] =
+    useState<string | null>(
+      null,
+    );
+
+  const [
+    generatingPdf,
+    setGeneratingPdf,
+  ] =
+    useState(
+      false,
+    );
+
+  const loadRecord =
+    useCallback(
+      async () => {
+        if (
+          actionId ===
+            null ||
+          actionId.trim().length ===
+            0
+        ) {
+          setError(
+            'A Standard Trust Formation record was not specified.',
+          );
+
+          setLoading(
+            false,
+          );
+
+          return;
+        }
+
+        setLoading(
+          true,
+        );
+
+        setError(
+          null,
+        );
+
+        try {
+          const response =
+            await fetch(
+              `/api/trust-club/formations/standard-trust/printable-record?actionId=${encodeURIComponent(actionId)}`,
+              {
+                method:
+                  'GET',
+
+                cache:
+                  'no-store',
+              },
+            );
+
+          if (
+            response.status ===
+              401
+          ) {
+            router.replace(
+              '/trust-club/login',
+            );
+
+            return;
+          }
+
+          const payload:
+            unknown =
+            await response.json();
+
+          if (
+            !response.ok
+          ) {
+            let status =
+              'PRINTABLE_RECORD_UNAVAILABLE';
+
+            if (
+              typeof payload ===
+                'object' &&
+              payload !==
+                null &&
+              'status' in payload &&
+              typeof payload.status ===
+                'string'
+            ) {
+              status =
+                payload.status;
+            }
+
+            setError(
+              `Printable Standard Trust record is unavailable: ${status}.`,
+            );
+
+            setLoading(
+              false,
+            );
+
+            return;
+          }
+
+          if (
+            !isPrintableRecordResponse(
+              payload,
+            )
+          ) {
+            setError(
+              'The printable record service returned an unexpected response.',
+            );
+
+            setLoading(
+              false,
+            );
+
+            return;
+          }
+
+          setRecord(
+            payload.record,
+          );
+
+          setLoading(
+            false,
+          );
+        }
+        catch {
+          setError(
+            'The printable Standard Trust record could not be loaded.',
+          );
+
+          setLoading(
+            false,
+          );
+        }
+      },
+      [
+        actionId,
+        router,
+      ],
+    );
+
+  useEffect(
+    () => {
+      void loadRecord();
+    },
+    [
+      loadRecord,
+    ],
+  );
+
+  const generatePdf =
+    useCallback(
+      async () => {
+        if (
+          record ===
+            null ||
+          generatingPdf
+        ) {
+          return;
+        }
+
+        setGeneratingPdf(
+          true,
+        );
+
+        setError(
+          null,
+        );
+
+        try {
+          const pdfDocument =
+            await PDFDocument.create();
+
+          pdfDocument.setTitle(
+            `${displayValue(record.formation.trustName)} - Standard Trust Formation Record`,
+          );
+
+          pdfDocument.setAuthor(
+            'Genesis Heritage Trust',
+          );
+
+          pdfDocument.setSubject(
+            'Genesis Trust Club Standard Trust Formation Record',
+          );
+
+          pdfDocument.setCreator(
+            'Genesis Heritage Trust',
+          );
+
+          pdfDocument.setProducer(
+            'Genesis Heritage Trust',
+          );
+
+          const regularFont =
+            await pdfDocument.embedFont(
+              StandardFonts.Helvetica,
+            );
+
+          const boldFont =
+            await pdfDocument.embedFont(
+              StandardFonts.HelveticaBold,
+            );
+
+          const sealResponse =
+            await fetch(
+              '/genesis-heritage-trust-seal.png',
+              {
+                method:
+                  'GET',
+                cache:
+                  'force-cache',
+              },
+            );
+
+          if (
+            !sealResponse.ok
+          ) {
+            throw new Error(
+              'Genesis Heritage Trust seal could not be loaded.',
+            );
+          }
+
+          const sealBytes =
+            await sealResponse.arrayBuffer();
+
+          const sealImage =
+            await pdfDocument.embedPng(
+              sealBytes,
+            );
+
+          const pageWidth =
+            595.28;
+
+          const pageHeight =
+            841.89;
+
+          const margin =
+            48;
+
+          const contentWidth =
+            pageWidth -
+            margin * 2;
+
+          const black =
+            rgb(
+              0.08,
+              0.08,
+              0.08,
+            );
+
+          const gray =
+            rgb(
+              0.38,
+              0.38,
+              0.38,
+            );
+
+          const lightGray =
+            rgb(
+              0.78,
+              0.78,
+              0.78,
+            );
+
+          const gold =
+            rgb(
+              0.67,
+              0.45,
+              0.10,
+            );
+
+          type PdfPage =
+            ReturnType<
+              typeof pdfDocument.addPage
+            >;
+
+          let page =
+            pdfDocument.addPage(
+              [
+                pageWidth,
+                pageHeight,
+              ],
+            );
+
+          let cursorY =
+            pageHeight -
+            margin -
+            100;
+
+          const addInstitutionalHeader =
+            (
+              targetPage:
+                PdfPage,
+            ) => {
+              const sealSize =
+                54;
+
+              targetPage.drawImage(
+                sealImage,
+                {
+                  x:
+                    margin,
+                  y:
+                    pageHeight -
+                    margin -
+                    sealSize,
+                  width:
+                    sealSize,
+                  height:
+                    sealSize,
+                },
+              );
+
+              targetPage.drawText(
+                'GENESIS HERITAGE TRUST',
+                {
+                  x:
+                    margin +
+                    sealSize +
+                    16,
+                  y:
+                    pageHeight -
+                    margin -
+                    12,
+                  size:
+                    11,
+                  font:
+                    boldFont,
+                  color:
+                    gold,
+                },
+              );
+
+              targetPage.drawText(
+                'Genesis Trust Club',
+                {
+                  x:
+                    margin +
+                    sealSize +
+                    16,
+                  y:
+                    pageHeight -
+                    margin -
+                    32,
+                  size:
+                    16,
+                  font:
+                    boldFont,
+                  color:
+                    black,
+                },
+              );
+
+              targetPage.drawText(
+                'Standard Trust Formation Record',
+                {
+                  x:
+                    margin +
+                    sealSize +
+                    16,
+                  y:
+                    pageHeight -
+                    margin -
+                    49,
+                  size:
+                    9.5,
+                  font:
+                    regularFont,
+                  color:
+                    gray,
+                },
+              );
+
+              targetPage.drawLine(
+                {
+                  start: {
+                    x:
+                      margin,
+                    y:
+                      pageHeight -
+                      margin -
+                      72,
+                  },
+                  end: {
+                    x:
+                      pageWidth -
+                      margin,
+                    y:
+                      pageHeight -
+                      margin -
+                      72,
+                  },
+                  thickness:
+                    0.75,
+                  color:
+                    lightGray,
+                },
+              );
+            };
+
+          const createPage =
+            () => {
+              page =
+                pdfDocument.addPage(
+                  [
+                    pageWidth,
+                    pageHeight,
+                  ],
+                );
+
+              addInstitutionalHeader(
+                page,
+              );
+
+              cursorY =
+                pageHeight -
+                margin -
+                100;
+
+              return page;
+            };
+
+          const ensureSpace =
+            (
+              requiredHeight:
+                number,
+            ) => {
+              if (
+                cursorY -
+                  requiredHeight <
+                88
+              ) {
+                createPage();
+              }
+            };
+
+          const wrapText =
+            (
+              text:
+                string,
+              fontSize:
+                number,
+              maxWidth:
+                number,
+              font:
+                typeof regularFont =
+                regularFont,
+            ): string[] => {
+              const normalized =
+                text
+                  .replace(
+                    /\s+/g,
+                    ' ',
+                  )
+                  .trim();
+
+              if (
+                normalized.length ===
+                  0
+              ) {
+                return [
+                  'Not recorded',
+                ];
+              }
+
+              const words =
+                normalized.split(
+                  ' ',
+                );
+
+              const lines:
+                string[] =
+                [];
+
+              let currentLine =
+                '';
+
+              for (
+                const word
+                of words
+              ) {
+                const candidate =
+                  currentLine.length ===
+                    0
+                    ? word
+                    : `${currentLine} ${word}`;
+
+                const width =
+                  font.widthOfTextAtSize(
+                    candidate,
+                    fontSize,
+                  );
+
+                if (
+                  width <=
+                    maxWidth
+                ) {
+                  currentLine =
+                    candidate;
+                }
+                else {
+                  if (
+                    currentLine.length >
+                      0
+                  ) {
+                    lines.push(
+                      currentLine,
+                    );
+                  }
+
+                  currentLine =
+                    word;
+                }
+              }
+
+              if (
+                currentLine.length >
+                  0
+              ) {
+                lines.push(
+                  currentLine,
+                );
+              }
+
+              return lines;
+            };
+
+          const drawWrappedText =
+            (
+              text:
+                string,
+              x:
+                number,
+              startY:
+                number,
+              maxWidth:
+                number,
+              fontSize:
+                number,
+              lineHeight:
+                number,
+              font:
+                typeof regularFont =
+                regularFont,
+              color =
+                black,
+            ): number => {
+              const lines =
+                wrapText(
+                  text,
+                  fontSize,
+                  maxWidth,
+                  font,
+                );
+
+              let y =
+                startY;
+
+              for (
+                const line
+                of lines
+              ) {
+                page.drawText(
+                  line,
+                  {
+                    x,
+                    y,
+                    size:
+                      fontSize,
+                    font,
+                    color,
+                  },
+                );
+
+                y -=
+                  lineHeight;
+              }
+
+              return y;
+            };
+
+          const drawSection =
+            (
+              label:
+                string,
+              title:
+                string,
+              body:
+                string,
+            ) => {
+              const bodyLines =
+                wrapText(
+                  body,
+                  10.5,
+                  contentWidth -
+                    32,
+                  regularFont,
+                );
+
+              const sectionHeight =
+                64 +
+                bodyLines.length *
+                  15;
+
+              ensureSpace(
+                sectionHeight +
+                  18,
+              );
+
+              page.drawRectangle(
+                {
+                  x:
+                    margin,
+                  y:
+                    cursorY -
+                    sectionHeight,
+                  width:
+                    contentWidth,
+                  height:
+                    sectionHeight,
+                  borderWidth:
+                    0.75,
+                  borderColor:
+                    lightGray,
+                },
+              );
+
+              page.drawText(
+                label,
+                {
+                  x:
+                    margin +
+                    16,
+                  y:
+                    cursorY -
+                    22,
+                  size:
+                    8,
+                  font:
+                    boldFont,
+                  color:
+                    gold,
+                },
+              );
+
+              page.drawText(
+                title,
+                {
+                  x:
+                    margin +
+                    16,
+                  y:
+                    cursorY -
+                    43,
+                  size:
+                    15,
+                  font:
+                    boldFont,
+                  color:
+                    black,
+                },
+              );
+
+              let bodyY =
+                cursorY -
+                62;
+
+              for (
+                const line
+                of bodyLines
+              ) {
+                page.drawText(
+                  line,
+                  {
+                    x:
+                      margin +
+                      16,
+                    y:
+                      bodyY,
+                    size:
+                      10.5,
+                    font:
+                      regularFont,
+                    color:
+                      black,
+                  },
+                );
+
+                bodyY -=
+                  15;
+              }
+
+              cursorY -=
+                sectionHeight +
+                16;
+            };
+
+          const drawPartyGrid =
+            () => {
+              const gap =
+                12;
+
+              const cardWidth =
+                (
+                  contentWidth -
+                  gap
+                ) /
+                2;
+
+              const cardHeight =
+                72;
+
+              const parties =
+                [
+                  [
+                    'Settlor',
+                    displayValue(
+                      record.formation.settlorName,
+                    ),
+                  ],
+                  [
+                    'Trustee',
+                    displayValue(
+                      record.formation.trusteeName,
+                    ),
+                  ],
+                  [
+                    'Beneficiary',
+                    displayValue(
+                      record.formation.beneficiaryName,
+                    ),
+                  ],
+                  [
+                    'Protector',
+                    displayValue(
+                      record.formation.protectorName,
+                    ),
+                  ],
+                ] as const;
+
+              ensureSpace(
+                cardHeight *
+                  2 +
+                  gap +
+                  18,
+              );
+
+              parties.forEach(
+                (
+                  [
+                    label,
+                    value,
+                  ],
+                  index,
+                ) => {
+                  const column =
+                    index %
+                    2;
+
+                  const row =
+                    Math.floor(
+                      index /
+                        2,
+                    );
+
+                  const x =
+                    margin +
+                    column *
+                      (
+                        cardWidth +
+                        gap
+                      );
+
+                  const y =
+                    cursorY -
+                    row *
+                      (
+                        cardHeight +
+                        gap
+                      ) -
+                    cardHeight;
+
+                  page.drawRectangle(
+                    {
+                      x,
+                      y,
+                      width:
+                        cardWidth,
+                      height:
+                        cardHeight,
+                      borderWidth:
+                        0.75,
+                      borderColor:
+                        lightGray,
+                    },
+                  );
+
+                  page.drawText(
+                    label,
+                    {
+                      x:
+                        x +
+                        14,
+                      y:
+                        y +
+                        cardHeight -
+                        20,
+                      size:
+                        8.5,
+                      font:
+                        regularFont,
+                      color:
+                        gray,
+                    },
+                  );
+
+                  const valueLines =
+                    wrapText(
+                      value,
+                      11.5,
+                      cardWidth -
+                        28,
+                      boldFont,
+                    );
+
+                  let valueY =
+                    y +
+                    cardHeight -
+                    41;
+
+                  for (
+                    const line
+                    of valueLines.slice(
+                      0,
+                      2,
+                    )
+                  ) {
+                    page.drawText(
+                      line,
+                      {
+                        x:
+                          x +
+                          14,
+                        y:
+                          valueY,
+                        size:
+                          11.5,
+                        font:
+                          boldFont,
+                        color:
+                          black,
+                      },
+                    );
+
+                    valueY -=
+                      14;
+                  }
+                },
+              );
+
+              cursorY -=
+                cardHeight *
+                  2 +
+                gap +
+                18;
+            };
+
+          const drawStatusGrid =
+            () => {
+              const gap =
+                12;
+
+              const cardWidth =
+                (
+                  contentWidth -
+                  gap
+                ) /
+                2;
+
+              const cardHeight =
+                72;
+
+              const statuses =
+                [
+                  [
+                    'Membership',
+                    record.membership.status,
+                    `Member ID: ${record.membership.memberId}`,
+                  ],
+                  [
+                    'Subscription',
+                    record.membership.subscriptionStatus,
+                    record.membership.planCode,
+                  ],
+                  [
+                    'Service Validity',
+                    record.serviceValidity.status.replaceAll(
+                      '_',
+                      ' ',
+                    ),
+                    'No service-period inference',
+                  ],
+                  [
+                    'Formation',
+                    record.formation.formationStatus,
+                    'Certified lifecycle state',
+                  ],
+                ] as const;
+
+              ensureSpace(
+                cardHeight *
+                  2 +
+                  gap +
+                  18,
+              );
+
+              statuses.forEach(
+                (
+                  [
+                    label,
+                    value,
+                    detail,
+                  ],
+                  index,
+                ) => {
+                  const column =
+                    index %
+                    2;
+
+                  const row =
+                    Math.floor(
+                      index /
+                        2,
+                    );
+
+                  const x =
+                    margin +
+                    column *
+                      (
+                        cardWidth +
+                        gap
+                      );
+
+                  const y =
+                    cursorY -
+                    row *
+                      (
+                        cardHeight +
+                        gap
+                      ) -
+                    cardHeight;
+
+                  page.drawRectangle(
+                    {
+                      x,
+                      y,
+                      width:
+                        cardWidth,
+                      height:
+                        cardHeight,
+                      borderWidth:
+                        0.75,
+                      borderColor:
+                        lightGray,
+                    },
+                  );
+
+                  page.drawText(
+                    label,
+                    {
+                      x:
+                        x +
+                        14,
+                      y:
+                        y +
+                        cardHeight -
+                        19,
+                      size:
+                        8.5,
+                      font:
+                        regularFont,
+                      color:
+                        gray,
+                    },
+                  );
+
+                  page.drawText(
+                    value,
+                    {
+                      x:
+                        x +
+                        14,
+                      y:
+                        y +
+                        cardHeight -
+                        39,
+                      size:
+                        11,
+                      font:
+                        boldFont,
+                      color:
+                        black,
+                    },
+                  );
+
+                  const detailLines =
+                    wrapText(
+                      detail,
+                      7.5,
+                      cardWidth -
+                        28,
+                      regularFont,
+                    );
+
+                  let detailY =
+                    y +
+                    14;
+
+                  for (
+                    const line
+                    of detailLines.slice(
+                      0,
+                      2,
+                    )
+                  ) {
+                    page.drawText(
+                      line,
+                      {
+                        x:
+                          x +
+                          14,
+                        y:
+                          detailY,
+                        size:
+                          7.5,
+                        font:
+                          regularFont,
+                        color:
+                          gray,
+                      },
+                    );
+
+                    detailY -=
+                      10;
+                  }
+                },
+              );
+
+              cursorY -=
+                cardHeight *
+                  2 +
+                gap +
+                18;
+            };
+
+          addInstitutionalHeader(
+            page,
+          );
+
+          page.drawText(
+            'STANDARD TRUST FORMATION RECORD',
+            {
+              x:
+                margin,
+              y:
+                cursorY,
+              size:
+                8.5,
+              font:
+                boldFont,
+              color:
+                gold,
+            },
+          );
+
+          cursorY -=
+            30;
+
+          cursorY =
+            drawWrappedText(
+              displayValue(
+                record.formation.trustName,
+              ),
+              margin,
+              cursorY,
+              contentWidth,
+              24,
+              28,
+              boldFont,
+              black,
+            );
+
+          cursorY -=
+            4;
+
+          page.drawText(
+            'Completed Standard Trust Formation',
+            {
+              x:
+                margin,
+              y:
+                cursorY,
+              size:
+                11,
+              font:
+                regularFont,
+              color:
+                gray,
+            },
+          );
+
+          cursorY -=
+            34;
+
+          page.drawRectangle(
+            {
+              x:
+                margin,
+              y:
+                cursorY -
+                94,
+              width:
+                contentWidth,
+              height:
+                94,
+              borderWidth:
+                0.75,
+              borderColor:
+                lightGray,
+            },
+          );
+
+          page.drawText(
+            'COMPLETE',
+            {
+              x:
+                margin +
+                16,
+              y:
+                cursorY -
+                22,
+              size:
+                9,
+              font:
+                boldFont,
+              color:
+                black,
+            },
+          );
+
+          page.drawText(
+            `Document Type: ${record.documentType}`,
+            {
+              x:
+                margin +
+                16,
+              y:
+                cursorY -
+                45,
+              size:
+                9,
+              font:
+                regularFont,
+              color:
+                black,
+            },
+          );
+
+          page.drawText(
+            `Document Version: ${record.documentVersion}`,
+            {
+              x:
+                margin +
+                16,
+              y:
+                cursorY -
+                62,
+              size:
+                9,
+              font:
+                regularFont,
+              color:
+                black,
+            },
+          );
+
+          page.drawText(
+            `Action ID: ${record.formation.actionId}`,
+            {
+              x:
+                margin +
+                16,
+              y:
+                cursorY -
+                79,
+              size:
+                8.5,
+              font:
+                regularFont,
+              color:
+                black,
+            },
+          );
+
+          cursorY -=
+            114;
+
+          drawPartyGrid();
+
+          drawSection(
+            'TRUST PURPOSE',
+            'Recorded Purpose',
+            displayValue(
+              record.formation.trustPurpose,
+            ),
+          );
+
+          drawSection(
+            'INITIAL PROPERTY',
+            'Recorded Initial Property',
+            displayValue(
+              record.formation.initialPropertyDescription,
+            ),
+          );
+
+          drawStatusGrid();
+
+          const pages =
+            pdfDocument.getPages();
+
+          pages.forEach(
+            (
+              targetPage,
+              index,
+            ) => {
+              targetPage.drawLine(
+                {
+                  start: {
+                    x:
+                      margin,
+                    y:
+                      62,
+                  },
+                  end: {
+                    x:
+                      pageWidth -
+                      margin,
+                    y:
+                      62,
+                  },
+                  thickness:
+                    0.6,
+                  color:
+                    lightGray,
+                },
+              );
+
+              targetPage.drawImage(
+                sealImage,
+                {
+                  x:
+                    margin,
+                  y:
+                    26,
+                  width:
+                    24,
+                  height:
+                    24,
+                },
+              );
+
+              targetPage.drawText(
+                'Genesis Heritage Trust',
+                {
+                  x:
+                    margin +
+                    34,
+                  y:
+                    42,
+                  size:
+                    8,
+                  font:
+                    boldFont,
+                  color:
+                    black,
+                },
+              );
+
+              targetPage.drawText(
+                'Â© 2020-2026 Genesis Heritage Trust. All Rights Reserved.',
+                {
+                  x:
+                    margin +
+                    34,
+                  y:
+                    29,
+                  size:
+                    6.8,
+                  font:
+                    regularFont,
+                  color:
+                    gray,
+                },
+              );
+
+              const pageLabel =
+                `Page ${index + 1} of ${pages.length}`;
+
+              const pageLabelWidth =
+                regularFont.widthOfTextAtSize(
+                  pageLabel,
+                  8,
+                );
+
+              targetPage.drawText(
+                pageLabel,
+                {
+                  x:
+                    pageWidth -
+                    margin -
+                    pageLabelWidth,
+                  y:
+                    35,
+                  size:
+                    8,
+                  font:
+                    regularFont,
+                  color:
+                    black,
+                },
+              );
+            },
+          );
+
+          const pdfBytes =
+            await pdfDocument.save();
+
+          const pdfArrayBuffer =
+            new ArrayBuffer(
+              pdfBytes.byteLength,
+            );
+
+          new Uint8Array(
+            pdfArrayBuffer,
+          ).set(
+            pdfBytes,
+          );
+
+          const blob =
+            new Blob(
+              [
+                pdfArrayBuffer,
+              ],
+              {
+                type:
+                  'application/pdf',
+              },
+            );
+
+          const objectUrl =
+            URL.createObjectURL(
+              blob,
+            );
+
+          const anchor =
+            document.createElement(
+              'a',
+            );
+
+          anchor.href =
+            objectUrl;
+
+          anchor.download =
+            `${safePdfFileName(record.formation.trustName)}-Standard-Trust-Formation-Record.pdf`;
+
+          document.body.appendChild(
+            anchor,
+          );
+
+          anchor.click();
+
+          anchor.remove();
+
+          window.setTimeout(
+            () => {
+              URL.revokeObjectURL(
+                objectUrl,
+              );
+            },
+            1000,
+          );
+        }
+        catch {
+          setError(
+            'The institutional PDF could not be generated.',
+          );
+        }
+        finally {
+          setGeneratingPdf(
+            false,
+          );
+        }
+      },
+      [
+        generatingPdf,
+        record,
+      ],
+    );
+
+  if (
+    loading
+  ) {
+    return <PrintableRecordLoadingFallback />;
+  }
+
+  if (
+    error !==
+      null &&
+    record ===
+      null
+  ) {
+    return (
+      <main className="trustClubDashboardPage">
+        <section className="trustClubDashboardShell">
+          <p className="trustClubEyebrow">
+            GENESIS TRUST CLUB
+          </p>
+
+          <h1>
+            Printable Record Unavailable
+          </h1>
+
+          <div className="trustClubError">
+            {error}
+          </div>
+
+          <Link
+            href="/trust-club/dashboard"
+            className="trustClubButton"
+          >
+            Return to Dashboard
+          </Link>
+        </section>
+      </main>
+    );
+  }
+
+  if (
+    record ===
+      null
+  ) {
+    return null;
+  }
+
+  return (
+    <main className="trustClubDashboardPage">
+      <section className="trustClubDashboardShell">
+
+        <section className="trustClubInstitutionalIdentity">
+          <div className="trustClubInstitutionalSeal">
+            <Image
+              src="/genesis-heritage-trust-seal.png"
+              alt="Genesis Heritage Trust Seal"
+              width={132}
+              height={132}
+              priority
+            />
+          </div>
+
+          <div className="trustClubInstitutionalIdentityText">
+            <p className="trustClubInstitutionalOverline">
+              GENESIS HERITAGE TRUST
+            </p>
+
+            <strong>
+              Genesis Trust Club
+            </strong>
+
+            <span>
+              Standard Trust Formation Record
+            </span>
+          </div>
+        </section>
+
+        <header className="trustClubDashboardHeader">
+          <div>
+            <p className="trustClubEyebrow">
+              GENESIS TRUST CLUB
+            </p>
+
+            <h1>
+              Standard Trust Formation Record
+            </h1>
+
+            <p className="trustClubDashboardLead">
+              Read-only record of the completed Standard Trust Formation.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display:
+                'flex',
+              gap:
+                '0.75rem',
+              alignItems:
+                'center',
+              flexWrap:
+                'wrap',
+            }}
+          >
+            <button
+              type="button"
+              className="trustClubDashboardSignOut trustClubPrintablePrintButton"
+              disabled={generatingPdf}
+              onClick={() => {
+                void generatePdf();
+              }}
+            >
+              {generatingPdf
+                ? 'Generating PDF...'
+                : 'Generate PDF'}
+            </button>
+
+            <Link
+              href="/trust-club/dashboard"
+              className="trustClubDashboardSignOut trustClubPrintableDashboardLink"
+            >
+              Dashboard
+            </Link>
+          </div>
+        </header>
+
+        {error !== null && (
+          <div className="trustClubError">
+            {error}
+          </div>
+        )}
+
+        <section className="trustClubAccessCard">
+          <span className="trustClubAccessState trustClubAccessState-ACTIVE">
+            COMPLETE
+          </span>
+
+          <h2>
+            {displayValue(
+              record.formation.trustName,
+            )}
+          </h2>
+
+          <p>
+            Document Type: {record.documentType}
+          </p>
+
+          <p>
+            Document Version: {record.documentVersion}
+          </p>
+
+          <p>
+            Action ID: {record.formation.actionId}
+          </p>
+        </section>
+
+        <section className="trustClubDashboardGrid">
+          <article className="trustClubDashboardCard">
+            <span>
+              Settlor
+            </span>
+
+            <strong>
+              {displayValue(
+                record.formation.settlorName,
+              )}
+            </strong>
+
+            <small>
+              Formation record
+            </small>
+          </article>
+
+          <article className="trustClubDashboardCard">
+            <span>
+              Trustee
+            </span>
+
+            <strong>
+              {displayValue(
+                record.formation.trusteeName,
+              )}
+            </strong>
+
+            <small>
+              Formation record
+            </small>
+          </article>
+
+          <article className="trustClubDashboardCard">
+            <span>
+              Beneficiary
+            </span>
+
+            <strong>
+              {displayValue(
+                record.formation.beneficiaryName,
+              )}
+            </strong>
+
+            <small>
+              Formation record
+            </small>
+          </article>
+
+          <article className="trustClubDashboardCard">
+            <span>
+              Protector
+            </span>
+
+            <strong>
+              {displayValue(
+                record.formation.protectorName,
+              )}
+            </strong>
+
+            <small>
+              Formation record
+            </small>
+          </article>
+        </section>
+
+        <section className="trustClubDashboardActions">
+          <div>
+            <p className="trustClubEyebrow">
+              TRUST PURPOSE
+            </p>
+
+            <h2>
+              Recorded Purpose
+            </h2>
+
+            <p>
+              {displayValue(
+                record.formation.trustPurpose,
+              )}
+            </p>
+          </div>
+        </section>
+
+        <section className="trustClubDashboardActions">
+          <div>
+            <p className="trustClubEyebrow">
+              INITIAL PROPERTY
+            </p>
+
+            <h2>
+              Recorded Initial Property
+            </h2>
+
+            <p>
+              {displayValue(
+                record.formation.initialPropertyDescription,
+              )}
+            </p>
+          </div>
+        </section>
+
+        <section className="trustClubDashboardGrid">
+          <article className="trustClubDashboardCard">
+            <span>
+              Membership
+            </span>
+
+            <strong>
+              {record.membership.status}
+            </strong>
+
+            <small>
+              Member ID: {record.membership.memberId}
+            </small>
+          </article>
+
+          <article className="trustClubDashboardCard">
+            <span>
+              Subscription
+            </span>
+
+            <strong>
+              {record.membership.subscriptionStatus}
+            </strong>
+
+            <small>
+              {record.membership.planCode}
+            </small>
+          </article>
+
+          <article className="trustClubDashboardCard">
+            <span>
+              Service Validity
+            </span>
+
+            <strong>
+              {record.serviceValidity.status.replaceAll(
+                '_',
+                ' ',
+              )}
+            </strong>
+
+            <small>
+              No service-period inference
+            </small>
+          </article>
+
+          <article className="trustClubDashboardCard">
+            <span>
+              Formation
+            </span>
+
+            <strong>
+              {record.formation.formationStatus}
+            </strong>
+
+            <small>
+              Certified lifecycle state
+            </small>
+          </article>
+        </section>
+
+        <footer className="trustClubDashboardFooter trustClubInstitutionalFooter">
+          <div className="trustClubInstitutionalFooterIdentity">
+            <Image
+              src="/genesis-heritage-trust-seal.png"
+              alt=""
+              aria-hidden="true"
+              width={46}
+              height={46}
+            />
+
+            <div>
+              <strong>
+                Genesis Heritage Trust
+              </strong>
+
+              <span>
+                Â© 2020â€“2026 Genesis Heritage Trust. All Rights Reserved.
+              </span>
+            </div>
+          </div>
+
+          <div className="trustClubInstitutionalFooterRecord">
+            <span>
+              Generated from the authenticated certified formation record.
+            </span>
+
+            <span>
+              Payment validity is not inferred by this document.
+            </span>
+          </div>
+        </footer>
+
+        <style jsx global>{`
+          .trustClubInstitutionalIdentity {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+            padding: 1.25rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 1.25rem;
+            background: rgba(255, 255, 255, 0.035);
+          }
+
+          .trustClubInstitutionalSeal {
+            display: flex;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .trustClubInstitutionalSeal img {
+            display: block;
+            width: 108px;
+            height: 108px;
+            object-fit: contain;
+          }
+
+          .trustClubInstitutionalIdentityText {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+          }
+
+          .trustClubInstitutionalOverline {
+            margin: 0;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.18em;
+          }
+
+          .trustClubInstitutionalIdentityText strong {
+            font-size: 1.5rem;
+          }
+
+          .trustClubInstitutionalIdentityText span {
+            opacity: 0.75;
+          }
+
+          .trustClubInstitutionalFooter {
+            align-items: center;
+            gap: 1.5rem;
+          }
+
+          .trustClubInstitutionalFooterIdentity {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+          }
+
+          .trustClubInstitutionalFooterIdentity img {
+            display: block;
+            width: 46px;
+            height: 46px;
+            object-fit: contain;
+          }
+
+          .trustClubInstitutionalFooterIdentity div,
+          .trustClubInstitutionalFooterRecord {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+          }
+
+          .trustClubInstitutionalFooterIdentity strong {
+            font-size: 0.9rem;
+          }
+
+          .trustClubInstitutionalFooterIdentity span,
+          .trustClubInstitutionalFooterRecord span {
+            font-size: 0.78rem;
+          }
+        `}</style>
+      </section>
+    </main>
+  );
+}
+
+export default function TrustClubPrintableRecordPage() {
+  return (
+    <Suspense fallback={<PrintableRecordLoadingFallback />}>
+      <TrustClubPrintableRecordContent />
+    </Suspense>
+  );
+}
+
+export const
+TRUST_CLUB_PRINTABLE_DOCUMENT_SURFACE_RULE =
+  'READ_ONLY_AUTHENTICATED_PRINTABLE_RECORD_SURFACE' as const;
+
+export const
+TRUST_CLUB_PRINTABLE_DOCUMENT_INPUT_RULE =
+  'ACTION_ID_ONLY' as const;
+
+export const
+TRUST_CLUB_PRINTABLE_DOCUMENT_WRITE_RULE =
+  'NO_DATABASE_OR_LIFECYCLE_WRITE' as const;
+
+export const
+TRUST_CLUB_PRINTABLE_DOCUMENT_VALIDITY_RULE =
+  'NO_PAYMENT_OR_SERVICE_VALIDITY_INFERENCE' as const;
+
+export const
+TRUST_CLUB_PRINTABLE_DOCUMENT_INSTITUTIONAL_IDENTITY_RULE =
+  'GENESIS_HERITAGE_TRUST_INSTITUTIONAL_IDENTITY' as const;
+
+export const
+TRUST_CLUB_PRINTABLE_DOCUMENT_COPYRIGHT_RULE =
+  'COPYRIGHT_2020_2026_GENESIS_HERITAGE_TRUST_ALL_RIGHTS_RESERVED' as const;
+
+export const
+TRUST_CLUB_PRINTABLE_DOCUMENT_PDF_RULE =
+  'CLIENT_GENERATED_CONTROLLED_PDF_NO_BROWSER_URL_HEADERS_OR_FOOTERS' as const;

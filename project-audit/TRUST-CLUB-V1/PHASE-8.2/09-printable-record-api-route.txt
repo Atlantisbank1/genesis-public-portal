@@ -1,0 +1,222 @@
+﻿import {
+  z,
+} from 'zod';
+
+import {
+  readAuthenticatedStandardTrustPrintableRecord,
+} from '@/trust-club/printable-record/trust-club-standard-trust-printable-record-read.operation';
+
+import {
+  TrustClubBetterAuthSessionAdapter,
+} from '@/trust-club/server/trust-club-better-auth-session.adapter';
+
+const actionIdSchema =
+  z.string()
+    .trim()
+    .min(
+      1,
+    )
+    .max(
+      160,
+    );
+
+/**
+ * TRUST-CLUB-V1
+ * PHASE 8.2
+ *
+ * Authenticated Printable Standard Trust Record HTTP Route
+ *
+ * GET only.
+ *
+ * The authenticated user identity is resolved server-side
+ * through the certified Better Auth session boundary.
+ *
+ * The caller supplies only:
+ *
+ * - actionId
+ *
+ * The caller does NOT supply:
+ *
+ * - userId;
+ * - memberId;
+ * - Membership status;
+ * - Action status;
+ * - administrative identity;
+ * - payment state;
+ * - service validity.
+ *
+ * This route does NOT:
+ *
+ * - write persistence;
+ * - create Membership;
+ * - transition Action lifecycle state;
+ * - record outcomes;
+ * - process or verify payments;
+ * - infer service validity;
+ * - access Prisma directly;
+ * - execute external services;
+ * - access Atlantis.
+ */
+export async function GET(
+  request:
+    Request,
+): Promise<Response> {
+  const requestUrl =
+    new URL(
+      request.url,
+    );
+
+  const parsedActionId =
+    actionIdSchema.safeParse(
+      requestUrl.searchParams.get(
+        'actionId',
+      ),
+    );
+
+  if (
+    !parsedActionId.success
+  ) {
+    return Response.json(
+      {
+        status:
+          'INVALID_REQUEST',
+
+        reason:
+          'ACTION_ID_REQUIRED',
+      },
+      {
+        status:
+          400,
+      },
+    );
+  }
+
+  const authenticationAdapter =
+    new TrustClubBetterAuthSessionAdapter(
+      request.headers,
+    );
+
+  const authentication =
+    await authenticationAdapter
+      .resolveAuthenticatedIdentity({
+        sourceReference:
+          'standard-trust-printable-record-route',
+      });
+
+  if (
+    authentication.status !==
+      'AUTHENTICATED' ||
+    authentication.identity ===
+      null
+  ) {
+    return Response.json(
+      {
+        status:
+          'AUTHENTICATION_REQUIRED',
+      },
+      {
+        status:
+          401,
+      },
+    );
+  }
+
+  const authenticatedUserId =
+    authentication.identity
+      .authenticatedUserId;
+
+  const result =
+    await readAuthenticatedStandardTrustPrintableRecord({
+      authenticatedUserId,
+
+      actionId:
+        parsedActionId.data,
+    });
+
+  switch (
+    result.status
+  ) {
+    case 'READY':
+      return Response.json(
+        {
+          status:
+            'READY',
+
+          record:
+            result.record,
+        },
+        {
+          status:
+            200,
+        },
+      );
+
+    case 'ACTION_NOT_FOUND':
+      return Response.json(
+        {
+          status:
+            result.status,
+        },
+        {
+          status:
+            404,
+        },
+      );
+
+    case 'FORMATION_NOT_FOUND':
+      return Response.json(
+        {
+          status:
+            result.status,
+        },
+        {
+          status:
+            404,
+        },
+      );
+
+    case 'FORMATION_NOT_COMPLETE':
+      return Response.json(
+        {
+          status:
+            result.status,
+        },
+        {
+          status:
+            409,
+        },
+      );
+
+    case 'MEMBERSHIP_REQUIRED':
+    case 'MEMBERSHIP_NOT_ACTIVE':
+    case 'ACTION_TYPE_NOT_ALLOWED':
+    case 'ACTION_OWNERSHIP_REQUIRED':
+    case 'MEMBER_OWNERSHIP_REQUIRED':
+      return Response.json(
+        {
+          status:
+            result.status,
+        },
+        {
+          status:
+            403,
+        },
+      );
+  }
+}
+
+export const
+TRUST_CLUB_STANDARD_TRUST_PRINTABLE_RECORD_HTTP_METHOD_RULE =
+  'GET_ONLY' as const;
+
+export const
+TRUST_CLUB_STANDARD_TRUST_PRINTABLE_RECORD_HTTP_AUTHENTICATION_RULE =
+  'AUTHENTICATED_USER_IDENTITY_IS_SERVER_DERIVED' as const;
+
+export const
+TRUST_CLUB_STANDARD_TRUST_PRINTABLE_RECORD_HTTP_INPUT_RULE =
+  'CALLER_SUPPLIES_ACTION_ID_ONLY' as const;
+
+export const
+TRUST_CLUB_STANDARD_TRUST_PRINTABLE_RECORD_HTTP_WRITE_RULE =
+  'HTTP_ROUTE_DOES_NOT_WRITE_DATABASE_OR_LIFECYCLE' as const;

@@ -1,0 +1,335 @@
+import {
+  readStandardTrustFormation,
+} from '@/trust-club/formation/trust-club-standard-trust-formation-read.operation';
+
+import {
+  readTrustClubAction,
+} from '@/trust-club/server/trust-club-action-read.operation';
+
+import {
+  getTrustClubMemberForUser,
+  trustClubMembershipAllowsServiceAccess,
+} from '@/trust-club/server/trust-club-production-membership.service';
+
+import type {
+  TrustClubPrintableRecordMembershipStatus,
+  TrustClubPrintableRecordSubscriptionStatus,
+  TrustClubStandardTrustPrintableRecord,
+} from './trust-club-standard-trust-printable-record.contracts';
+
+import {
+  TrustClubStandardTrustPrintableRecordService,
+} from './trust-club-standard-trust-printable-record.service';
+
+export interface ReadAuthenticatedStandardTrustPrintableRecordInput {
+  authenticatedUserId:
+    string;
+
+  actionId:
+    string;
+
+  generatedAt?:
+    Date;
+}
+
+export type ReadAuthenticatedStandardTrustPrintableRecordResult =
+  | {
+      status:
+        'READY';
+
+      record:
+        TrustClubStandardTrustPrintableRecord;
+    }
+  | {
+      status:
+        | 'MEMBERSHIP_REQUIRED'
+        | 'MEMBERSHIP_NOT_ACTIVE'
+        | 'ACTION_NOT_FOUND'
+        | 'ACTION_TYPE_NOT_ALLOWED'
+        | 'ACTION_OWNERSHIP_REQUIRED'
+        | 'MEMBER_OWNERSHIP_REQUIRED'
+        | 'FORMATION_NOT_COMPLETE'
+        | 'FORMATION_NOT_FOUND';
+    };
+
+/**
+ * TRUST-CLUB-V1
+ * PHASE 8.2
+ *
+ * Authenticated Printable Record Read Operation
+ *
+ * Purpose:
+ *
+ * Assembles an already-authenticated member's completed
+ * Standard Trust formation into the certified read-only
+ * printable record projection.
+ *
+ * Authentication itself is resolved outside this operation.
+ *
+ * This operation does NOT:
+ *
+ * - authenticate credentials;
+ * - accept caller-supplied administrative authority;
+ * - create Membership;
+ * - call ensureTrustClubMemberForUser;
+ * - mutate Membership;
+ * - write formation data;
+ * - transition Action lifecycle state;
+ * - record outcomes;
+ * - process or verify payment;
+ * - infer service validity;
+ * - access Prisma directly;
+ * - create database state;
+ * - access Atlantis;
+ * - execute external services.
+ */
+export async function readAuthenticatedStandardTrustPrintableRecord(
+  input:
+    ReadAuthenticatedStandardTrustPrintableRecordInput,
+): Promise<
+  ReadAuthenticatedStandardTrustPrintableRecordResult
+> {
+  const membership =
+    await getTrustClubMemberForUser(
+      input.authenticatedUserId,
+    );
+
+  if (
+    membership ===
+      null
+  ) {
+    return {
+      status:
+        'MEMBERSHIP_REQUIRED',
+    };
+  }
+
+  if (
+    !trustClubMembershipAllowsServiceAccess(
+      membership,
+    )
+  ) {
+    return {
+      status:
+        'MEMBERSHIP_NOT_ACTIVE',
+    };
+  }
+
+  const action =
+    await readTrustClubAction({
+      actionId:
+        input.actionId,
+    });
+
+  if (
+    action ===
+      null
+  ) {
+    return {
+      status:
+        'ACTION_NOT_FOUND',
+    };
+  }
+
+  if (
+    action.actionType !==
+      'CREATE_STANDARD_TRUST'
+  ) {
+    return {
+      status:
+        'ACTION_TYPE_NOT_ALLOWED',
+    };
+  }
+
+  if (
+    action.requestedByUserId !==
+      input.authenticatedUserId
+  ) {
+    return {
+      status:
+        'ACTION_OWNERSHIP_REQUIRED',
+    };
+  }
+
+  if (
+    action.memberId !==
+      membership.memberId
+  ) {
+    return {
+      status:
+        'MEMBER_OWNERSHIP_REQUIRED',
+    };
+  }
+
+  if (
+    action.status !==
+      'COMPLETE'
+  ) {
+    return {
+      status:
+        'FORMATION_NOT_COMPLETE',
+    };
+  }
+
+  const formationResult =
+    await readStandardTrustFormation({
+      actionId:
+        action.actionId,
+    });
+
+  if (
+    formationResult.formation ===
+      null
+  ) {
+    return {
+      status:
+        'FORMATION_NOT_FOUND',
+    };
+  }
+
+  if (
+    formationResult.actionStatus !==
+      'COMPLETE'
+  ) {
+    return {
+      status:
+        'FORMATION_NOT_COMPLETE',
+    };
+  }
+
+  const membershipStatus =
+    normalizeMembershipStatus(
+      membership.status,
+    );
+
+  const subscriptionStatus =
+    normalizeSubscriptionStatus(
+      membership.subscriptionStatus,
+    );
+
+  const projectionService =
+    new TrustClubStandardTrustPrintableRecordService();
+
+  const record =
+    projectionService.project(
+      {
+        actionId:
+          action.actionId,
+
+        formationStatus:
+          'COMPLETE',
+
+        trustName:
+          formationResult.formation.trustName,
+
+        trustPurpose:
+          formationResult.formation.trustPurpose,
+
+        settlorName:
+          formationResult.formation.settlorName,
+
+        trusteeName:
+          formationResult.formation.trusteeName,
+
+        beneficiaryName:
+          formationResult.formation.beneficiaryName,
+
+        protectorName:
+          formationResult.formation.protectorName,
+
+        initialPropertyDescription:
+          formationResult.formation
+            .initialPropertyDescription,
+
+        formationCreatedAt:
+          formationResult.formation.createdAt,
+
+        formationUpdatedAt:
+          formationResult.formation.updatedAt,
+      },
+
+      {
+        memberId:
+          membership.memberId,
+
+        status:
+          membershipStatus,
+
+        subscriptionStatus,
+
+        planCode:
+          membership.planCode,
+
+        activatedAt:
+          membership.activatedAt,
+      },
+
+      input.generatedAt ??
+        new Date(),
+    );
+
+  return {
+    status:
+      'READY',
+
+    record,
+  };
+}
+
+function normalizeMembershipStatus(
+  status:
+    string,
+): TrustClubPrintableRecordMembershipStatus {
+  switch (
+    status
+  ) {
+    case 'PENDING':
+    case 'ACTIVE':
+    case 'GRACE':
+    case 'SUSPENDED':
+    case 'TERMINATED':
+      return status;
+
+    default:
+      return 'UNKNOWN';
+  }
+}
+
+function normalizeSubscriptionStatus(
+  status:
+    string,
+): TrustClubPrintableRecordSubscriptionStatus {
+  switch (
+    status
+  ) {
+    case 'PENDING':
+    case 'ACTIVE':
+    case 'GRACE':
+    case 'SUSPENDED':
+    case 'TERMINATED':
+      return status;
+
+    default:
+      return 'UNKNOWN';
+  }
+}
+
+export const
+TRUST_CLUB_STANDARD_TRUST_PRINTABLE_RECORD_READ_AUTHORITY_RULE =
+  'AUTHENTICATED_USER_MUST_OWN_COMPLETE_STANDARD_TRUST_ACTION' as const;
+
+export const
+TRUST_CLUB_STANDARD_TRUST_PRINTABLE_RECORD_READ_MEMBERSHIP_RULE =
+  'EXISTING_MEMBERSHIP_MUST_ALLOW_SERVICE_ACCESS' as const;
+
+export const
+TRUST_CLUB_STANDARD_TRUST_PRINTABLE_RECORD_READ_FORMATION_RULE =
+  'FORMATION_MUST_EXIST_AND_ACTION_MUST_BE_COMPLETE' as const;
+
+export const
+TRUST_CLUB_STANDARD_TRUST_PRINTABLE_RECORD_READ_WRITE_RULE =
+  'READ_ONLY_NO_DATABASE_OR_LIFECYCLE_WRITE' as const;
+
+export const
+TRUST_CLUB_STANDARD_TRUST_PRINTABLE_RECORD_READ_PAYMENT_RULE =
+  'NO_PAYMENT_OR_SERVICE_VALIDITY_INFERENCE' as const;

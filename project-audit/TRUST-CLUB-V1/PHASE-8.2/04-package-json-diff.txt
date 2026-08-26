@@ -1,0 +1,12 @@
+﻿diff --git a/package.json b/package.json
+index 94d146f..cf17416 100644
+--- a/package.json
++++ b/package.json
+@@ -15,6 +15,7 @@
+     "better-auth": "^1.7.1",
+     "dotenv": "^17.4.2",
+     "next": "16.2.9",
++    "pdf-lib": "^1.17.1",
+     "pg": "^8.23.0",
+     "react": "19.2.4",
+     "react-dom": "19.2.4",
