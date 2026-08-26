@@ -1,0 +1,55 @@
+﻿diff --git a/src/app/trust-club/start/page.tsx b/src/app/trust-club/start/page.tsx
+index 1e01fc7..8eabc01 100644
+--- a/src/app/trust-club/start/page.tsx
++++ b/src/app/trust-club/start/page.tsx
+@@ -1816,21 +1816,36 @@ export default function StandardTrustFormationPage() {
+                         </p>
+                       </div>
+
+-                      <button
+-                        type="button"
+-                        className="trustClubButton"
+-                        disabled={
+-                          formationLoading
+-                        }
+-                        onClick={
+-                          () =>
+-                            void loadFormation(
+-                              activeActionId,
+-                            )
++                      <div className="trustClubButtonRow">
++                        <button
++                          type="button"
++                          className="trustClubButton"
++                          disabled={
++                            formationLoading
++                          }
++                          onClick={
++                            () =>
++                              void loadFormation(
++                                activeActionId,
++                              )
++                          }
++                        >
++                          Reload Formation
++                        </button>
++
++                        {
++                          actionStatus ===
++                            'COMPLETE' &&
++                          (
++                            <Link
++                              href={`/trust-club/printable-record?actionId=${encodeURIComponent(activeActionId)}`}
++                              className="trustClubButton"
++                            >
++                              View Printable Record
++                            </Link>
++                          )
+                         }
+-                      >
+-                        Reload Formation
+-                      </button>
++                      </div>
+                     </section>
+                   </>
+                 )
