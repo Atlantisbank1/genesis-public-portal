@@ -1,0 +1,313 @@
+﻿GENESIS HERITAGE TRUST
+GENESIS TRUST CLUB V1
+
+PHASE 8.6
+MEMBER ACTION DASHBOARD INTEGRATION
+
+SOURCE DIFF
+
+FILE:
+src/app/trust-club/dashboard/page.tsx
+
+============================================================
+DIFF
+============================================================
+
+diff --git a/src/app/trust-club/dashboard/page.tsx b/src/app/trust-club/dashboard/page.tsx
+index 05f2587..9b22923 100644
+--- a/src/app/trust-club/dashboard/page.tsx
++++ b/src/app/trust-club/dashboard/page.tsx
+@@ -150,6 +150,124 @@ function accessDescription(
+   }
+ }
+ 
++type TrustClubDashboardAction = {
++  actionId:
++    string;
++
++  actionType:
++    'CREATE_STANDARD_TRUST';
++
++  status:
++    string;
++
++  requestedByUserId:
++    string;
++
++  memberId:
++    string;
++
++  trustId?:
++    string;
++
++  createdAt:
++    string;
++
++  updatedAt:
++    string;
++};
++
++type TrustClubMemberActionsResponse = {
++  status:
++    'READY';
++
++  memberId:
++    string;
++
++  actionType:
++    'CREATE_STANDARD_TRUST';
++
++  actions:
++    readonly TrustClubDashboardAction[];
++};
++
++function isTrustClubMemberActionsResponse(
++  value:
++    unknown,
++): value is TrustClubMemberActionsResponse {
++  if (
++    typeof value !==
++      'object' ||
++    value ===
++      null
++  ) {
++    return false;
++  }
++
++  const candidate =
++    value as Record<
++      string,
++      unknown
++    >;
++
++  if (
++    candidate.status !==
++      'READY' ||
++    typeof candidate.memberId !==
++      'string' ||
++    candidate.actionType !==
++      'CREATE_STANDARD_TRUST' ||
++    !Array.isArray(
++      candidate.actions,
++    )
++  ) {
++    return false;
++  }
++
++  return candidate.actions.every(
++    (
++      action,
++    ) => {
++      if (
++        typeof action !==
++          'object' ||
++        action ===
++          null
++      ) {
++        return false;
++      }
++
++      const record =
++        action as Record<
++          string,
++          unknown
++        >;
++
++      return (
++        typeof record.actionId ===
++          'string' &&
++        record.actionType ===
++          'CREATE_STANDARD_TRUST' &&
++        typeof record.status ===
++          'string' &&
++        typeof record.requestedByUserId ===
++          'string' &&
++        typeof record.memberId ===
++          'string' &&
++        (
++          record.trustId ===
++            undefined ||
++          typeof record.trustId ===
++            'string'
++        ) &&
++        typeof record.createdAt ===
++          'string' &&
++        typeof record.updatedAt ===
++          'string'
++      );
++    },
++  );
++}
++
+ export default function TrustClubDashboardPage() {
+   const router =
+     useRouter();
+@@ -194,6 +312,24 @@ export default function TrustClubDashboardPage() {
+       null,
+     );
+ 
++  const [
++    standardTrustActions,
++    setStandardTrustActions,
++  ] =
++    useState<
++      readonly TrustClubDashboardAction[]
++    >(
++      [],
++    );
++
++  const [
++    actionsError,
++    setActionsError,
++  ] =
++    useState<string | null>(
++      null,
++    );
++
+   const loadStatus =
+     useCallback(
+       async () => {
+@@ -275,12 +411,79 @@ export default function TrustClubDashboardPage() {
+       ],
+     );
+ 
++  const loadMemberActions =
++    useCallback(
++      async () => {
++        setActionsError(
++          null,
++        );
++
++        const response =
++          await fetch(
++            '/api/trust-club/actions?type=CREATE_STANDARD_TRUST',
++            {
++              method:
++                'GET',
++
++              cache:
++                'no-store',
++            },
++          );
++
++        if (
++          response.status ===
++            401
++        ) {
++          router.replace(
++            '/trust-club/login',
++          );
++
++          return;
++        }
++
++        if (
++          !response.ok
++        ) {
++          setActionsError(
++            'Your Trust Club actions could not be loaded.',
++          );
++
++          return;
++        }
++
++        const payload:
++          unknown =
++          await response.json();
++
++        if (
++          !isTrustClubMemberActionsResponse(
++            payload,
++          )
++        ) {
++          setActionsError(
++            'Trust Club returned an unexpected action response.',
++          );
++
++          return;
++        }
++
++        setStandardTrustActions(
++          payload.actions,
++        );
++      },
++      [
++        router,
++      ],
++    );
++
+   useEffect(
+     () => {
+       void loadStatus();
++      void loadMemberActions();
+     },
+     [
+       loadStatus,
++      loadMemberActions,
+     ],
+   );
+ 
+@@ -632,6 +835,63 @@ export default function TrustClubDashboardPage() {
+           }
+         </section>
+ 
++        <section className="trustClubDashboardActions">
++          <div>
++            <p className="trustClubEyebrow">
++              MEMBER ACTIONS
++            </p>
++
++            <h2>
++              Your Standard Trust Activity
++            </h2>
++
++            {
++              actionsError !==
++                null
++                ? (
++                    <p>
++                      {actionsError}
++                    </p>
++                  )
++                : standardTrustActions.length ===
++                    0
++                  ? (
++                      <p>
++                        No Standard Trust Formation action has been recorded yet.
++                      </p>
++                    )
++                  : (
++                      <div className="trustClubDashboardGrid">
++                        {
++                          standardTrustActions.map(
++                            (
++                              action,
++                            ) => (
++                              <article
++                                key={action.actionId}
++                                className="trustClubDashboardCard"
++                              >
++                                <span>
++                                  Standard Trust Formation
++                                </span>
++
++                                <strong>
++                                  {action.status.replaceAll('_', ' ')}
++                                </strong>
++
++                                <small>
++                                  Action ID: {action.actionId}
++                                </small>
++                              </article>
++                            ),
++                          )
++                        }
++                      </div>
++                    )
++            }
++          </div>
++        </section>
++
+         <footer className="trustClubDashboardFooter">
+           <span>
+             Signed in as {status.user.email}

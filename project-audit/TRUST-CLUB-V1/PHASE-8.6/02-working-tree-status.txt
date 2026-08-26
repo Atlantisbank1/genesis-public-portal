@@ -1,0 +1,283 @@
+﻿GENESIS HERITAGE TRUST
+GENESIS TRUST CLUB V1
+
+PHASE 8.6
+WORKING TREE STATUS EVIDENCE
+
+HEAD:
+2b89ceea1ae72dab03f958574e4dda5ecbca5294
+
+AUTHORIZED SOURCE CHANGE:
+src/app/trust-club/dashboard/page.tsx
+
+------------------------------------------------------------
+GIT STATUS --SHORT --UNTRACKED-FILES=ALL
+------------------------------------------------------------
+
+ M src/app/trust-club/dashboard/page.tsx
+?? project-audit/TRUST-CLUB-V1/PHASE-3.6/TRUST-CLUB-V1-PHASE-3.6-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-3.6/TRUST-CLUB-V1-PHASE-3.6-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-3.7-entitlement-resolution-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-3.7-runtime/project-audit/TRUST-CLUB-V1/PHASE-3.7-entitlement-resolution-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.7-runtime/src/trust-club/domain/trust-club-commercial-catalog.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.7-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.7-runtime/src/trust-club/domain/trust-club-entitlement-resolution.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.7-runtime/src/trust-club/domain/trust-club-entitlement-resolution.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.7-runtime/src/trust-club/domain/trust-club-plan-pricing.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.7-runtime/src/trust-club/domain/trust-club-service-catalog.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.7-runtime/src/trust-club/domain/trust-club-service-definition.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.7/TRUST-CLUB-V1-PHASE-3.7-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-3.7/TRUST-CLUB-V1-PHASE-3.7-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-3.8-authorization-context-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-3.8-runtime/project-audit/TRUST-CLUB-V1/PHASE-3.8-authorization-context-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.8-runtime/src/trust-club/domain/trust-club-authorization-context.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.8-runtime/src/trust-club/domain/trust-club-authorization-context.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.8-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.8-runtime/src/trust-club/domain/trust-club-entitlement-resolution.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.8-runtime/src/trust-club/domain/trust-club-plan-pricing.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.8-runtime/src/trust-club/domain/trust-club-service-catalog.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.8-runtime/src/trust-club/domain/trust-club-service-definition.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.8/TRUST-CLUB-V1-PHASE-3.8-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-3.8/TRUST-CLUB-V1-PHASE-3.8-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-3.9-authorization-orchestration-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-3.9-runtime/project-audit/TRUST-CLUB-V1/PHASE-3.9-authorization-orchestration-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.9-runtime/src/trust-club/domain/trust-club-action-classification.policy.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.9-runtime/src/trust-club/domain/trust-club-authorization-orchestration.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.9-runtime/src/trust-club/domain/trust-club-authorization-orchestration.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.9-runtime/src/trust-club/domain/trust-club-authorization.policy.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.9-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.9-runtime/src/trust-club/domain/trust-club-service-catalog.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.9-runtime/src/trust-club/domain/trust-club-service-definition.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-3.9/TRUST-CLUB-V1-PHASE-3.9-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-3.9/TRUST-CLUB-V1-PHASE-3.9-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.0-action-workflow-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-4.0-runtime/project-audit/TRUST-CLUB-V1/PHASE-4.0-action-workflow-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.0-runtime/src/trust-club/domain/trust-club-action-workflow.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.0-runtime/src/trust-club/domain/trust-club-action-workflow.policy.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.0-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.0/TRUST-CLUB-V1-PHASE-4.0-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.0/TRUST-CLUB-V1-PHASE-4.0-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.1-action-record-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-4.1-runtime/project-audit/TRUST-CLUB-V1/PHASE-4.1-action-record-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.1-runtime/src/trust-club/domain/trust-club-action-record.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.1-runtime/src/trust-club/domain/trust-club-action-record.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.1-runtime/src/trust-club/domain/trust-club-action-workflow.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.1-runtime/src/trust-club/domain/trust-club-action-workflow.policy.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.1-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.1/TRUST-CLUB-V1-PHASE-4.1-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.1/TRUST-CLUB-V1-PHASE-4.1-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-action-request-intake-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/project-audit/TRUST-CLUB-V1/PHASE-4.2-action-request-intake-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/src/trust-club/domain/trust-club-action-classification.policy.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/src/trust-club/domain/trust-club-action-record.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/src/trust-club/domain/trust-club-action-record.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/src/trust-club/domain/trust-club-action-request-intake.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/src/trust-club/domain/trust-club-action-request-intake.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/src/trust-club/domain/trust-club-action-workflow.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/src/trust-club/domain/trust-club-action-workflow.policy.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/src/trust-club/domain/trust-club-authorization-orchestration.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/src/trust-club/domain/trust-club-authorization-orchestration.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/src/trust-club/domain/trust-club-authorization.policy.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/src/trust-club/domain/trust-club-service-catalog.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2-runtime/src/trust-club/domain/trust-club-service-definition.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2/TRUST-CLUB-V1-PHASE-4.2-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.2/TRUST-CLUB-V1-PHASE-4.2-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.3-action-progression-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-4.3-runtime/project-audit/TRUST-CLUB-V1/PHASE-4.3-action-progression-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.3-runtime/src/trust-club/domain/trust-club-action-progression.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.3-runtime/src/trust-club/domain/trust-club-action-progression.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.3-runtime/src/trust-club/domain/trust-club-action-record.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.3-runtime/src/trust-club/domain/trust-club-action-record.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.3-runtime/src/trust-club/domain/trust-club-action-workflow.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.3-runtime/src/trust-club/domain/trust-club-action-workflow.policy.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.3-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.3/TRUST-CLUB-V1-PHASE-4.3-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.3/TRUST-CLUB-V1-PHASE-4.3-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.4-action-outcome-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-4.4-runtime/project-audit/TRUST-CLUB-V1/PHASE-4.4-action-outcome-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.4-runtime/src/trust-club/domain/trust-club-action-outcome.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.4-runtime/src/trust-club/domain/trust-club-action-outcome.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.4-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.4/TRUST-CLUB-V1-PHASE-4.4-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.4/TRUST-CLUB-V1-PHASE-4.4-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.5-action-outcome-consistency-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-4.5-runtime/project-audit/TRUST-CLUB-V1/PHASE-4.5-action-outcome-consistency-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.5-runtime/src/trust-club/domain/trust-club-action-outcome-consistency.policy.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.5-runtime/src/trust-club/domain/trust-club-action-outcome.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.5-runtime/src/trust-club/domain/trust-club-action-outcome.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.5-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.5/TRUST-CLUB-V1-PHASE-4.5-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.5/TRUST-CLUB-V1-PHASE-4.5-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.6-action-outcome-creation-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-4.6-runtime/project-audit/TRUST-CLUB-V1/PHASE-4.6-action-outcome-creation-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.6-runtime/src/trust-club/domain/trust-club-action-outcome-consistency.policy.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.6-runtime/src/trust-club/domain/trust-club-action-outcome-creation.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.6-runtime/src/trust-club/domain/trust-club-action-outcome-creation.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.6-runtime/src/trust-club/domain/trust-club-action-outcome.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.6-runtime/src/trust-club/domain/trust-club-action-outcome.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.6-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.6/TRUST-CLUB-V1-PHASE-4.6-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.6/TRUST-CLUB-V1-PHASE-4.6-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-action-outcome-integration-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/project-audit/TRUST-CLUB-V1/PHASE-4.7-action-outcome-integration-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-action-outcome-consistency.policy.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-action-outcome-creation.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-action-outcome-creation.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-action-outcome-integration.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-action-outcome-integration.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-action-outcome.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-action-outcome.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-action-progression.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-action-progression.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-action-record.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-action-record.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-action-workflow.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-action-workflow.policy.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7/TRUST-CLUB-V1-PHASE-4.7-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-4.7/TRUST-CLUB-V1-PHASE-4.7-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.1-action-persistence-repository-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.1-runtime/project-audit/TRUST-CLUB-V1/PHASE-5.1-action-persistence-repository-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.1-runtime/src/trust-club/domain/trust-club-action-outcome.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.1-runtime/src/trust-club/domain/trust-club-action-record.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.1-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.1-runtime/src/trust-club/persistence/trust-club-action.repository.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.1/TRUST-CLUB-V1-PHASE-5.1-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.1/TRUST-CLUB-V1-PHASE-5.1-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.10-lifecycle-transition-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.10/TRUST-CLUB-V1-PHASE-5.10-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.10/TRUST-CLUB-V1-PHASE-5.10-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.11-outcome-recording-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.11/TRUST-CLUB-V1-PHASE-5.11-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.11/TRUST-CLUB-V1-PHASE-5.11-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.12-outcome-read-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.12/TRUST-CLUB-V1-PHASE-5.12-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.12/TRUST-CLUB-V1-PHASE-5.12-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.13-aggregate-read-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.13/TRUST-CLUB-V1-PHASE-5.13-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.13/TRUST-CLUB-V1-PHASE-5.13-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.14-exposure-contract-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.14/TRUST-CLUB-V1-PHASE-5.14-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.14/TRUST-CLUB-V1-PHASE-5.14-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.15-application-gateway-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.15/TRUST-CLUB-V1-PHASE-5.15-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.15/TRUST-CLUB-V1-PHASE-5.15-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.16-authentication-context-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.16/TRUST-CLUB-V1-PHASE-5.16-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.16/TRUST-CLUB-V1-PHASE-5.16-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.17-authentication-source-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.17/TRUST-CLUB-V1-PHASE-5.17-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.17/TRUST-CLUB-V1-PHASE-5.17-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.18-authentication-integration-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.18/TRUST-CLUB-V1-PHASE-5.18-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.18/TRUST-CLUB-V1-PHASE-5.18-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.19-authentication-authorization-integration-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.19/TRUST-CLUB-V1-PHASE-5.19-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.19/TRUST-CLUB-V1-PHASE-5.19-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.2-action-persistence-service-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.2-runtime/project-audit/TRUST-CLUB-V1/PHASE-5.2-action-persistence-service-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.2-runtime/src/trust-club/application/trust-club-action-persistence.service.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.2-runtime/src/trust-club/domain/trust-club-action-outcome.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.2-runtime/src/trust-club/domain/trust-club-action-record.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.2-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.2-runtime/src/trust-club/persistence/trust-club-action.repository.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.2/TRUST-CLUB-V1-PHASE-5.2-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.2/TRUST-CLUB-V1-PHASE-5.2-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.20-authorized-application-gateway-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.20/TRUST-CLUB-V1-PHASE-5.20-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.20/TRUST-CLUB-V1-PHASE-5.20-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.21-authorized-operation-delegation-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.21/TRUST-CLUB-V1-PHASE-5.21-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.21/TRUST-CLUB-V1-PHASE-5.21-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.22-controlled-operation-execution-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.22/TRUST-CLUB-V1-PHASE-5.22-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.22/TRUST-CLUB-V1-PHASE-5.22-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.23-certified-gateway-read-runtime-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.23-certified-gateway-write-runtime-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.23/TRUST-CLUB-V1-PHASE-5.23-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.23/TRUST-CLUB-V1-PHASE-5.23-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.24-server-application-entry-read-runtime-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.24-server-application-entry-write-runtime-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.24/TRUST-CLUB-V1-PHASE-5.24-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.24/TRUST-CLUB-V1-PHASE-5.24-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.25-better-auth-trust-club-entry-runtime-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.25/better-auth.generated.prisma
+?? project-audit/TRUST-CLUB-V1/PHASE-5.25/next.config.before-server-runtime.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.26-member-standard-trust-runtime-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.26/TRUST-CLUB-V1-PHASE-5.26-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.26/TRUST-CLUB-V1-PHASE-5.26-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.27-eligibility-runtime-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.27/TRUST-CLUB-V1-PHASE-5.27-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.27/TRUST-CLUB-V1-PHASE-5.27-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.3-action-persistence-adapter-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.3-runtime/project-audit/TRUST-CLUB-V1/PHASE-5.3-action-persistence-adapter-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.3-runtime/src/trust-club/domain/trust-club-action-outcome.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.3-runtime/src/trust-club/domain/trust-club-action-record.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.3-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.3-runtime/src/trust-club/persistence/adapters/trust-club-action-persistence.adapter.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.3-runtime/src/trust-club/persistence/trust-club-action.repository.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.3/TRUST-CLUB-V1-PHASE-5.3-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.3/TRUST-CLUB-V1-PHASE-5.3-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.4-E/TRUST-CLUB-V1-PHASE-5.4-E-migration-review.sql
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-prisma-adapter-runtime-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-prisma-adapter-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/project-audit/TRUST-CLUB-V1/PHASE-5.5-prisma-adapter-verification.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/generated/prisma/client.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/generated/prisma/commonInputTypes.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/generated/prisma/enums.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/generated/prisma/internal/class.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/generated/prisma/internal/prismaNamespace.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/generated/prisma/models.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/generated/prisma/models/TrustClubActionOutcome.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/generated/prisma/models/TrustClubActionRecord.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/trust-club/domain/trust-club-action-outcome.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/trust-club/domain/trust-club-action-record.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/trust-club/domain/trust-club-domain.contracts.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/trust-club/persistence/adapters/trust-club-action-persistence.adapter.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/trust-club/persistence/adapters/trust-club-action-prisma.adapter.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5-runtime/src/trust-club/persistence/trust-club-action.repository.js
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5/TRUST-CLUB-V1-PHASE-5.5-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.5/TRUST-CLUB-V1-PHASE-5.5-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.6-application-runtime-integration-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.6-persistence-runtime-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.6/TRUST-CLUB-V1-PHASE-5.6-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.6/TRUST-CLUB-V1-PHASE-5.6-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.7-persistence-consumer-failure-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.7-persistence-consumer-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.7/TRUST-CLUB-V1-PHASE-5.7-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.7/TRUST-CLUB-V1-PHASE-5.7-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.8-action-read-operation-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.8/TRUST-CLUB-V1-PHASE-5.8-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.8/TRUST-CLUB-V1-PHASE-5.8-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.9-authorization-gate-verification.ts
+?? project-audit/TRUST-CLUB-V1/PHASE-5.9/TRUST-CLUB-V1-PHASE-5.9-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-5.9/TRUST-CLUB-V1-PHASE-5.9-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-6.4/PHASE-6.4-D.3-formation-migration-review.sql
+?? project-audit/TRUST-CLUB-V1/PHASE-6.5/CERTIFICATION/TRUST-CLUB-V1-PHASE-6.5-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-6.5/CERTIFICATION/TRUST-CLUB-V1-PHASE-6.5-LOCK-HASHES.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-6.6/CERTIFICATION/TRUST-CLUB-V1-PHASE-6.6-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-6.6/CERTIFICATION/TRUST-CLUB-V1-PHASE-6.6-LOCK-HASHES.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-6.7-I.4O.11/01-authenticated-read-action-runtime-verification.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-6.7-I.4O.11/02-PHASE-6.7-I.4O.11-CERTIFICATION.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-6.7-I.4O.11/03-PHASE-6.7-I.4O.11-SHA256-LOCK.txt
+?? project-audit/TRUST-CLUB-V1/PHASE-8.6/01-baseline-head.txt
+
+------------------------------------------------------------
+BOUNDARY
+------------------------------------------------------------
+
+AUTHORIZED TRACKED SOURCE CHANGE COUNT:
+1
+
+AUTHORIZED SOURCE:
+src/app/trust-club/dashboard/page.tsx
+
+STAGING:
+NONE
+
+COMMIT:
+NONE
+
+PUSH:
+NO
