@@ -268,56 +268,6 @@ function isTrustClubMemberActionsResponse(
   );
 }
 
-type TrustClubSubmitReviewResponse = {
-  status:
-    'SUBMITTED_FOR_REVIEW';
-
-  actionId:
-    string;
-
-  previousActionStatus:
-    'READY';
-
-  actionStatus:
-    'PENDING_REVIEW';
-
-  persisted:
-    boolean;
-};
-
-function isTrustClubSubmitReviewResponse(
-  value:
-    unknown,
-): value is TrustClubSubmitReviewResponse {
-  if (
-    typeof value !==
-      'object' ||
-    value ===
-      null
-  ) {
-    return false;
-  }
-
-  const candidate =
-    value as Record<
-      string,
-      unknown
-    >;
-
-  return (
-    candidate.status ===
-      'SUBMITTED_FOR_REVIEW' &&
-    typeof candidate.actionId ===
-      'string' &&
-    candidate.previousActionStatus ===
-      'READY' &&
-    candidate.actionStatus ===
-      'PENDING_REVIEW' &&
-    typeof candidate.persisted ===
-      'boolean'
-  );
-}
-
 export default function TrustClubDashboardPage() {
   const router =
     useRouter();
@@ -377,28 +327,6 @@ export default function TrustClubDashboardPage() {
     setActionsError,
   ] =
     useState<string | null>(
-      null,
-    );
-
-  const [
-    reviewSubmittingActionId,
-    setReviewSubmittingActionId,
-  ] =
-    useState<string | null>(
-      null,
-    );
-
-  const [
-    reviewSubmissionError,
-    setReviewSubmissionError,
-  ] =
-    useState<{
-      actionId:
-        string;
-
-      message:
-        string;
-    } | null>(
       null,
     );
 
@@ -558,132 +486,6 @@ export default function TrustClubDashboardPage() {
       loadMemberActions,
     ],
   );
-
-  async function handleSubmitForReview(
-    actionId:
-      string,
-  ) {
-    if (
-      reviewSubmittingActionId !==
-        null
-    ) {
-      return;
-    }
-
-    setReviewSubmittingActionId(
-      actionId,
-    );
-
-    setReviewSubmissionError(
-      null,
-    );
-
-    try {
-      const response =
-        await fetch(
-          '/api/trust-club/formations/standard-trust/submit-review',
-          {
-            method:
-              'POST',
-
-            headers: {
-              'Content-Type':
-                'application/json',
-            },
-
-            body:
-              JSON.stringify({
-                actionId,
-              }),
-
-            cache:
-              'no-store',
-          },
-        );
-
-      if (
-        response.status ===
-          401
-      ) {
-        router.replace(
-          '/trust-club/login',
-        );
-
-        return;
-      }
-
-      const payload:
-        unknown =
-        await response.json();
-
-      if (
-        !response.ok
-      ) {
-        let reason =
-          'Review submission could not be completed.';
-
-        if (
-          typeof payload ===
-            'object' &&
-          payload !==
-            null &&
-          'status' in payload &&
-          typeof payload.status ===
-            'string'
-        ) {
-          reason =
-            `Review submission could not be completed: ${payload.status}.`;
-        }
-
-        setReviewSubmissionError({
-          actionId,
-          message:
-            reason,
-        });
-
-        if (
-          response.status ===
-            409
-        ) {
-          await loadMemberActions();
-        }
-
-        return;
-      }
-
-      if (
-        !isTrustClubSubmitReviewResponse(
-          payload,
-        ) ||
-        payload.actionId !==
-          actionId ||
-        payload.persisted !==
-          true
-      ) {
-        setReviewSubmissionError({
-          actionId,
-          message:
-            'Trust Club returned an unexpected review submission response.',
-        });
-
-        return;
-      }
-
-      await loadMemberActions();
-    }
-    catch {
-      setReviewSubmissionError({
-        actionId,
-        message:
-          'Review submission could not be completed.',
-      });
-    }
-    finally {
-      setReviewSubmittingActionId(
-        null,
-      );
-    }
-  }
 
   async function handleEstablishMembership() {
     if (
@@ -1080,44 +882,6 @@ export default function TrustClubDashboardPage() {
                                 <small>
                                   Action ID: {action.actionId}
                                 </small>
-
-                                {
-                                  action.status ===
-                                    'READY' &&
-                                  (
-                                    <button
-                                      type="button"
-                                      className="trustClubSubmitButton"
-                                      disabled={
-                                        reviewSubmittingActionId !==
-                                          null
-                                      }
-                                      onClick={
-                                        () =>
-                                          void handleSubmitForReview(
-                                            action.actionId,
-                                          )
-                                      }
-                                    >
-                                      {
-                                        reviewSubmittingActionId ===
-                                          action.actionId
-                                          ? 'Submitting for Review...'
-                                          : 'Submit for Review'
-                                      }
-                                    </button>
-                                  )
-                                }
-
-                                {
-                                  reviewSubmissionError?.actionId ===
-                                    action.actionId &&
-                                  (
-                                    <div className="trustClubError">
-                                      {reviewSubmissionError.message}
-                                    </div>
-                                  )
-                                }
                               </article>
                             ),
                           )
