@@ -7,10 +7,6 @@ import type {
 } from '../../domain/trust-club-action-outcome.contracts';
 
 import type {
-  TrustClubActionType,
-} from '../../domain/trust-club-domain.contracts';
-
-import type {
   TrustClubActionPersistenceRepository,
   TrustClubPersistenceResult,
 } from '../trust-club-action.repository';
@@ -21,27 +17,12 @@ import type {
  * Phase 5.3
  * Action Persistence Adapter Boundary
  *
- * Phase 8.4 controlled extension:
- * Member Action Discovery Read Capability
- *
  * Purpose:
  * Defines the adapter-side implementation boundary for the
- * certified Action Persistence Repository contract.
+ * certified Phase 5.1 Action Persistence Repository contract.
  *
- * Phase 8.4 extends the declared adapter read capability with
- * member-scoped Action discovery.
- *
- * The member discovery capability:
- * - reads existing persisted Action Records only;
- * - supports member-scoped Action discovery;
- * - scopes discovery by existing memberId;
- * - scopes discovery by existing certified ActionType;
- * - does not create or modify Action Records;
- * - does not perform lifecycle transitions;
- * - does not establish authorization;
- * - does not establish authentication;
- * - does not establish entitlement;
- * - does not prove external completion.
+ * Phase 5.3 establishes the shape that a future concrete
+ * persistence adapter must satisfy.
  *
  * It does NOT:
  * - select Prisma;
@@ -94,9 +75,6 @@ export interface TrustClubActionPersistenceAdapterCapabilities {
   supportsActionRecordLookup:
     boolean;
 
-  supportsMemberActionDiscovery:
-    boolean;
-
   supportsActionOutcomeSave:
     boolean;
 
@@ -109,13 +87,10 @@ export interface TrustClubActionPersistenceAdapterCapabilities {
  *
  * A concrete persistence adapter must:
  *
- * - satisfy the certified repository contract;
+ * - satisfy the certified Phase 5.1 repository contract;
  * - expose adapter identity;
  * - expose declared persistence capabilities;
  * - preserve certified Trust Club domain representations.
- *
- * Phase 8.4 explicitly exposes the member-scoped Action
- * discovery read primitive at the adapter boundary.
  */
 export interface TrustClubActionPersistenceAdapter
   extends TrustClubActionPersistenceRepository {
@@ -124,15 +99,6 @@ export interface TrustClubActionPersistenceAdapter
 
   readonly capabilities:
     TrustClubActionPersistenceAdapterCapabilities;
-
-  findByMemberIdAndActionType(
-    memberId:
-      string,
-    actionType:
-      TrustClubActionType,
-  ): Promise<
-    readonly TrustClubActionRecord[]
-  >;
 }
 
 /**
@@ -156,8 +122,6 @@ export function validateTrustClubActionPersistenceAdapter(
       true &&
     adapter.capabilities.supportsActionRecordLookup ===
       true &&
-    adapter.capabilities.supportsMemberActionDiscovery ===
-      true &&
     adapter.capabilities.supportsActionOutcomeSave ===
       true &&
     adapter.capabilities.supportsActionOutcomeLookup ===
@@ -169,8 +133,8 @@ export function validateTrustClubActionPersistenceAdapter(
  * Type-level compatibility checks.
  *
  * These aliases intentionally reference the certified domain
- * and repository contracts so that adapter implementations
- * remain aligned with them.
+ * and repository contracts so that future adapter
+ * implementations remain aligned with them.
  */
 export type TrustClubActionPersistenceAdapterRecord =
   TrustClubActionRecord;
@@ -213,13 +177,3 @@ export const TRUST_CLUB_ACTION_ADAPTER_LIFECYCLE_RULE =
  */
 export const TRUST_CLUB_ACTION_ADAPTER_CAPABILITY_PROOF_RULE =
   'ADAPTER_CAPABILITY_DECLARATION_IS_NOT_PERSISTENCE_PROOF' as const;
-
-/**
- * Phase 8.4 member-discovery rule.
- *
- * Declaring member Action discovery support exposes a
- * read capability only. It does not grant lifecycle,
- * authorization, or entitlement authority to the adapter.
- */
-export const TRUST_CLUB_ACTION_ADAPTER_MEMBER_DISCOVERY_RULE =
-  'PERSISTENCE_ADAPTER_MEMBER_ACTION_DISCOVERY_IS_READ_ONLY' as const;

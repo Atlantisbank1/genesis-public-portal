@@ -15,6 +15,10 @@ import type {
 } from '../../domain/trust-club-action-outcome.contracts';
 
 import type {
+  TrustClubActionType,
+} from '../../domain/trust-club-domain.contracts';
+
+import type {
   TrustClubPersistenceResult,
 } from '../trust-club-action.repository';
 
@@ -28,6 +32,9 @@ import type {
  * Phase 5.5
  * Concrete Prisma Persistence Adapter
  *
+ * Phase 8.4 controlled extension:
+ * Member Action Discovery Read Primitive
+ *
  * Purpose:
  * Implements the certified Phase 5.3 persistence adapter
  * boundary using Prisma 7 and PostgreSQL.
@@ -35,6 +42,21 @@ import type {
  * Persistence ownership:
  * - Trust Club Action Records
  * - Trust Club Action Outcomes
+ *
+ * Phase 8.4 extends the existing read capability with
+ * member-scoped Action discovery using already persisted
+ * Action Record fields.
+ *
+ * The Phase 8.4 primitive:
+ * - reads existing Action Records only;
+ * - filters by existing memberId;
+ * - filters by existing certified actionType;
+ * - does not create or modify Action Records;
+ * - does not perform lifecycle transitions;
+ * - does not establish authorization;
+ * - does not establish authentication;
+ * - does not establish entitlement;
+ * - does not prove external completion.
  *
  * This adapter does NOT:
  * - control Action lifecycle authority;
@@ -93,6 +115,9 @@ export class TrustClubActionPrismaAdapter
       true,
 
     supportsActionRecordLookup:
+      true,
+
+    supportsMemberActionDiscovery:
       true,
 
     supportsActionOutcomeSave:
@@ -257,6 +282,70 @@ export class TrustClubActionPrismaAdapter
       updatedAt:
         record.updatedAt,
     };
+  }
+
+  /**
+   * Phase 8.4
+   * Member-scoped Action discovery.
+   *
+   * Read-only query over existing persisted Action Records.
+   *
+   * No lifecycle mutation, authorization decision,
+   * entitlement decision, or external completion proof
+   * occurs within this persistence operation.
+   */
+  async findByMemberIdAndActionType(
+    memberId:
+      string,
+    actionType:
+      TrustClubActionType,
+  ): Promise<
+    readonly TrustClubActionRecord[]
+  > {
+    const records =
+      await this.prisma
+        .trustClubActionRecord
+        .findMany({
+          where: {
+            memberId,
+            actionType,
+          },
+
+          orderBy: {
+            createdAt:
+              'desc',
+          },
+        });
+
+    return records.map(
+      (
+        record,
+      ): TrustClubActionRecord => ({
+        actionId:
+          record.actionId,
+
+        actionType:
+          record.actionType,
+
+        status:
+          record.status,
+
+        requestedByUserId:
+          record.requestedByUserId,
+
+        memberId:
+          record.memberId,
+
+        trustId:
+          record.trustId ?? undefined,
+
+        createdAt:
+          record.createdAt,
+
+        updatedAt:
+          record.updatedAt,
+      }),
+    );
   }
 
   async saveActionOutcome(

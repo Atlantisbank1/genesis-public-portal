@@ -6,39 +6,20 @@ import type {
   TrustClubActionOutcome,
 } from '../domain/trust-club-action-outcome.contracts';
 
-import type {
-  TrustClubActionType,
-} from '../domain/trust-club-domain.contracts';
-
 /**
  * TRUST-CLUB-V1
  *
  * Phase 5.1
  * Action Persistence Repository Contract
  *
- * Phase 8.4 controlled extension:
- * Member Action Discovery Read Primitive
- *
  * Purpose:
  * Defines the persistence boundary for certified Trust Club
  * Action Records and Action Outcomes.
  *
  * This contract separates the certified Trust Club domain
- * model from any persistence implementation.
+ * model from any future persistence implementation.
  *
- * Phase 8.4 extends the existing read capability with a
- * controlled member-scoped Action discovery primitive.
- *
- * The new primitive:
- * - reads existing persisted Action Records only;
- * - scopes discovery by existing memberId;
- * - scopes discovery by existing certified ActionType;
- * - does not create or modify Action Records;
- * - does not perform lifecycle transitions;
- * - does not establish authorization;
- * - does not establish authentication;
- * - does not establish entitlement;
- * - does not prove external completion.
+ * Phase 5.1 defines repository capability only.
  *
  * It does NOT:
  * - implement persistence;
@@ -82,27 +63,6 @@ export interface TrustClubActionRecordRepository {
       string,
   ): Promise<
     TrustClubActionRecord | null
-  >;
-
-  /**
-   * Phase 8.4
-   * Member-scoped Action discovery.
-   *
-   * Returns persisted Action Records belonging to the supplied
-   * member and matching the supplied certified Action type.
-   *
-   * This is a read-only persistence capability.
-   *
-   * Membership ownership and authorization remain outside the
-   * repository boundary.
-   */
-  findByMemberIdAndActionType(
-    memberId:
-      string,
-    actionType:
-      TrustClubActionType,
-  ): Promise<
-    readonly TrustClubActionRecord[]
   >;
 }
 
@@ -152,13 +112,3 @@ export const TRUST_CLUB_ACTION_PERSISTENCE_TECHNOLOGY_RULE =
  */
 export const TRUST_CLUB_ACTION_PERSISTENCE_PROOF_RULE =
   'DOMAIN_OBJECT_EXISTENCE_IS_NOT_PERSISTENCE_PROOF' as const;
-
-/**
- * Phase 8.4 member-discovery rule.
- *
- * Member-scoped Action discovery is a persistence read
- * capability only. It does not establish authorization,
- * entitlement, lifecycle authority, or external completion.
- */
-export const TRUST_CLUB_ACTION_MEMBER_DISCOVERY_PERSISTENCE_RULE =
-  'MEMBER_ACTION_DISCOVERY_IS_READ_ONLY_PERSISTENCE_CAPABILITY' as const;

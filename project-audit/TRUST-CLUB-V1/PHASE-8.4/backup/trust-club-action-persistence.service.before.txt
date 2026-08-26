@@ -7,10 +7,6 @@ import type {
 } from '../domain/trust-club-action-outcome.contracts';
 
 import type {
-  TrustClubActionType,
-} from '../domain/trust-club-domain.contracts';
-
-import type {
   TrustClubActionPersistenceRepository,
   TrustClubPersistenceResult,
 } from '../persistence/trust-club-action.repository';
@@ -21,30 +17,12 @@ import type {
  * Phase 5.2
  * Application Persistence Orchestration Service
  *
- * Phase 8.4 controlled extension:
- * Member Action Discovery Read Primitive
- *
  * Purpose:
  * Defines the application-layer orchestration used to invoke
- * the certified Action Persistence Repository boundary for
- * Trust Club Action Records and Action Outcomes.
+ * the certified Phase 5.1 Action Persistence Repository
+ * boundary for Trust Club Action Records and Action Outcomes.
  *
- * Phase 8.4 extends the existing application read capability
- * with controlled member-scoped Action discovery.
- *
- * The member discovery primitive:
- * - reads existing persisted Action Records only;
- * - scopes discovery by existing memberId;
- * - scopes discovery by existing certified ActionType;
- * - delegates persistence access to the repository boundary;
- * - does not create or modify Action Records;
- * - does not perform lifecycle transitions;
- * - does not establish authorization;
- * - does not establish authentication;
- * - does not establish entitlement;
- * - does not prove external completion.
- *
- * This service depends on the repository contract only.
+ * Phase 5.2 depends on the repository contract only.
  *
  * It does NOT:
  * - implement persistence;
@@ -95,27 +73,6 @@ export class TrustClubActionPersistenceService {
     );
   }
 
-  /**
-   * Phase 8.4
-   * Member-scoped Action discovery.
-   *
-   * This method is application-layer orchestration only.
-   * Persistence remains owned by the repository boundary.
-   */
-  async findActionRecordsByMemberAndType(
-    memberId:
-      string,
-    actionType:
-      TrustClubActionType,
-  ): Promise<
-    readonly TrustClubActionRecord[]
-  > {
-    return this.repository.findByMemberIdAndActionType(
-      memberId,
-      actionType,
-    );
-  }
-
   async saveActionOutcome(
     outcome:
       TrustClubActionOutcome,
@@ -144,8 +101,8 @@ export class TrustClubActionPersistenceService {
 /**
  * Repository-boundary rule.
  *
- * Application persistence must access persistence only through
- * the certified repository contract.
+ * Phase 5.2 must access persistence only through the certified
+ * Phase 5.1 repository contract.
  */
 export const TRUST_CLUB_ACTION_APPLICATION_PERSISTENCE_RULE =
   'APPLICATION_PERSISTENCE_USES_PHASE_5_1_REPOSITORY_BOUNDARY' as const;
@@ -153,9 +110,8 @@ export const TRUST_CLUB_ACTION_APPLICATION_PERSISTENCE_RULE =
 /**
  * Domain-preservation rule.
  *
- * Application persistence consumes and returns certified
- * Trust Club Action domain representations without redefining
- * them.
+ * Phase 5.2 consumes and returns certified Trust Club Action
+ * domain representations without redefining them.
  */
 export const TRUST_CLUB_ACTION_APPLICATION_DOMAIN_RULE =
   'APPLICATION_PERSISTENCE_PRESERVES_CERTIFIED_ACTION_DOMAIN' as const;
@@ -172,17 +128,8 @@ export const TRUST_CLUB_ACTION_APPLICATION_LIFECYCLE_RULE =
 /**
  * Technology-neutrality rule.
  *
- * Application persistence does not know which persistence
- * adapter or database technology implements the repository.
+ * Phase 5.2 does not know which persistence adapter or database
+ * technology will eventually implement the repository.
  */
 export const TRUST_CLUB_ACTION_APPLICATION_TECHNOLOGY_RULE =
   'APPLICATION_PERSISTENCE_IS_ADAPTER_NEUTRAL' as const;
-
-/**
- * Phase 8.4 member-discovery rule.
- *
- * Member-scoped Action discovery remains a read-only
- * application orchestration capability.
- */
-export const TRUST_CLUB_ACTION_APPLICATION_MEMBER_DISCOVERY_RULE =
-  'APPLICATION_MEMBER_ACTION_DISCOVERY_IS_READ_ONLY' as const;

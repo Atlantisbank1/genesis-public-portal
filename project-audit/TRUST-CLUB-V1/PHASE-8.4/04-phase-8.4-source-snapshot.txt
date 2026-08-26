@@ -1,0 +1,1227 @@
+﻿============================================================
+SOURCE: src/trust-club/persistence/trust-club-action.repository.ts
+============================================================
+import type {
+  TrustClubActionRecord,
+} from '../domain/trust-club-action-record.contracts';
+
+import type {
+  TrustClubActionOutcome,
+} from '../domain/trust-club-action-outcome.contracts';
+
+import type {
+  TrustClubActionType,
+} from '../domain/trust-club-domain.contracts';
+
+/**
+ * TRUST-CLUB-V1
+ *
+ * Phase 5.1
+ * Action Persistence Repository Contract
+ *
+ * Phase 8.4 controlled extension:
+ * Member Action Discovery Read Primitive
+ *
+ * Purpose:
+ * Defines the persistence boundary for certified Trust Club
+ * Action Records and Action Outcomes.
+ *
+ * This contract separates the certified Trust Club domain
+ * model from any persistence implementation.
+ *
+ * Phase 8.4 extends the existing read capability with a
+ * controlled member-scoped Action discovery primitive.
+ *
+ * The new primitive:
+ * - reads existing persisted Action Records only;
+ * - scopes discovery by existing memberId;
+ * - scopes discovery by existing certified ActionType;
+ * - does not create or modify Action Records;
+ * - does not perform lifecycle transitions;
+ * - does not establish authorization;
+ * - does not establish authentication;
+ * - does not establish entitlement;
+ * - does not prove external completion.
+ *
+ * It does NOT:
+ * - implement persistence;
+ * - select a database technology;
+ * - access a database;
+ * - access Prisma;
+ * - create database schemas;
+ * - create migrations;
+ * - modify Action lifecycle state;
+ * - perform lifecycle transitions;
+ * - authorize Trust actions;
+ * - authenticate users;
+ * - verify identity;
+ * - resolve entitlements;
+ * - execute payments;
+ * - execute banking activity;
+ * - access Atlantis;
+ * - execute external services.
+ */
+
+export interface TrustClubPersistenceResult<T> {
+  value:
+    T;
+
+  persisted:
+    boolean;
+}
+
+export interface TrustClubActionRecordRepository {
+  saveActionRecord(
+    record:
+      TrustClubActionRecord,
+  ): Promise<
+    TrustClubPersistenceResult<
+      TrustClubActionRecord
+    >
+  >;
+
+  findByActionId(
+    actionId:
+      string,
+  ): Promise<
+    TrustClubActionRecord | null
+  >;
+
+  /**
+   * Phase 8.4
+   * Member-scoped Action discovery.
+   *
+   * Returns persisted Action Records belonging to the supplied
+   * member and matching the supplied certified Action type.
+   *
+   * This is a read-only persistence capability.
+   *
+   * Membership ownership and authorization remain outside the
+   * repository boundary.
+   */
+  findByMemberIdAndActionType(
+    memberId:
+      string,
+    actionType:
+      TrustClubActionType,
+  ): Promise<
+    readonly TrustClubActionRecord[]
+  >;
+}
+
+export interface TrustClubActionOutcomeRepository {
+  saveActionOutcome(
+    outcome:
+      TrustClubActionOutcome,
+  ): Promise<
+    TrustClubPersistenceResult<
+      TrustClubActionOutcome
+    >
+  >;
+
+  findOutcomesByActionId(
+    actionId:
+      string,
+  ): Promise<
+    readonly TrustClubActionOutcome[]
+  >;
+}
+
+export interface TrustClubActionPersistenceRepository
+  extends
+    TrustClubActionRecordRepository,
+    TrustClubActionOutcomeRepository {}
+
+/**
+ * Domain-boundary rule.
+ */
+export const TRUST_CLUB_ACTION_PERSISTENCE_DOMAIN_RULE =
+  'PERSISTENCE_USES_CERTIFIED_TRUST_CLUB_ACTION_DOMAIN' as const;
+
+/**
+ * Lifecycle-authority rule.
+ */
+export const TRUST_CLUB_ACTION_PERSISTENCE_LIFECYCLE_RULE =
+  'PERSISTENCE_DOES_NOT_CONTROL_ACTION_LIFECYCLE' as const;
+
+/**
+ * Technology-neutrality rule.
+ */
+export const TRUST_CLUB_ACTION_PERSISTENCE_TECHNOLOGY_RULE =
+  'PERSISTENCE_CONTRACT_IS_TECHNOLOGY_NEUTRAL' as const;
+
+/**
+ * Persistence-proof rule.
+ */
+export const TRUST_CLUB_ACTION_PERSISTENCE_PROOF_RULE =
+  'DOMAIN_OBJECT_EXISTENCE_IS_NOT_PERSISTENCE_PROOF' as const;
+
+/**
+ * Phase 8.4 member-discovery rule.
+ *
+ * Member-scoped Action discovery is a persistence read
+ * capability only. It does not establish authorization,
+ * entitlement, lifecycle authority, or external completion.
+ */
+export const TRUST_CLUB_ACTION_MEMBER_DISCOVERY_PERSISTENCE_RULE =
+  'MEMBER_ACTION_DISCOVERY_IS_READ_ONLY_PERSISTENCE_CAPABILITY' as const;
+
+============================================================
+SOURCE: src/trust-club/persistence/adapters/trust-club-action-persistence.adapter.ts
+============================================================
+import type {
+  TrustClubActionRecord,
+} from '../../domain/trust-club-action-record.contracts';
+
+import type {
+  TrustClubActionOutcome,
+} from '../../domain/trust-club-action-outcome.contracts';
+
+import type {
+  TrustClubActionType,
+} from '../../domain/trust-club-domain.contracts';
+
+import type {
+  TrustClubActionPersistenceRepository,
+  TrustClubPersistenceResult,
+} from '../trust-club-action.repository';
+
+/**
+ * TRUST-CLUB-V1
+ *
+ * Phase 5.3
+ * Action Persistence Adapter Boundary
+ *
+ * Phase 8.4 controlled extension:
+ * Member Action Discovery Read Capability
+ *
+ * Purpose:
+ * Defines the adapter-side implementation boundary for the
+ * certified Action Persistence Repository contract.
+ *
+ * Phase 8.4 extends the declared adapter read capability with
+ * member-scoped Action discovery.
+ *
+ * The member discovery capability:
+ * - reads existing persisted Action Records only;
+ * - supports member-scoped Action discovery;
+ * - scopes discovery by existing memberId;
+ * - scopes discovery by existing certified ActionType;
+ * - does not create or modify Action Records;
+ * - does not perform lifecycle transitions;
+ * - does not establish authorization;
+ * - does not establish authentication;
+ * - does not establish entitlement;
+ * - does not prove external completion.
+ *
+ * It does NOT:
+ * - select Prisma;
+ * - select PostgreSQL;
+ * - select another database technology;
+ * - implement database access;
+ * - create database schemas;
+ * - create migrations;
+ * - persist Action Records;
+ * - persist Action Outcomes;
+ * - redefine Action domain models;
+ * - modify Action lifecycle state;
+ * - perform lifecycle transitions;
+ * - authorize Trust actions;
+ * - authenticate users;
+ * - verify identity;
+ * - resolve entitlements;
+ * - execute payments;
+ * - execute banking activity;
+ * - access Atlantis;
+ * - execute external services.
+ */
+
+/**
+ * Adapter identity.
+ *
+ * A concrete persistence implementation must expose a stable
+ * adapter identity without coupling the application layer to
+ * a specific database technology.
+ */
+export interface TrustClubActionPersistenceAdapterIdentity {
+  adapterName:
+    string;
+
+  adapterVersion:
+    string;
+}
+
+/**
+ * Adapter capability descriptor.
+ *
+ * The capability descriptor states what the adapter supports.
+ * It does not prove that any persistence operation has been
+ * executed.
+ */
+export interface TrustClubActionPersistenceAdapterCapabilities {
+  supportsActionRecordSave:
+    boolean;
+
+  supportsActionRecordLookup:
+    boolean;
+
+  supportsMemberActionDiscovery:
+    boolean;
+
+  supportsActionOutcomeSave:
+    boolean;
+
+  supportsActionOutcomeLookup:
+    boolean;
+}
+
+/**
+ * Persistence Adapter Boundary.
+ *
+ * A concrete persistence adapter must:
+ *
+ * - satisfy the certified repository contract;
+ * - expose adapter identity;
+ * - expose declared persistence capabilities;
+ * - preserve certified Trust Club domain representations.
+ *
+ * Phase 8.4 explicitly exposes the member-scoped Action
+ * discovery read primitive at the adapter boundary.
+ */
+export interface TrustClubActionPersistenceAdapter
+  extends TrustClubActionPersistenceRepository {
+  readonly identity:
+    TrustClubActionPersistenceAdapterIdentity;
+
+  readonly capabilities:
+    TrustClubActionPersistenceAdapterCapabilities;
+
+  findByMemberIdAndActionType(
+    memberId:
+      string,
+    actionType:
+      TrustClubActionType,
+  ): Promise<
+    readonly TrustClubActionRecord[]
+  >;
+}
+
+/**
+ * Adapter contract verification helper.
+ *
+ * This function performs structural capability checks only.
+ *
+ * It does not perform persistence and does not prove database
+ * connectivity or database write capability.
+ */
+export function validateTrustClubActionPersistenceAdapter(
+  adapter:
+    TrustClubActionPersistenceAdapter,
+): boolean {
+  return (
+    adapter.identity.adapterName.trim().length >
+      0 &&
+    adapter.identity.adapterVersion.trim().length >
+      0 &&
+    adapter.capabilities.supportsActionRecordSave ===
+      true &&
+    adapter.capabilities.supportsActionRecordLookup ===
+      true &&
+    adapter.capabilities.supportsMemberActionDiscovery ===
+      true &&
+    adapter.capabilities.supportsActionOutcomeSave ===
+      true &&
+    adapter.capabilities.supportsActionOutcomeLookup ===
+      true
+  );
+}
+
+/**
+ * Type-level compatibility checks.
+ *
+ * These aliases intentionally reference the certified domain
+ * and repository contracts so that adapter implementations
+ * remain aligned with them.
+ */
+export type TrustClubActionPersistenceAdapterRecord =
+  TrustClubActionRecord;
+
+export type TrustClubActionPersistenceAdapterOutcome =
+  TrustClubActionOutcome;
+
+export type TrustClubActionPersistenceAdapterResult<T> =
+  TrustClubPersistenceResult<T>;
+
+/**
+ * Repository-boundary rule.
+ */
+export const TRUST_CLUB_ACTION_ADAPTER_REPOSITORY_RULE =
+  'PERSISTENCE_ADAPTER_IMPLEMENTS_PHASE_5_1_REPOSITORY_BOUNDARY' as const;
+
+/**
+ * Domain-preservation rule.
+ */
+export const TRUST_CLUB_ACTION_ADAPTER_DOMAIN_RULE =
+  'PERSISTENCE_ADAPTER_PRESERVES_CERTIFIED_ACTION_DOMAIN' as const;
+
+/**
+ * Technology-neutrality rule.
+ */
+export const TRUST_CLUB_ACTION_ADAPTER_TECHNOLOGY_RULE =
+  'PERSISTENCE_ADAPTER_BOUNDARY_DOES_NOT_SELECT_DATABASE_TECHNOLOGY' as const;
+
+/**
+ * Lifecycle-authority rule.
+ */
+export const TRUST_CLUB_ACTION_ADAPTER_LIFECYCLE_RULE =
+  'PERSISTENCE_ADAPTER_DOES_NOT_CONTROL_ACTION_LIFECYCLE' as const;
+
+/**
+ * Capability-proof rule.
+ *
+ * Declaring adapter capability is not proof that a persistence
+ * operation occurred.
+ */
+export const TRUST_CLUB_ACTION_ADAPTER_CAPABILITY_PROOF_RULE =
+  'ADAPTER_CAPABILITY_DECLARATION_IS_NOT_PERSISTENCE_PROOF' as const;
+
+/**
+ * Phase 8.4 member-discovery rule.
+ *
+ * Declaring member Action discovery support exposes a
+ * read capability only. It does not grant lifecycle,
+ * authorization, or entitlement authority to the adapter.
+ */
+export const TRUST_CLUB_ACTION_ADAPTER_MEMBER_DISCOVERY_RULE =
+  'PERSISTENCE_ADAPTER_MEMBER_ACTION_DISCOVERY_IS_READ_ONLY' as const;
+
+============================================================
+SOURCE: src/trust-club/persistence/adapters/trust-club-action-prisma.adapter.ts
+============================================================
+import {
+  PrismaPg,
+} from '@prisma/adapter-pg';
+
+import {
+  PrismaClient,
+} from '../../../generated/prisma/client';
+
+import type {
+  TrustClubActionRecord,
+} from '../../domain/trust-club-action-record.contracts';
+
+import type {
+  TrustClubActionOutcome,
+} from '../../domain/trust-club-action-outcome.contracts';
+
+import type {
+  TrustClubActionType,
+} from '../../domain/trust-club-domain.contracts';
+
+import type {
+  TrustClubPersistenceResult,
+} from '../trust-club-action.repository';
+
+import type {
+  TrustClubActionPersistenceAdapter,
+} from './trust-club-action-persistence.adapter';
+
+/**
+ * TRUST-CLUB-V1
+ *
+ * Phase 5.5
+ * Concrete Prisma Persistence Adapter
+ *
+ * Phase 8.4 controlled extension:
+ * Member Action Discovery Read Primitive
+ *
+ * Purpose:
+ * Implements the certified Phase 5.3 persistence adapter
+ * boundary using Prisma 7 and PostgreSQL.
+ *
+ * Persistence ownership:
+ * - Trust Club Action Records
+ * - Trust Club Action Outcomes
+ *
+ * Phase 8.4 extends the existing read capability with
+ * member-scoped Action discovery using already persisted
+ * Action Record fields.
+ *
+ * The Phase 8.4 primitive:
+ * - reads existing Action Records only;
+ * - filters by existing memberId;
+ * - filters by existing certified actionType;
+ * - does not create or modify Action Records;
+ * - does not perform lifecycle transitions;
+ * - does not establish authorization;
+ * - does not establish authentication;
+ * - does not establish entitlement;
+ * - does not prove external completion.
+ *
+ * This adapter does NOT:
+ * - control Action lifecycle authority;
+ * - perform lifecycle transitions;
+ * - authorize Trust actions;
+ * - authenticate users;
+ * - verify identity;
+ * - resolve entitlements;
+ * - execute payments;
+ * - execute banking activity;
+ * - access Atlantis;
+ * - execute external services.
+ */
+
+function createPrismaClient(): PrismaClient {
+  const connectionString =
+    process.env.DATABASE_URL;
+
+  if (
+    typeof connectionString !==
+      'string' ||
+    connectionString.trim().length ===
+      0
+  ) {
+    throw new Error(
+      'DATABASE_URL is required for Trust Club Prisma persistence.',
+    );
+  }
+
+  const adapter =
+    new PrismaPg({
+      connectionString,
+    });
+
+  return new PrismaClient({
+    adapter,
+  });
+}
+
+/**
+ * Concrete Prisma implementation of the certified
+ * Trust Club Action Persistence Adapter boundary.
+ */
+export class TrustClubActionPrismaAdapter
+  implements TrustClubActionPersistenceAdapter {
+  readonly identity = {
+    adapterName:
+      'trust-club-prisma-postgresql',
+
+    adapterVersion:
+      '1.0.0',
+  } as const;
+
+  readonly capabilities = {
+    supportsActionRecordSave:
+      true,
+
+    supportsActionRecordLookup:
+      true,
+
+    supportsMemberActionDiscovery:
+      true,
+
+    supportsActionOutcomeSave:
+      true,
+
+    supportsActionOutcomeLookup:
+      true,
+  } as const;
+
+  private readonly prisma:
+    PrismaClient;
+
+  constructor(
+    prisma?: PrismaClient,
+  ) {
+    this.prisma =
+      prisma ??
+      createPrismaClient();
+  }
+
+  async saveActionRecord(
+    record:
+      TrustClubActionRecord,
+  ): Promise<
+    TrustClubPersistenceResult<
+      TrustClubActionRecord
+    >
+  > {
+    const persisted =
+      await this.prisma
+        .trustClubActionRecord
+        .upsert({
+          where: {
+            actionId:
+              record.actionId,
+          },
+
+          create: {
+            actionId:
+              record.actionId,
+
+            actionType:
+              record.actionType,
+
+            status:
+              record.status,
+
+            requestedByUserId:
+              record.requestedByUserId,
+
+            memberId:
+              record.memberId,
+
+            trustId:
+              record.trustId,
+
+            createdAt:
+              record.createdAt,
+
+            updatedAt:
+              record.updatedAt,
+          },
+
+          update: {
+            actionType:
+              record.actionType,
+
+            status:
+              record.status,
+
+            requestedByUserId:
+              record.requestedByUserId,
+
+            memberId:
+              record.memberId,
+
+            trustId:
+              record.trustId,
+
+            createdAt:
+              record.createdAt,
+
+            updatedAt:
+              record.updatedAt,
+          },
+        });
+
+    return {
+      value: {
+        actionId:
+          persisted.actionId,
+
+        actionType:
+          persisted.actionType,
+
+        status:
+          persisted.status,
+
+        requestedByUserId:
+          persisted.requestedByUserId,
+
+        memberId:
+          persisted.memberId,
+
+        trustId:
+          persisted.trustId ?? undefined,
+
+        createdAt:
+          persisted.createdAt,
+
+        updatedAt:
+          persisted.updatedAt,
+      },
+
+      persisted:
+        true,
+    };
+  }
+
+  async findByActionId(
+    actionId:
+      string,
+  ): Promise<
+    TrustClubActionRecord |
+    null
+  > {
+    const record =
+      await this.prisma
+        .trustClubActionRecord
+        .findUnique({
+          where: {
+            actionId,
+          },
+        });
+
+    if (!record) {
+      return null;
+    }
+
+    return {
+      actionId:
+        record.actionId,
+
+      actionType:
+        record.actionType,
+
+      status:
+        record.status,
+
+      requestedByUserId:
+        record.requestedByUserId,
+
+      memberId:
+        record.memberId,
+
+      trustId:
+        record.trustId ?? undefined,
+
+      createdAt:
+        record.createdAt,
+
+      updatedAt:
+        record.updatedAt,
+    };
+  }
+
+  /**
+   * Phase 8.4
+   * Member-scoped Action discovery.
+   *
+   * Read-only query over existing persisted Action Records.
+   *
+   * No lifecycle mutation, authorization decision,
+   * entitlement decision, or external completion proof
+   * occurs within this persistence operation.
+   */
+  async findByMemberIdAndActionType(
+    memberId:
+      string,
+    actionType:
+      TrustClubActionType,
+  ): Promise<
+    readonly TrustClubActionRecord[]
+  > {
+    const records =
+      await this.prisma
+        .trustClubActionRecord
+        .findMany({
+          where: {
+            memberId,
+            actionType,
+          },
+
+          orderBy: {
+            createdAt:
+              'desc',
+          },
+        });
+
+    return records.map(
+      (
+        record,
+      ): TrustClubActionRecord => ({
+        actionId:
+          record.actionId,
+
+        actionType:
+          record.actionType,
+
+        status:
+          record.status,
+
+        requestedByUserId:
+          record.requestedByUserId,
+
+        memberId:
+          record.memberId,
+
+        trustId:
+          record.trustId ?? undefined,
+
+        createdAt:
+          record.createdAt,
+
+        updatedAt:
+          record.updatedAt,
+      }),
+    );
+  }
+
+  async saveActionOutcome(
+    outcome:
+      TrustClubActionOutcome,
+  ): Promise<
+    TrustClubPersistenceResult<
+      TrustClubActionOutcome
+    >
+  > {
+    const persisted =
+      await this.prisma
+        .trustClubActionOutcome
+        .create({
+          data: {
+            actionId:
+              outcome.actionId,
+
+            actionType:
+              outcome.actionType,
+
+            actionStatus:
+              outcome.actionStatus,
+
+            outcomeType:
+              outcome.outcomeType,
+
+            recordedAt:
+              outcome.recordedAt,
+
+            outcomeCode:
+              outcome.outcomeCode,
+
+            outcomeReason:
+              outcome.outcomeReason,
+
+            externalReference:
+              outcome.externalReference,
+          },
+        });
+
+    return {
+      value: {
+        actionId:
+          persisted.actionId,
+
+        actionType:
+          persisted.actionType,
+
+        actionStatus:
+          persisted.actionStatus,
+
+        outcomeType:
+          persisted.outcomeType,
+
+        recordedAt:
+          persisted.recordedAt,
+
+        outcomeCode:
+          persisted.outcomeCode ?? undefined,
+
+        outcomeReason:
+          persisted.outcomeReason ?? undefined,
+
+        externalReference:
+          persisted.externalReference ?? undefined,
+      },
+
+      persisted:
+        true,
+    };
+  }
+
+  async findOutcomesByActionId(
+    actionId:
+      string,
+  ): Promise<
+    readonly TrustClubActionOutcome[]
+  > {
+    const outcomes =
+      await this.prisma
+        .trustClubActionOutcome
+        .findMany({
+          where: {
+            actionId,
+          },
+
+          orderBy: {
+            recordedAt:
+              'asc',
+          },
+        });
+
+    return outcomes.map(
+      (
+        outcome,
+      ): TrustClubActionOutcome => ({
+        actionId:
+          outcome.actionId,
+
+        actionType:
+          outcome.actionType,
+
+        actionStatus:
+          outcome.actionStatus,
+
+        outcomeType:
+          outcome.outcomeType,
+
+        recordedAt:
+          outcome.recordedAt,
+
+        outcomeCode:
+          outcome.outcomeCode ?? undefined,
+
+        outcomeReason:
+          outcome.outcomeReason ?? undefined,
+
+        externalReference:
+          outcome.externalReference ?? undefined,
+      }),
+    );
+  }
+
+  async disconnect(): Promise<void> {
+    await this.prisma.$disconnect();
+  }
+}
+
+============================================================
+SOURCE: src/trust-club/application/trust-club-action-persistence.service.ts
+============================================================
+import type {
+  TrustClubActionRecord,
+} from '../domain/trust-club-action-record.contracts';
+
+import type {
+  TrustClubActionOutcome,
+} from '../domain/trust-club-action-outcome.contracts';
+
+import type {
+  TrustClubActionType,
+} from '../domain/trust-club-domain.contracts';
+
+import type {
+  TrustClubActionPersistenceRepository,
+  TrustClubPersistenceResult,
+} from '../persistence/trust-club-action.repository';
+
+/**
+ * TRUST-CLUB-V1
+ *
+ * Phase 5.2
+ * Application Persistence Orchestration Service
+ *
+ * Phase 8.4 controlled extension:
+ * Member Action Discovery Read Primitive
+ *
+ * Purpose:
+ * Defines the application-layer orchestration used to invoke
+ * the certified Action Persistence Repository boundary for
+ * Trust Club Action Records and Action Outcomes.
+ *
+ * Phase 8.4 extends the existing application read capability
+ * with controlled member-scoped Action discovery.
+ *
+ * The member discovery primitive:
+ * - reads existing persisted Action Records only;
+ * - scopes discovery by existing memberId;
+ * - scopes discovery by existing certified ActionType;
+ * - delegates persistence access to the repository boundary;
+ * - does not create or modify Action Records;
+ * - does not perform lifecycle transitions;
+ * - does not establish authorization;
+ * - does not establish authentication;
+ * - does not establish entitlement;
+ * - does not prove external completion.
+ *
+ * This service depends on the repository contract only.
+ *
+ * It does NOT:
+ * - implement persistence;
+ * - select a database technology;
+ * - access Prisma directly;
+ * - create database schemas;
+ * - create migrations;
+ * - redefine Action domain models;
+ * - modify Action lifecycle rules;
+ * - perform lifecycle transitions;
+ * - authorize Trust actions;
+ * - authenticate users;
+ * - verify identity;
+ * - resolve entitlements;
+ * - execute payments;
+ * - execute banking activity;
+ * - access Atlantis;
+ * - execute external services.
+ */
+
+export class TrustClubActionPersistenceService {
+  constructor(
+    private readonly repository:
+      TrustClubActionPersistenceRepository,
+  ) {}
+
+  async saveActionRecord(
+    record:
+      TrustClubActionRecord,
+  ): Promise<
+    TrustClubPersistenceResult<
+      TrustClubActionRecord
+    >
+  > {
+    return this.repository.saveActionRecord(
+      record,
+    );
+  }
+
+  async findActionRecord(
+    actionId:
+      string,
+  ): Promise<
+    TrustClubActionRecord | null
+  > {
+    return this.repository.findByActionId(
+      actionId,
+    );
+  }
+
+  /**
+   * Phase 8.4
+   * Member-scoped Action discovery.
+   *
+   * This method is application-layer orchestration only.
+   * Persistence remains owned by the repository boundary.
+   */
+  async findActionRecordsByMemberAndType(
+    memberId:
+      string,
+    actionType:
+      TrustClubActionType,
+  ): Promise<
+    readonly TrustClubActionRecord[]
+  > {
+    return this.repository.findByMemberIdAndActionType(
+      memberId,
+      actionType,
+    );
+  }
+
+  async saveActionOutcome(
+    outcome:
+      TrustClubActionOutcome,
+  ): Promise<
+    TrustClubPersistenceResult<
+      TrustClubActionOutcome
+    >
+  > {
+    return this.repository.saveActionOutcome(
+      outcome,
+    );
+  }
+
+  async findActionOutcomes(
+    actionId:
+      string,
+  ): Promise<
+    readonly TrustClubActionOutcome[]
+  > {
+    return this.repository.findOutcomesByActionId(
+      actionId,
+    );
+  }
+}
+
+/**
+ * Repository-boundary rule.
+ *
+ * Application persistence must access persistence only through
+ * the certified repository contract.
+ */
+export const TRUST_CLUB_ACTION_APPLICATION_PERSISTENCE_RULE =
+  'APPLICATION_PERSISTENCE_USES_PHASE_5_1_REPOSITORY_BOUNDARY' as const;
+
+/**
+ * Domain-preservation rule.
+ *
+ * Application persistence consumes and returns certified
+ * Trust Club Action domain representations without redefining
+ * them.
+ */
+export const TRUST_CLUB_ACTION_APPLICATION_DOMAIN_RULE =
+  'APPLICATION_PERSISTENCE_PRESERVES_CERTIFIED_ACTION_DOMAIN' as const;
+
+/**
+ * Lifecycle-authority rule.
+ *
+ * Application persistence orchestration must not become an
+ * Action lifecycle authority.
+ */
+export const TRUST_CLUB_ACTION_APPLICATION_LIFECYCLE_RULE =
+  'APPLICATION_PERSISTENCE_DOES_NOT_CONTROL_ACTION_LIFECYCLE' as const;
+
+/**
+ * Technology-neutrality rule.
+ *
+ * Application persistence does not know which persistence
+ * adapter or database technology implements the repository.
+ */
+export const TRUST_CLUB_ACTION_APPLICATION_TECHNOLOGY_RULE =
+  'APPLICATION_PERSISTENCE_IS_ADAPTER_NEUTRAL' as const;
+
+/**
+ * Phase 8.4 member-discovery rule.
+ *
+ * Member-scoped Action discovery remains a read-only
+ * application orchestration capability.
+ */
+export const TRUST_CLUB_ACTION_APPLICATION_MEMBER_DISCOVERY_RULE =
+  'APPLICATION_MEMBER_ACTION_DISCOVERY_IS_READ_ONLY' as const;
+
+============================================================
+SOURCE: src/trust-club/server/trust-club-member-action-discovery.operation.ts
+============================================================
+import type {
+  TrustClubActionRecord,
+} from '../domain/trust-club-action-record.contracts';
+
+import type {
+  TrustClubActionType,
+} from '../domain/trust-club-domain.contracts';
+
+import {
+  withTrustClubPersistence,
+} from '../runtime/trust-club-persistence.consumer';
+
+/**
+ * TRUST-CLUB-V1
+ *
+ * Phase 8.4
+ * Server Application Member Action Discovery Operation
+ *
+ * Purpose:
+ * Defines a controlled server-side application operation for
+ * discovering persisted Trust Club Action Records belonging
+ * to one existing member and matching one existing certified
+ * Action type.
+ *
+ * Persistence access is performed only through the existing
+ * certified controlled persistence-consumption boundary.
+ *
+ * This operation composes the Phase 8.4 member-scoped Action
+ * discovery read primitive without introducing a new
+ * persistence authority.
+ *
+ * The operation:
+ * - reads existing persisted Action Records only;
+ * - scopes discovery by existing memberId;
+ * - scopes discovery by existing certified ActionType;
+ * - delegates persistence access through
+ *   withTrustClubPersistence;
+ * - preserves the certified Action Record domain;
+ * - remains read only.
+ *
+ * It does NOT:
+ * - create Action Records;
+ * - modify Action Records;
+ * - modify Action lifecycle state;
+ * - perform lifecycle transitions;
+ * - create or record Action Outcomes;
+ * - perform persistence writes;
+ * - access Prisma directly;
+ * - access the repository directly;
+ * - expose the concrete persistence adapter;
+ * - establish member ownership;
+ * - authorize Trust actions;
+ * - authenticate users;
+ * - verify identity;
+ * - resolve entitlements;
+ * - create an HTTP route;
+ * - create a Server Action;
+ * - expose persistence to client-side code;
+ * - execute payments;
+ * - execute banking activity;
+ * - access Atlantis;
+ * - execute external services;
+ * - prove external completion.
+ */
+
+export interface ReadTrustClubMemberActionsInput {
+  memberId:
+    string;
+
+  actionType:
+    TrustClubActionType;
+}
+
+/**
+ * Reads persisted Trust Club Action Records belonging to the
+ * supplied member and matching the supplied certified Action
+ * type.
+ *
+ * Membership ownership and authorization are intentionally
+ * outside this operation.
+ *
+ * Persistence access is performed only through the certified
+ * controlled persistence-consumption boundary.
+ *
+ * Ordering remains owned by the certified persistence
+ * implementation and is not redefined by this operation.
+ */
+export async function readTrustClubMemberActions(
+  input:
+    ReadTrustClubMemberActionsInput,
+): Promise<
+  readonly TrustClubActionRecord[]
+> {
+  return withTrustClubPersistence(
+    async (
+      persistence,
+    ) => {
+      return persistence.findActionRecordsByMemberAndType(
+        input.memberId,
+        input.actionType,
+      );
+    },
+  );
+}
+
+/**
+ * Server-boundary rule.
+ */
+export const TRUST_CLUB_MEMBER_ACTION_DISCOVERY_SERVER_BOUNDARY_RULE =
+  'SERVER_MEMBER_ACTION_DISCOVERY_USES_CERTIFIED_PERSISTENCE_CONSUMPTION_BOUNDARY' as const;
+
+/**
+ * Read-only rule.
+ */
+export const TRUST_CLUB_MEMBER_ACTION_DISCOVERY_READ_ONLY_RULE =
+  'SERVER_MEMBER_ACTION_DISCOVERY_DOES_NOT_WRITE_PERSISTENCE' as const;
+
+/**
+ * Member-scope rule.
+ *
+ * The member identifier scopes persistence discovery only.
+ * Its presence does not establish ownership or authorization.
+ */
+export const TRUST_CLUB_MEMBER_ACTION_DISCOVERY_SCOPE_RULE =
+  'MEMBER_ACTION_DISCOVERY_SCOPE_IS_NOT_OWNERSHIP_OR_AUTHORIZATION_PROOF' as const;
+
+/**
+ * Existing-domain rule.
+ */
+export const TRUST_CLUB_MEMBER_ACTION_DISCOVERY_DOMAIN_RULE =
+  'SERVER_MEMBER_ACTION_DISCOVERY_PRESERVES_CERTIFIED_ACTION_DOMAIN' as const;
+
+/**
+ * Exposure rule.
+ */
+export const TRUST_CLUB_MEMBER_ACTION_DISCOVERY_EXPOSURE_RULE =
+  'SERVER_MEMBER_ACTION_DISCOVERY_DOES_NOT_CREATE_PUBLIC_ENDPOINT' as const;
+
+/**
+ * Lifecycle-authority rule.
+ */
+export const TRUST_CLUB_MEMBER_ACTION_DISCOVERY_LIFECYCLE_RULE =
+  'SERVER_MEMBER_ACTION_DISCOVERY_DOES_NOT_CONTROL_ACTION_LIFECYCLE' as const;
+
+/**
+ * Entitlement rule.
+ */
+export const TRUST_CLUB_MEMBER_ACTION_DISCOVERY_ENTITLEMENT_RULE =
+  'READING_MEMBER_ACTIONS_IS_NOT_ENTITLEMENT_PROOF' as const;
+
+/**
+ * External-completion rule.
+ */
+export const TRUST_CLUB_MEMBER_ACTION_DISCOVERY_EXTERNAL_RULE =
+  'READING_MEMBER_ACTIONS_IS_NOT_PROOF_OF_EXTERNAL_COMPLETION' as const;
