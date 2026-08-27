@@ -45,6 +45,9 @@ export interface TrustClubActionProgressionInput {
   requestedStatus:
     TrustClubActionStatus;
 
+  requestedTrustId?:
+    string;
+
   updatedAt:
     string;
 }

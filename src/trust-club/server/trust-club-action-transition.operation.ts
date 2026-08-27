@@ -63,6 +63,9 @@ export interface TransitionTrustClubActionInput {
   requestedStatus:
     TrustClubActionStatus;
 
+  requestedTrustId?:
+    string;
+
   updatedAt:
     string;
 }
@@ -113,6 +116,9 @@ export async function transitionTrustClubAction(
 
           requestedStatus:
             input.requestedStatus,
+
+          requestedTrustId:
+            input.requestedTrustId,
 
           updatedAt:
             input.updatedAt,

@@ -1,0 +1,4 @@
+﻿ canonicalTrustIdRecordCount
+-----------------------------
+                           1
+(1 row)

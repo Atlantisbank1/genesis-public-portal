@@ -99,6 +99,9 @@ export interface TrustClubActionRecordTransitionInput {
   requestedStatus:
     TrustClubActionStatus;
 
+  requestedTrustId?:
+    string;
+
   updatedAt:
     string;
 }

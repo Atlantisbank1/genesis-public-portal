@@ -1,0 +1,11 @@
+﻿                     actionId                      |      actionType       |  status  |        requestedByUserId         |         memberId          |                    trustId                     |        createdAt         |        updatedAt
+---------------------------------------------------+-----------------------+----------+----------------------------------+---------------------------+------------------------------------------------+--------------------------+--------------------------
+ trust-action-ae91dfdc-d654-495c-9584-5f258f663251 | CREATE_STANDARD_TRUST | COMPLETE | qaWyE8LaqX4RvDGR9ETyi1UCW1kQPcS5 | cmt4koypv0001x0n9gp8nzld8 | GTC-TRUST-fb102ff3-61a6-4ee0-8c1d-a85fed8cf624 | 2026-08-27T12:13:53.757Z | 2026-08-27T15:20:28.768Z
+(1 row)
+
+   actionStatus    |     outcomeType     |                 externalReference                  |        recordedAt
+-------------------+---------------------+----------------------------------------------------+--------------------------
+ INTERNAL_COMPLETE | INTERNAL_COMPLETION | <NULL>                                             | 2026-08-27T14:33:03.764Z
+ EXTERNAL_PENDING  | EXTERNAL_PENDING    | <NULL>                                             | 2026-08-27T14:37:31.123Z
+ COMPLETE          | COMPLETED           | PHASE-9.0-CANONICAL-TRUST-ID-RUNTIME-1787842061714 | 2026-08-27T14:48:36.465Z
+(3 rows)

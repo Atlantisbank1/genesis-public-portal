@@ -1,0 +1,144 @@
+﻿============================================================
+GENESIS TRUST CLUB V1
+PHASE 9.0-I.8I.2O
+CANONICAL TRUST ID COMPLETION AND CONTROLLED RECOVERY
+ENGINEERING CERTIFICATION
+============================================================
+
+BASELINE HEAD:
+6b3b43aa20167aaf5a9c4a11b50ae1ef48840fb2
+
+CERTIFICATION STATUS:
+PASS
+
+SCOPE:
+STANDARD TRUST FORMATION CANONICAL TRUST ID
+
+CERTIFIED ARCHITECTURAL RESULT:
+
+1. Canonical Trust ID allocation is bound to verified
+   Standard Trust final completion.
+
+2. Standard Trust completion requires:
+   - CREATE_STANDARD_TRUST Action;
+   - EXTERNAL_PENDING source status;
+   - verified external completion evidence;
+   - authenticated persisted TRUST_CLUB_ADMIN authority.
+
+3. Normal final completion targets:
+   EXTERNAL_PENDING -> COMPLETE.
+
+4. Canonical Trust ID allocation uses:
+   allocateTrustClubTrustId().
+
+5. Canonical Trust ID is supplied to the certified
+   TRANSITION_ACTION boundary as requestedTrustId.
+
+6. Action persistence supports canonical trustId storage.
+
+7. Existing Trust ID reassignment is prohibited.
+
+8. A stale pre-Phase-9.0 runtime caused one historical
+   Action to reach COMPLETE without persisting trustId.
+
+9. The historical anomaly was recovered through a
+   dedicated authenticated Admin-only recovery boundary.
+
+10. Controlled recovery required:
+    - CREATE_STANDARD_TRUST;
+    - COMPLETE status;
+    - missing trustId;
+    - exactly one INTERNAL_COMPLETION Outcome;
+    - exactly one EXTERNAL_PENDING Outcome;
+    - exactly one COMPLETED Outcome;
+    - existing verified externalReference;
+    - persisted TRUST_CLUB_ADMIN authority.
+
+11. Recovery did NOT:
+    - replay lifecycle completion;
+    - perform COMPLETE -> COMPLETE;
+    - create a new Action Outcome;
+    - modify historical Outcomes;
+    - execute an external service;
+    - accept caller-supplied trustId;
+    - access Prisma directly from the HTTP route;
+    - perform direct SQL write;
+    - reassign an existing Trust ID.
+
+RUNTIME CERTIFICATION RESULT:
+
+ACTION ID:
+trust-action-ae91dfdc-d654-495c-9584-5f258f663251
+
+FINAL ACTION STATUS:
+COMPLETE
+
+CANONICAL TRUST ID:
+GTC-TRUST-fb102ff3-61a6-4ee0-8c1d-a85fed8cf624
+
+CANONICAL TRUST ID UNIQUENESS:
+PASS
+
+CERTIFIED OUTCOME CHAIN:
+INTERNAL_COMPLETE / INTERNAL_COMPLETION
+EXTERNAL_PENDING / EXTERNAL_PENDING
+COMPLETE / COMPLETED
+
+COMPLETED EXTERNAL REFERENCE:
+PHASE-9.0-CANONICAL-TRUST-ID-RUNTIME-1787842061714
+
+RECOVERY HTTP STATUS:
+200
+
+RECOVERY PERSISTENCE:
+PASS
+
+RECOVERY REPLAY STATUS:
+HTTP 409
+
+RECOVERY REPLAY PROTECTION:
+PASS
+
+TRUST ID REASSIGNMENT PROTECTION:
+PASS
+
+NEW ACTION OUTCOME CREATED BY RECOVERY:
+NO
+
+HISTORICAL OUTCOMES MODIFIED:
+NO
+
+DIRECT SQL WRITE:
+NO
+
+DIRECT PRISMA WRITE:
+NO
+
+SOURCE BUILD:
+PASS
+
+RECOVERY ROUTE BUILD:
+PASS
+
+FAIL-CLOSED UNAUTHENTICATED RECOVERY:
+HTTP 401 / PASS
+
+FINAL ENGINEERING DETERMINATION:
+
+PHASE 9.0-I.8I.2O IS ENGINEERING CERTIFIED.
+
+The Standard Trust canonical Trust ID lifecycle boundary,
+final-completion allocation path, stale-runtime recovery path,
+Admin authority boundary, replay protection, outcome immutability,
+and canonical Trust ID uniqueness have been runtime verified.
+
+STAGING:
+NO
+
+COMMIT:
+NO
+
+PUSH:
+NO
+
+============================================================

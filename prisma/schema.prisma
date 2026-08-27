@@ -106,7 +106,7 @@ model TrustClubActionRecord {
   status            TrustClubActionStatus
   requestedByUserId String
   memberId          String
-  trustId           String?
+  trustId           String?               @unique
   createdAt         String
   updatedAt         String
 
@@ -115,7 +115,6 @@ model TrustClubActionRecord {
 
   @@index([requestedByUserId])
   @@index([memberId])
-  @@index([trustId])
   @@index([status])
   @@map("trust_club_action_records")
 }

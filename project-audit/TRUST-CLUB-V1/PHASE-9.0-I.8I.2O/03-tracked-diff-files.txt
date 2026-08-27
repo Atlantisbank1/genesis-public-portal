@@ -1,0 +1,7 @@
+﻿prisma/schema.prisma
+src/trust-club/domain/trust-club-action-progression.contracts.ts
+src/trust-club/domain/trust-club-action-progression.service.ts
+src/trust-club/domain/trust-club-action-record.contracts.ts
+src/trust-club/domain/trust-club-action-record.service.ts
+src/trust-club/formation/trust-club-standard-trust-formation-complete.operation.ts
+src/trust-club/server/trust-club-action-transition.operation.ts

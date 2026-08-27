@@ -57,6 +57,9 @@ export function progressTrustClubAction(
       requestedStatus:
         input.requestedStatus,
 
+      requestedTrustId:
+        input.requestedTrustId,
+
       updatedAt:
         input.updatedAt,
     });

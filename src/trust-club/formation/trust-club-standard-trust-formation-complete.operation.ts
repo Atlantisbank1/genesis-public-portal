@@ -1,4 +1,8 @@
 import {
+  allocateTrustClubTrustId,
+} from '../domain/trust-club-trust-identity.service';
+
+import {
   executeTrustClubServerApplicationEntry,
 } from '../server/trust-club-server-application-entry.service';
 
@@ -43,6 +47,9 @@ export interface CompleteStandardTrustFormationInput {
 
 export interface CompleteStandardTrustFormationResult {
   actionId:
+    string;
+
+  trustId:
     string;
 
   previousActionStatus:
@@ -104,6 +111,15 @@ export async function completeStandardTrustFormation(
     );
   }
 
+  if (
+    action.trustId !==
+      undefined
+  ) {
+    throw new Error(
+      'TRUST_CLUB_STANDARD_TRUST_FORMATION_TRUST_ID_ALREADY_ASSIGNED',
+    );
+  }
+
   const verification =
     await verifyStandardTrustExternalCompletion({
       authenticationSource:
@@ -144,6 +160,9 @@ export async function completeStandardTrustFormation(
     );
   }
 
+  const trustId =
+    allocateTrustClubTrustId();
+
   const transitionExecution =
     await executeTrustClubServerApplicationEntry({
       ...input.applicationEntry,
@@ -157,6 +176,9 @@ export async function completeStandardTrustFormation(
 
         requestedStatus:
           'COMPLETE',
+
+        requestedTrustId:
+          trustId,
 
         updatedAt:
           input.updatedAt,
@@ -215,6 +237,15 @@ export async function completeStandardTrustFormation(
   ) {
     throw new Error(
       'TRUST_CLUB_STANDARD_TRUST_FORMATION_COMPLETION_ACTION_ID_MISMATCH',
+    );
+  }
+
+  if (
+    transition.progressedRecord.trustId !==
+      trustId
+  ) {
+    throw new Error(
+      'TRUST_CLUB_STANDARD_TRUST_FORMATION_COMPLETION_TRUST_ID_MISMATCH',
     );
   }
 
@@ -325,6 +356,8 @@ export async function completeStandardTrustFormation(
     actionId:
       transition.progressedRecord.actionId,
 
+    trustId,
+
     previousActionStatus:
       'EXTERNAL_PENDING',
 
@@ -374,3 +407,9 @@ export const TRUST_CLUB_STANDARD_TRUST_FORMATION_COMPLETION_DIRECT_PERSISTENCE_R
 
 export const TRUST_CLUB_STANDARD_TRUST_FORMATION_COMPLETION_EXTERNAL_EXECUTION_RULE =
   'STANDARD_TRUST_FORMATION_COMPLETION_DOES_NOT_EXECUTE_EXTERNAL_SERVICE' as const;
+
+export const TRUST_CLUB_STANDARD_TRUST_FORMATION_COMPLETION_TRUST_ID_RULE =
+  'STANDARD_TRUST_FORMATION_COMPLETION_ALLOCATES_CANONICAL_TRUST_ID_ONLY_AFTER_VERIFIED_EXTERNAL_COMPLETION' as const;
+
+export const TRUST_CLUB_STANDARD_TRUST_FORMATION_COMPLETION_TRUST_ID_REASSIGNMENT_RULE =
+  'STANDARD_TRUST_FORMATION_COMPLETION_PROHIBITS_EXISTING_TRUST_ID_REASSIGNMENT' as const;

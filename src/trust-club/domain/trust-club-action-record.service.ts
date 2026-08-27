@@ -89,11 +89,33 @@ export function transitionTrustClubActionRecord(
     );
   }
 
+  if (
+    input.requestedTrustId !== undefined &&
+    input.requestedStatus !== 'COMPLETE'
+  ) {
+    throw new Error(
+      'TRUST_CLUB_TRUST_ID_ASSIGNMENT_REQUIRES_COMPLETE_STATUS',
+    );
+  }
+
+  if (
+    input.requestedTrustId !== undefined &&
+    input.record.trustId !== undefined
+  ) {
+    throw new Error(
+      'TRUST_CLUB_TRUST_ID_REASSIGNMENT_PROHIBITED',
+    );
+  }
+
   return {
     ...input.record,
 
     status:
       input.requestedStatus,
+
+    trustId:
+      input.requestedTrustId ??
+      input.record.trustId,
 
     updatedAt:
       input.updatedAt,
