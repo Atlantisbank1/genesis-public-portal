@@ -208,6 +208,7 @@ export type TrustClubActionRecordWhereInput = {
   updatedAt?: Prisma.StringFilter<"TrustClubActionRecord"> | string
   outcomes?: Prisma.TrustClubActionOutcomeListRelationFilter
   standardFormation?: Prisma.XOR<Prisma.TrustClubStandardTrustFormationNullableScalarRelationFilter, Prisma.TrustClubStandardTrustFormationWhereInput> | null
+  formedTrust?: Prisma.XOR<Prisma.TrustClubTrustRecordNullableScalarRelationFilter, Prisma.TrustClubTrustRecordWhereInput> | null
 }
 
 export type TrustClubActionRecordOrderByWithRelationInput = {
@@ -221,10 +222,12 @@ export type TrustClubActionRecordOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   outcomes?: Prisma.TrustClubActionOutcomeOrderByRelationAggregateInput
   standardFormation?: Prisma.TrustClubStandardTrustFormationOrderByWithRelationInput
+  formedTrust?: Prisma.TrustClubTrustRecordOrderByWithRelationInput
 }
 
 export type TrustClubActionRecordWhereUniqueInput = Prisma.AtLeast<{
   actionId?: string
+  trustId?: string
   AND?: Prisma.TrustClubActionRecordWhereInput | Prisma.TrustClubActionRecordWhereInput[]
   OR?: Prisma.TrustClubActionRecordWhereInput[]
   NOT?: Prisma.TrustClubActionRecordWhereInput | Prisma.TrustClubActionRecordWhereInput[]
@@ -232,12 +235,12 @@ export type TrustClubActionRecordWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumTrustClubActionStatusFilter<"TrustClubActionRecord"> | $Enums.TrustClubActionStatus
   requestedByUserId?: Prisma.StringFilter<"TrustClubActionRecord"> | string
   memberId?: Prisma.StringFilter<"TrustClubActionRecord"> | string
-  trustId?: Prisma.StringNullableFilter<"TrustClubActionRecord"> | string | null
   createdAt?: Prisma.StringFilter<"TrustClubActionRecord"> | string
   updatedAt?: Prisma.StringFilter<"TrustClubActionRecord"> | string
   outcomes?: Prisma.TrustClubActionOutcomeListRelationFilter
   standardFormation?: Prisma.XOR<Prisma.TrustClubStandardTrustFormationNullableScalarRelationFilter, Prisma.TrustClubStandardTrustFormationWhereInput> | null
-}, "actionId">
+  formedTrust?: Prisma.XOR<Prisma.TrustClubTrustRecordNullableScalarRelationFilter, Prisma.TrustClubTrustRecordWhereInput> | null
+}, "actionId" | "trustId">
 
 export type TrustClubActionRecordOrderByWithAggregationInput = {
   actionId?: Prisma.SortOrder
@@ -278,6 +281,7 @@ export type TrustClubActionRecordCreateInput = {
   updatedAt: string
   outcomes?: Prisma.TrustClubActionOutcomeCreateNestedManyWithoutActionInput
   standardFormation?: Prisma.TrustClubStandardTrustFormationCreateNestedOneWithoutActionInput
+  formedTrust?: Prisma.TrustClubTrustRecordCreateNestedOneWithoutFormationActionInput
 }
 
 export type TrustClubActionRecordUncheckedCreateInput = {
@@ -291,6 +295,7 @@ export type TrustClubActionRecordUncheckedCreateInput = {
   updatedAt: string
   outcomes?: Prisma.TrustClubActionOutcomeUncheckedCreateNestedManyWithoutActionInput
   standardFormation?: Prisma.TrustClubStandardTrustFormationUncheckedCreateNestedOneWithoutActionInput
+  formedTrust?: Prisma.TrustClubTrustRecordUncheckedCreateNestedOneWithoutFormationActionInput
 }
 
 export type TrustClubActionRecordUpdateInput = {
@@ -304,6 +309,7 @@ export type TrustClubActionRecordUpdateInput = {
   updatedAt?: Prisma.StringFieldUpdateOperationsInput | string
   outcomes?: Prisma.TrustClubActionOutcomeUpdateManyWithoutActionNestedInput
   standardFormation?: Prisma.TrustClubStandardTrustFormationUpdateOneWithoutActionNestedInput
+  formedTrust?: Prisma.TrustClubTrustRecordUpdateOneWithoutFormationActionNestedInput
 }
 
 export type TrustClubActionRecordUncheckedUpdateInput = {
@@ -317,6 +323,7 @@ export type TrustClubActionRecordUncheckedUpdateInput = {
   updatedAt?: Prisma.StringFieldUpdateOperationsInput | string
   outcomes?: Prisma.TrustClubActionOutcomeUncheckedUpdateManyWithoutActionNestedInput
   standardFormation?: Prisma.TrustClubStandardTrustFormationUncheckedUpdateOneWithoutActionNestedInput
+  formedTrust?: Prisma.TrustClubTrustRecordUncheckedUpdateOneWithoutFormationActionNestedInput
 }
 
 export type TrustClubActionRecordCreateManyInput = {
@@ -420,6 +427,20 @@ export type TrustClubActionRecordUpdateOneRequiredWithoutOutcomesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TrustClubActionRecordUpdateToOneWithWhereWithoutOutcomesInput, Prisma.TrustClubActionRecordUpdateWithoutOutcomesInput>, Prisma.TrustClubActionRecordUncheckedUpdateWithoutOutcomesInput>
 }
 
+export type TrustClubActionRecordCreateNestedOneWithoutFormedTrustInput = {
+  create?: Prisma.XOR<Prisma.TrustClubActionRecordCreateWithoutFormedTrustInput, Prisma.TrustClubActionRecordUncheckedCreateWithoutFormedTrustInput>
+  connectOrCreate?: Prisma.TrustClubActionRecordCreateOrConnectWithoutFormedTrustInput
+  connect?: Prisma.TrustClubActionRecordWhereUniqueInput
+}
+
+export type TrustClubActionRecordUpdateOneRequiredWithoutFormedTrustNestedInput = {
+  create?: Prisma.XOR<Prisma.TrustClubActionRecordCreateWithoutFormedTrustInput, Prisma.TrustClubActionRecordUncheckedCreateWithoutFormedTrustInput>
+  connectOrCreate?: Prisma.TrustClubActionRecordCreateOrConnectWithoutFormedTrustInput
+  upsert?: Prisma.TrustClubActionRecordUpsertWithoutFormedTrustInput
+  connect?: Prisma.TrustClubActionRecordWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TrustClubActionRecordUpdateToOneWithWhereWithoutFormedTrustInput, Prisma.TrustClubActionRecordUpdateWithoutFormedTrustInput>, Prisma.TrustClubActionRecordUncheckedUpdateWithoutFormedTrustInput>
+}
+
 export type TrustClubActionRecordCreateNestedOneWithoutStandardFormationInput = {
   create?: Prisma.XOR<Prisma.TrustClubActionRecordCreateWithoutStandardFormationInput, Prisma.TrustClubActionRecordUncheckedCreateWithoutStandardFormationInput>
   connectOrCreate?: Prisma.TrustClubActionRecordCreateOrConnectWithoutStandardFormationInput
@@ -444,6 +465,7 @@ export type TrustClubActionRecordCreateWithoutOutcomesInput = {
   createdAt: string
   updatedAt: string
   standardFormation?: Prisma.TrustClubStandardTrustFormationCreateNestedOneWithoutActionInput
+  formedTrust?: Prisma.TrustClubTrustRecordCreateNestedOneWithoutFormationActionInput
 }
 
 export type TrustClubActionRecordUncheckedCreateWithoutOutcomesInput = {
@@ -456,6 +478,7 @@ export type TrustClubActionRecordUncheckedCreateWithoutOutcomesInput = {
   createdAt: string
   updatedAt: string
   standardFormation?: Prisma.TrustClubStandardTrustFormationUncheckedCreateNestedOneWithoutActionInput
+  formedTrust?: Prisma.TrustClubTrustRecordUncheckedCreateNestedOneWithoutFormationActionInput
 }
 
 export type TrustClubActionRecordCreateOrConnectWithoutOutcomesInput = {
@@ -484,6 +507,7 @@ export type TrustClubActionRecordUpdateWithoutOutcomesInput = {
   createdAt?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.StringFieldUpdateOperationsInput | string
   standardFormation?: Prisma.TrustClubStandardTrustFormationUpdateOneWithoutActionNestedInput
+  formedTrust?: Prisma.TrustClubTrustRecordUpdateOneWithoutFormationActionNestedInput
 }
 
 export type TrustClubActionRecordUncheckedUpdateWithoutOutcomesInput = {
@@ -495,6 +519,75 @@ export type TrustClubActionRecordUncheckedUpdateWithoutOutcomesInput = {
   trustId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.StringFieldUpdateOperationsInput | string
+  standardFormation?: Prisma.TrustClubStandardTrustFormationUncheckedUpdateOneWithoutActionNestedInput
+  formedTrust?: Prisma.TrustClubTrustRecordUncheckedUpdateOneWithoutFormationActionNestedInput
+}
+
+export type TrustClubActionRecordCreateWithoutFormedTrustInput = {
+  actionId: string
+  actionType: $Enums.TrustClubActionType
+  status: $Enums.TrustClubActionStatus
+  requestedByUserId: string
+  memberId: string
+  trustId?: string | null
+  createdAt: string
+  updatedAt: string
+  outcomes?: Prisma.TrustClubActionOutcomeCreateNestedManyWithoutActionInput
+  standardFormation?: Prisma.TrustClubStandardTrustFormationCreateNestedOneWithoutActionInput
+}
+
+export type TrustClubActionRecordUncheckedCreateWithoutFormedTrustInput = {
+  actionId: string
+  actionType: $Enums.TrustClubActionType
+  status: $Enums.TrustClubActionStatus
+  requestedByUserId: string
+  memberId: string
+  trustId?: string | null
+  createdAt: string
+  updatedAt: string
+  outcomes?: Prisma.TrustClubActionOutcomeUncheckedCreateNestedManyWithoutActionInput
+  standardFormation?: Prisma.TrustClubStandardTrustFormationUncheckedCreateNestedOneWithoutActionInput
+}
+
+export type TrustClubActionRecordCreateOrConnectWithoutFormedTrustInput = {
+  where: Prisma.TrustClubActionRecordWhereUniqueInput
+  create: Prisma.XOR<Prisma.TrustClubActionRecordCreateWithoutFormedTrustInput, Prisma.TrustClubActionRecordUncheckedCreateWithoutFormedTrustInput>
+}
+
+export type TrustClubActionRecordUpsertWithoutFormedTrustInput = {
+  update: Prisma.XOR<Prisma.TrustClubActionRecordUpdateWithoutFormedTrustInput, Prisma.TrustClubActionRecordUncheckedUpdateWithoutFormedTrustInput>
+  create: Prisma.XOR<Prisma.TrustClubActionRecordCreateWithoutFormedTrustInput, Prisma.TrustClubActionRecordUncheckedCreateWithoutFormedTrustInput>
+  where?: Prisma.TrustClubActionRecordWhereInput
+}
+
+export type TrustClubActionRecordUpdateToOneWithWhereWithoutFormedTrustInput = {
+  where?: Prisma.TrustClubActionRecordWhereInput
+  data: Prisma.XOR<Prisma.TrustClubActionRecordUpdateWithoutFormedTrustInput, Prisma.TrustClubActionRecordUncheckedUpdateWithoutFormedTrustInput>
+}
+
+export type TrustClubActionRecordUpdateWithoutFormedTrustInput = {
+  actionId?: Prisma.StringFieldUpdateOperationsInput | string
+  actionType?: Prisma.EnumTrustClubActionTypeFieldUpdateOperationsInput | $Enums.TrustClubActionType
+  status?: Prisma.EnumTrustClubActionStatusFieldUpdateOperationsInput | $Enums.TrustClubActionStatus
+  requestedByUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  memberId?: Prisma.StringFieldUpdateOperationsInput | string
+  trustId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedAt?: Prisma.StringFieldUpdateOperationsInput | string
+  outcomes?: Prisma.TrustClubActionOutcomeUpdateManyWithoutActionNestedInput
+  standardFormation?: Prisma.TrustClubStandardTrustFormationUpdateOneWithoutActionNestedInput
+}
+
+export type TrustClubActionRecordUncheckedUpdateWithoutFormedTrustInput = {
+  actionId?: Prisma.StringFieldUpdateOperationsInput | string
+  actionType?: Prisma.EnumTrustClubActionTypeFieldUpdateOperationsInput | $Enums.TrustClubActionType
+  status?: Prisma.EnumTrustClubActionStatusFieldUpdateOperationsInput | $Enums.TrustClubActionStatus
+  requestedByUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  memberId?: Prisma.StringFieldUpdateOperationsInput | string
+  trustId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.StringFieldUpdateOperationsInput | string
+  updatedAt?: Prisma.StringFieldUpdateOperationsInput | string
+  outcomes?: Prisma.TrustClubActionOutcomeUncheckedUpdateManyWithoutActionNestedInput
   standardFormation?: Prisma.TrustClubStandardTrustFormationUncheckedUpdateOneWithoutActionNestedInput
 }
 
@@ -508,6 +601,7 @@ export type TrustClubActionRecordCreateWithoutStandardFormationInput = {
   createdAt: string
   updatedAt: string
   outcomes?: Prisma.TrustClubActionOutcomeCreateNestedManyWithoutActionInput
+  formedTrust?: Prisma.TrustClubTrustRecordCreateNestedOneWithoutFormationActionInput
 }
 
 export type TrustClubActionRecordUncheckedCreateWithoutStandardFormationInput = {
@@ -520,6 +614,7 @@ export type TrustClubActionRecordUncheckedCreateWithoutStandardFormationInput = 
   createdAt: string
   updatedAt: string
   outcomes?: Prisma.TrustClubActionOutcomeUncheckedCreateNestedManyWithoutActionInput
+  formedTrust?: Prisma.TrustClubTrustRecordUncheckedCreateNestedOneWithoutFormationActionInput
 }
 
 export type TrustClubActionRecordCreateOrConnectWithoutStandardFormationInput = {
@@ -548,6 +643,7 @@ export type TrustClubActionRecordUpdateWithoutStandardFormationInput = {
   createdAt?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.StringFieldUpdateOperationsInput | string
   outcomes?: Prisma.TrustClubActionOutcomeUpdateManyWithoutActionNestedInput
+  formedTrust?: Prisma.TrustClubTrustRecordUpdateOneWithoutFormationActionNestedInput
 }
 
 export type TrustClubActionRecordUncheckedUpdateWithoutStandardFormationInput = {
@@ -560,6 +656,7 @@ export type TrustClubActionRecordUncheckedUpdateWithoutStandardFormationInput = 
   createdAt?: Prisma.StringFieldUpdateOperationsInput | string
   updatedAt?: Prisma.StringFieldUpdateOperationsInput | string
   outcomes?: Prisma.TrustClubActionOutcomeUncheckedUpdateManyWithoutActionNestedInput
+  formedTrust?: Prisma.TrustClubTrustRecordUncheckedUpdateOneWithoutFormationActionNestedInput
 }
 
 
@@ -604,6 +701,7 @@ export type TrustClubActionRecordSelect<ExtArgs extends runtime.Types.Extensions
   updatedAt?: boolean
   outcomes?: boolean | Prisma.TrustClubActionRecord$outcomesArgs<ExtArgs>
   standardFormation?: boolean | Prisma.TrustClubActionRecord$standardFormationArgs<ExtArgs>
+  formedTrust?: boolean | Prisma.TrustClubActionRecord$formedTrustArgs<ExtArgs>
   _count?: boolean | Prisma.TrustClubActionRecordCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trustClubActionRecord"]>
 
@@ -644,6 +742,7 @@ export type TrustClubActionRecordOmit<ExtArgs extends runtime.Types.Extensions.I
 export type TrustClubActionRecordInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   outcomes?: boolean | Prisma.TrustClubActionRecord$outcomesArgs<ExtArgs>
   standardFormation?: boolean | Prisma.TrustClubActionRecord$standardFormationArgs<ExtArgs>
+  formedTrust?: boolean | Prisma.TrustClubActionRecord$formedTrustArgs<ExtArgs>
   _count?: boolean | Prisma.TrustClubActionRecordCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TrustClubActionRecordIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -654,6 +753,7 @@ export type $TrustClubActionRecordPayload<ExtArgs extends runtime.Types.Extensio
   objects: {
     outcomes: Prisma.$TrustClubActionOutcomePayload<ExtArgs>[]
     standardFormation: Prisma.$TrustClubStandardTrustFormationPayload<ExtArgs> | null
+    formedTrust: Prisma.$TrustClubTrustRecordPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     actionId: string
@@ -1060,6 +1160,7 @@ export interface Prisma__TrustClubActionRecordClient<T, Null = never, ExtArgs ex
   readonly [Symbol.toStringTag]: "PrismaPromise"
   outcomes<T extends Prisma.TrustClubActionRecord$outcomesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TrustClubActionRecord$outcomesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TrustClubActionOutcomePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   standardFormation<T extends Prisma.TrustClubActionRecord$standardFormationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TrustClubActionRecord$standardFormationArgs<ExtArgs>>): Prisma.Prisma__TrustClubStandardTrustFormationClient<runtime.Types.Result.GetResult<Prisma.$TrustClubStandardTrustFormationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  formedTrust<T extends Prisma.TrustClubActionRecord$formedTrustArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TrustClubActionRecord$formedTrustArgs<ExtArgs>>): Prisma.Prisma__TrustClubTrustRecordClient<runtime.Types.Result.GetResult<Prisma.$TrustClubTrustRecordPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1530,6 +1631,25 @@ export type TrustClubActionRecord$standardFormationArgs<ExtArgs extends runtime.
    */
   include?: Prisma.TrustClubStandardTrustFormationInclude<ExtArgs> | null
   where?: Prisma.TrustClubStandardTrustFormationWhereInput
+}
+
+/**
+ * TrustClubActionRecord.formedTrust
+ */
+export type TrustClubActionRecord$formedTrustArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TrustClubTrustRecord
+   */
+  select?: Prisma.TrustClubTrustRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TrustClubTrustRecord
+   */
+  omit?: Prisma.TrustClubTrustRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TrustClubTrustRecordInclude<ExtArgs> | null
+  where?: Prisma.TrustClubTrustRecordWhereInput
 }
 
 /**

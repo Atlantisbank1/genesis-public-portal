@@ -1,0 +1,29 @@
+﻿GENESIS TRUST CLUB V1
+PHASE 9.1-R30
+STAGED INDEX OBJECT REGISTER
+
+OBJECT COUNT: 23
+
+100644 1a80f03f30feb4288c46005704b94dfed5497d0d 0	prisma/migrations/20260827160502_trust_club_canonical_trust_record/migration.sql
+100644 7c88e829419cc13518f7cda505045fdcb553e9f0 0	prisma/schema.prisma
+100644 b80f178e49b165da691b211aaff4e006f8c6f50c 0	src/app/api/trust-club/admin/formations/standard-trust/establish-canonical-trust/route.ts
+100644 da84e4305eebe04485d4d29ea854efdc5ec659c6 0	src/app/api/trust-club/canonical-trusts/route.ts
+100644 f58f90695ca9f526f3162233aaed9a7c027d77f5 0	src/generated/prisma/browser.ts
+100644 f33e9d14b1664d3875151fac9b7d3156e32b5c80 0	src/generated/prisma/client.ts
+100644 9ebf97b3d6c2af82da433d9e2253a05a6f7cae5e 0	src/generated/prisma/commonInputTypes.ts
+100644 624f8fea467706c60b9fe07ed7fb3d3dcf740494 0	src/generated/prisma/enums.ts
+100644 c90ce7b94b8eb96946299ca399ac5623cc201242 0	src/generated/prisma/internal/class.ts
+100644 e2e2b4a5123f603830aab72aa61668db5dcf9f8f 0	src/generated/prisma/internal/prismaNamespace.ts
+100644 616ea7eea32112471f3725988410cd2d2ddbac71 0	src/generated/prisma/internal/prismaNamespaceBrowser.ts
+100644 0efdc58f5f923a1e9ea267e7cd2e6cb043f3bc53 0	src/generated/prisma/models.ts
+100644 df912c4b4d89f545dbc464b060f65992a471c06d 0	src/generated/prisma/models/TrustClubActionRecord.ts
+100644 b911f48696df14e6ab7c9017014ddd04493ac65f 0	src/generated/prisma/models/TrustClubMember.ts
+100644 93ee8dfe71793c4097058ce6c13cb5aef75d0112 0	src/generated/prisma/models/TrustClubTrustRecord.ts
+100644 4089350e014827f66500f8e0d196354b29b090f4 0	src/trust-club/application/trust-club-trust-registry.service.ts
+100644 eff0b1822fab7400adb3f9205836fef514ca0c0b 0	src/trust-club/domain/trust-club-trust-record.contracts.ts
+100644 21d248bb43a9eb7f2f22c674f6721de5990b75a0 0	src/trust-club/formation/trust-club-standard-trust-establishment.operation.ts
+100644 25a931103953ea2852c08c9111bf781c94cb662c 0	src/trust-club/persistence/adapters/trust-club-trust-record-prisma.adapter.ts
+100644 6ef300e918d948314d3d82e588333c3fe367880b 0	src/trust-club/persistence/trust-club-trust-record.repository.ts
+100644 a6f9b4404664ed7b1984641fac2d4ee98248aa81 0	src/trust-club/runtime/trust-club-persistence.consumer.ts
+100644 101ca2f68045c65b2f2ad83b413ee1298d143c8b 0	src/trust-club/runtime/trust-club-persistence.runtime.ts
+100644 033a8a7c1505c1f364a92611a4632c24dd4d6f94 0	src/trust-club/server/trust-club-member-canonical-trust-read.operation.ts

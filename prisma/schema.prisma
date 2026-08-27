@@ -100,6 +100,10 @@ enum TrustClubInvitationStatus {
   EXPIRED
 }
 
+enum TrustClubTrustType {
+  STANDARD_TRUST
+}
+
 model TrustClubActionRecord {
   actionId          String                @id
   actionType        TrustClubActionType
@@ -112,6 +116,7 @@ model TrustClubActionRecord {
 
   outcomes          TrustClubActionOutcome[]
   standardFormation TrustClubStandardTrustFormation?
+  formedTrust        TrustClubTrustRecord?
 
   @@index([requestedByUserId])
   @@index([memberId])
@@ -153,7 +158,7 @@ model User {
   trustClubMember                TrustClubMember?
   trustClubEligibilityRecord     TrustClubEligibilityRecord?
   trustClubSystemRoleAssignments TrustClubSystemRoleAssignment[]
-  trustClubInvitationsApproved   TrustClubInvitation[]           @relation("TrustClubInvitationApprovedBy")
+  trustClubInvitationsApproved   TrustClubInvitation[] @relation("TrustClubInvitationApprovedBy")
 
   @@unique([email])
   @@map("user")
@@ -200,7 +205,7 @@ model Session {
 }
 
 model Account {
-  id                    String    @id
+  id                    String   @id
   issuer                String
   accountId             String
   providerId            String
@@ -212,8 +217,8 @@ model Account {
   refreshTokenExpiresAt DateTime?
   scope                 String?
   password              String?
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -244,7 +249,8 @@ model TrustClubMember {
   updatedAt          DateTime                    @updatedAt
   activatedAt        DateTime?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  trusts TrustClubTrustRecord[]
 
   @@index([status])
   @@index([subscriptionStatus])
@@ -287,6 +293,24 @@ model TrustClubSystemRoleAssignment {
   @@unique([userId, role])
   @@index([role])
   @@map("trust_club_system_role_assignments")
+}
+
+model TrustClubTrustRecord {
+  trustId           String             @id
+  formationActionId String             @unique
+  memberId          String
+  trustType         TrustClubTrustType
+  establishedAt     DateTime
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+
+  formationAction TrustClubActionRecord @relation(fields: [formationActionId], references: [actionId], onDelete: Restrict, onUpdate: Cascade)
+  member          TrustClubMember       @relation(fields: [memberId], references: [memberId], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([memberId])
+  @@index([trustType])
+  @@index([establishedAt])
+  @@map("trust_club_trust_records")
 }
 
 model TrustClubStandardTrustFormation {

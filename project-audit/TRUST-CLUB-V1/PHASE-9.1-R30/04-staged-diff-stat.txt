@@ -1,0 +1,28 @@
+﻿GENESIS TRUST CLUB V1
+PHASE 9.1-R30
+STAGED DIFF STAT
+
+ .../migration.sql                                  |   33 +
+ prisma/schema.prisma                               |   36 +-
+ .../establish-canonical-trust/route.ts             |  275 ++++
+ src/app/api/trust-club/canonical-trusts/route.ts   |  142 ++
+ src/generated/prisma/browser.ts                    |    5 +
+ src/generated/prisma/client.ts                     |    5 +
+ src/generated/prisma/commonInputTypes.ts           |   34 +
+ src/generated/prisma/enums.ts                      |    7 +
+ src/generated/prisma/internal/class.ts             |   18 +-
+ src/generated/prisma/internal/prismaNamespace.ts   |  105 +-
+ .../prisma/internal/prismaNamespaceBrowser.ts      |   14 +
+ src/generated/prisma/models.ts                     |    1 +
+ .../prisma/models/TrustClubActionRecord.ts         |  124 +-
+ src/generated/prisma/models/TrustClubMember.ts     |  149 ++
+ .../prisma/models/TrustClubTrustRecord.ts          | 1518 ++++++++++++++++++++
+ .../trust-club-trust-registry.service.ts           |  186 +++
+ .../domain/trust-club-trust-record.contracts.ts    |   67 +
+ ...-club-standard-trust-establishment.operation.ts |  414 ++++++
+ .../trust-club-trust-record-prisma.adapter.ts      |  220 +++
+ .../trust-club-trust-record.repository.ts          |  111 ++
+ .../runtime/trust-club-persistence.consumer.ts     |  111 +-
+ .../runtime/trust-club-persistence.runtime.ts      |  104 +-
+ ...t-club-member-canonical-trust-read.operation.ts |  282 ++++
+ 23 files changed, 3901 insertions(+), 60 deletions(-)

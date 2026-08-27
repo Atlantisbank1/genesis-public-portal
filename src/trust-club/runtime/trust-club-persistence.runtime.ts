@@ -3,32 +3,37 @@ import {
 } from '../application/trust-club-action-persistence.service';
 
 import {
+  TrustClubTrustRegistryService,
+} from '../application/trust-club-trust-registry.service';
+
+import {
   TrustClubActionPrismaAdapter,
 } from '../persistence/adapters/trust-club-action-prisma.adapter';
+
+import {
+  TrustClubTrustRecordPrismaAdapter,
+} from '../persistence/adapters/trust-club-trust-record-prisma.adapter';
 
 /**
  * TRUST-CLUB-V1
  *
- * Phase 5.6
+ * Phase 9.1
  * Application Persistence Runtime Composition
  *
  * Purpose:
- * Composes the certified Trust Club persistence chain:
+ * Composes the certified Trust Club persistence boundaries.
  *
- * Phase 5.1
- * Repository Contract
+ * Action persistence chain:
  *
- * Phase 5.2
- * Application Persistence Service
+ * TrustClubActionPrismaAdapter
+ *              ↓
+ * TrustClubActionPersistenceService
  *
- * Phase 5.3
- * Persistence Adapter Boundary
+ * Canonical Trust Registry chain:
  *
- * Phase 5.4
- * Prisma / PostgreSQL Foundation
- *
- * Phase 5.5
- * Concrete Prisma Persistence Adapter
+ * TrustClubTrustRecordPrismaAdapter
+ *              ↓
+ * TrustClubTrustRegistryService
  *
  * This runtime composition owns dependency construction only.
  *
@@ -37,6 +42,12 @@ import {
  * - redefine domain models;
  * - control Action lifecycle authority;
  * - perform lifecycle transitions;
+ * - allocate canonical Trust IDs;
+ * - derive canonical Trust IDs;
+ * - register a Trust automatically;
+ * - recover a Trust automatically;
+ * - create Action Outcomes;
+ * - verify external completion;
  * - authorize Trust actions;
  * - authenticate users;
  * - verify identity;
@@ -51,6 +62,9 @@ export interface TrustClubPersistenceRuntime {
   readonly persistence:
     TrustClubActionPersistenceService;
 
+  readonly trustRegistry:
+    TrustClubTrustRegistryService;
+
   disconnect():
     Promise<void>;
 }
@@ -64,25 +78,43 @@ export interface TrustClubPersistenceRuntime {
  *              ↓
  * TrustClubActionPersistenceService
  *
- * The application service remains dependent only on the
- * certified Phase 5.1 repository boundary.
+ * TrustClubTrustRecordPrismaAdapter
+ *              ↓
+ * TrustClubTrustRegistryService
+ *
+ * Both application services remain dependent only on their
+ * respective repository contracts.
+ *
+ * Runtime construction itself performs no persistence write.
  */
 export function createTrustClubPersistenceRuntime():
   TrustClubPersistenceRuntime {
-  const adapter =
+  const actionAdapter =
     new TrustClubActionPrismaAdapter();
 
   const persistence =
     new TrustClubActionPersistenceService(
-      adapter,
+      actionAdapter,
+    );
+
+  const trustRecordAdapter =
+    new TrustClubTrustRecordPrismaAdapter();
+
+  const trustRegistry =
+    new TrustClubTrustRegistryService(
+      trustRecordAdapter,
     );
 
   return {
     persistence,
 
+    trustRegistry,
+
     async disconnect():
       Promise<void> {
-      await adapter.disconnect();
+      await trustRecordAdapter.disconnect();
+
+      await actionAdapter.disconnect();
     },
   };
 }
@@ -99,11 +131,30 @@ export const TRUST_CLUB_PERSISTENCE_RUNTIME_COMPOSITION_RULE =
 /**
  * Application-boundary rule.
  *
- * The certified Phase 5.2 application service remains
- * dependent on the Phase 5.1 repository contract.
+ * Trust Club application services remain dependent on their
+ * repository contracts rather than concrete Prisma adapters.
  */
 export const TRUST_CLUB_PERSISTENCE_RUNTIME_APPLICATION_RULE =
-  'APPLICATION_SERVICE_REMAINS_REPOSITORY_BOUND' as const;
+  'APPLICATION_SERVICES_REMAIN_REPOSITORY_BOUND' as const;
+
+/**
+ * Canonical Trust Registry composition rule.
+ *
+ * The canonical Trust Registry is made available through
+ * runtime composition without granting runtime composition
+ * authority to register, recover, or allocate a Trust.
+ */
+export const TRUST_CLUB_PERSISTENCE_RUNTIME_TRUST_REGISTRY_RULE =
+  'CANONICAL_TRUST_REGISTRY_IS_COMPOSED_WITHOUT_AUTOMATIC_EXECUTION' as const;
+
+/**
+ * Trust-ID authority rule.
+ *
+ * Runtime composition does not allocate or derive canonical
+ * Trust IDs.
+ */
+export const TRUST_CLUB_PERSISTENCE_RUNTIME_TRUST_ID_RULE =
+  'RUNTIME_COMPOSITION_DOES_NOT_ALLOCATE_CANONICAL_TRUST_IDS' as const;
 
 /**
  * Lifecycle-authority rule.
@@ -115,10 +166,19 @@ export const TRUST_CLUB_PERSISTENCE_RUNTIME_LIFECYCLE_RULE =
   'RUNTIME_COMPOSITION_DOES_NOT_CONTROL_ACTION_LIFECYCLE' as const;
 
 /**
+ * Outcome-boundary rule.
+ *
+ * Runtime composition does not create or modify Action
+ * Outcomes.
+ */
+export const TRUST_CLUB_PERSISTENCE_RUNTIME_OUTCOME_RULE =
+  'RUNTIME_COMPOSITION_DOES_NOT_CREATE_ACTION_OUTCOMES' as const;
+
+/**
  * Resource-ownership rule.
  *
  * The runtime composition owns controlled shutdown of the
- * concrete Prisma adapter that it creates.
+ * concrete Prisma adapters that it creates.
  */
 export const TRUST_CLUB_PERSISTENCE_RUNTIME_RESOURCE_RULE =
   'RUNTIME_COMPOSITION_OWNS_ADAPTER_RESOURCE_SHUTDOWN' as const;

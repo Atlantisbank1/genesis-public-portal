@@ -301,6 +301,23 @@ export type EnumTrustClubSystemRoleWithAggregatesFilter<$PrismaModel = never> = 
   _max?: Prisma.NestedEnumTrustClubSystemRoleFilter<$PrismaModel>
 }
 
+export type EnumTrustClubTrustTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubTrustType | Prisma.EnumTrustClubTrustTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubTrustType[] | Prisma.ListEnumTrustClubTrustTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubTrustType[] | Prisma.ListEnumTrustClubTrustTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubTrustTypeFilter<$PrismaModel> | $Enums.TrustClubTrustType
+}
+
+export type EnumTrustClubTrustTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubTrustType | Prisma.EnumTrustClubTrustTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubTrustType[] | Prisma.ListEnumTrustClubTrustTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubTrustType[] | Prisma.ListEnumTrustClubTrustTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubTrustTypeWithAggregatesFilter<$PrismaModel> | $Enums.TrustClubTrustType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTrustClubTrustTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTrustClubTrustTypeFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -599,6 +616,23 @@ export type NestedEnumTrustClubSystemRoleWithAggregatesFilter<$PrismaModel = nev
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTrustClubSystemRoleFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTrustClubSystemRoleFilter<$PrismaModel>
+}
+
+export type NestedEnumTrustClubTrustTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubTrustType | Prisma.EnumTrustClubTrustTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubTrustType[] | Prisma.ListEnumTrustClubTrustTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubTrustType[] | Prisma.ListEnumTrustClubTrustTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubTrustTypeFilter<$PrismaModel> | $Enums.TrustClubTrustType
+}
+
+export type NestedEnumTrustClubTrustTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubTrustType | Prisma.EnumTrustClubTrustTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubTrustType[] | Prisma.ListEnumTrustClubTrustTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubTrustType[] | Prisma.ListEnumTrustClubTrustTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubTrustTypeWithAggregatesFilter<$PrismaModel> | $Enums.TrustClubTrustType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTrustClubTrustTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTrustClubTrustTypeFilter<$PrismaModel>
 }
 
 

@@ -127,3 +127,10 @@ export const TrustClubInvitationStatus = {
 } as const
 
 export type TrustClubInvitationStatus = (typeof TrustClubInvitationStatus)[keyof typeof TrustClubInvitationStatus]
+
+
+export const TrustClubTrustType = {
+  STANDARD_TRUST: 'STANDARD_TRUST'
+} as const
+
+export type TrustClubTrustType = (typeof TrustClubTrustType)[keyof typeof TrustClubTrustType]

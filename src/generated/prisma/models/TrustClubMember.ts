@@ -207,6 +207,7 @@ export type TrustClubMemberWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"TrustClubMember"> | Date | string
   activatedAt?: Prisma.DateTimeNullableFilter<"TrustClubMember"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  trusts?: Prisma.TrustClubTrustRecordListRelationFilter
 }
 
 export type TrustClubMemberOrderByWithRelationInput = {
@@ -219,6 +220,7 @@ export type TrustClubMemberOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   activatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
+  trusts?: Prisma.TrustClubTrustRecordOrderByRelationAggregateInput
 }
 
 export type TrustClubMemberWhereUniqueInput = Prisma.AtLeast<{
@@ -234,6 +236,7 @@ export type TrustClubMemberWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"TrustClubMember"> | Date | string
   activatedAt?: Prisma.DateTimeNullableFilter<"TrustClubMember"> | Date | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  trusts?: Prisma.TrustClubTrustRecordListRelationFilter
 }, "memberId" | "userId">
 
 export type TrustClubMemberOrderByWithAggregationInput = {
@@ -273,6 +276,7 @@ export type TrustClubMemberCreateInput = {
   updatedAt?: Date | string
   activatedAt?: Date | string | null
   user: Prisma.UserCreateNestedOneWithoutTrustClubMemberInput
+  trusts?: Prisma.TrustClubTrustRecordCreateNestedManyWithoutMemberInput
 }
 
 export type TrustClubMemberUncheckedCreateInput = {
@@ -284,6 +288,7 @@ export type TrustClubMemberUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   activatedAt?: Date | string | null
+  trusts?: Prisma.TrustClubTrustRecordUncheckedCreateNestedManyWithoutMemberInput
 }
 
 export type TrustClubMemberUpdateInput = {
@@ -295,6 +300,7 @@ export type TrustClubMemberUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutTrustClubMemberNestedInput
+  trusts?: Prisma.TrustClubTrustRecordUpdateManyWithoutMemberNestedInput
 }
 
 export type TrustClubMemberUncheckedUpdateInput = {
@@ -306,6 +312,7 @@ export type TrustClubMemberUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trusts?: Prisma.TrustClubTrustRecordUncheckedUpdateManyWithoutMemberNestedInput
 }
 
 export type TrustClubMemberCreateManyInput = {
@@ -378,6 +385,11 @@ export type TrustClubMemberMinOrderByAggregateInput = {
   activatedAt?: Prisma.SortOrder
 }
 
+export type TrustClubMemberScalarRelationFilter = {
+  is?: Prisma.TrustClubMemberWhereInput
+  isNot?: Prisma.TrustClubMemberWhereInput
+}
+
 export type TrustClubMemberCreateNestedOneWithoutUserInput = {
   create?: Prisma.XOR<Prisma.TrustClubMemberCreateWithoutUserInput, Prisma.TrustClubMemberUncheckedCreateWithoutUserInput>
   connectOrCreate?: Prisma.TrustClubMemberCreateOrConnectWithoutUserInput
@@ -418,6 +430,20 @@ export type EnumTrustClubSubscriptionStatusFieldUpdateOperationsInput = {
   set?: $Enums.TrustClubSubscriptionStatus
 }
 
+export type TrustClubMemberCreateNestedOneWithoutTrustsInput = {
+  create?: Prisma.XOR<Prisma.TrustClubMemberCreateWithoutTrustsInput, Prisma.TrustClubMemberUncheckedCreateWithoutTrustsInput>
+  connectOrCreate?: Prisma.TrustClubMemberCreateOrConnectWithoutTrustsInput
+  connect?: Prisma.TrustClubMemberWhereUniqueInput
+}
+
+export type TrustClubMemberUpdateOneRequiredWithoutTrustsNestedInput = {
+  create?: Prisma.XOR<Prisma.TrustClubMemberCreateWithoutTrustsInput, Prisma.TrustClubMemberUncheckedCreateWithoutTrustsInput>
+  connectOrCreate?: Prisma.TrustClubMemberCreateOrConnectWithoutTrustsInput
+  upsert?: Prisma.TrustClubMemberUpsertWithoutTrustsInput
+  connect?: Prisma.TrustClubMemberWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TrustClubMemberUpdateToOneWithWhereWithoutTrustsInput, Prisma.TrustClubMemberUpdateWithoutTrustsInput>, Prisma.TrustClubMemberUncheckedUpdateWithoutTrustsInput>
+}
+
 export type TrustClubMemberCreateWithoutUserInput = {
   memberId?: string
   status?: $Enums.TrustClubMemberStatus
@@ -426,6 +452,7 @@ export type TrustClubMemberCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   activatedAt?: Date | string | null
+  trusts?: Prisma.TrustClubTrustRecordCreateNestedManyWithoutMemberInput
 }
 
 export type TrustClubMemberUncheckedCreateWithoutUserInput = {
@@ -436,6 +463,7 @@ export type TrustClubMemberUncheckedCreateWithoutUserInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   activatedAt?: Date | string | null
+  trusts?: Prisma.TrustClubTrustRecordUncheckedCreateNestedManyWithoutMemberInput
 }
 
 export type TrustClubMemberCreateOrConnectWithoutUserInput = {
@@ -462,6 +490,7 @@ export type TrustClubMemberUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trusts?: Prisma.TrustClubTrustRecordUpdateManyWithoutMemberNestedInput
 }
 
 export type TrustClubMemberUncheckedUpdateWithoutUserInput = {
@@ -472,8 +501,98 @@ export type TrustClubMemberUncheckedUpdateWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  trusts?: Prisma.TrustClubTrustRecordUncheckedUpdateManyWithoutMemberNestedInput
 }
 
+export type TrustClubMemberCreateWithoutTrustsInput = {
+  memberId?: string
+  status?: $Enums.TrustClubMemberStatus
+  subscriptionStatus?: $Enums.TrustClubSubscriptionStatus
+  planCode?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+  user: Prisma.UserCreateNestedOneWithoutTrustClubMemberInput
+}
+
+export type TrustClubMemberUncheckedCreateWithoutTrustsInput = {
+  memberId?: string
+  userId: string
+  status?: $Enums.TrustClubMemberStatus
+  subscriptionStatus?: $Enums.TrustClubSubscriptionStatus
+  planCode?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  activatedAt?: Date | string | null
+}
+
+export type TrustClubMemberCreateOrConnectWithoutTrustsInput = {
+  where: Prisma.TrustClubMemberWhereUniqueInput
+  create: Prisma.XOR<Prisma.TrustClubMemberCreateWithoutTrustsInput, Prisma.TrustClubMemberUncheckedCreateWithoutTrustsInput>
+}
+
+export type TrustClubMemberUpsertWithoutTrustsInput = {
+  update: Prisma.XOR<Prisma.TrustClubMemberUpdateWithoutTrustsInput, Prisma.TrustClubMemberUncheckedUpdateWithoutTrustsInput>
+  create: Prisma.XOR<Prisma.TrustClubMemberCreateWithoutTrustsInput, Prisma.TrustClubMemberUncheckedCreateWithoutTrustsInput>
+  where?: Prisma.TrustClubMemberWhereInput
+}
+
+export type TrustClubMemberUpdateToOneWithWhereWithoutTrustsInput = {
+  where?: Prisma.TrustClubMemberWhereInput
+  data: Prisma.XOR<Prisma.TrustClubMemberUpdateWithoutTrustsInput, Prisma.TrustClubMemberUncheckedUpdateWithoutTrustsInput>
+}
+
+export type TrustClubMemberUpdateWithoutTrustsInput = {
+  memberId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTrustClubMemberStatusFieldUpdateOperationsInput | $Enums.TrustClubMemberStatus
+  subscriptionStatus?: Prisma.EnumTrustClubSubscriptionStatusFieldUpdateOperationsInput | $Enums.TrustClubSubscriptionStatus
+  planCode?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  user?: Prisma.UserUpdateOneRequiredWithoutTrustClubMemberNestedInput
+}
+
+export type TrustClubMemberUncheckedUpdateWithoutTrustsInput = {
+  memberId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumTrustClubMemberStatusFieldUpdateOperationsInput | $Enums.TrustClubMemberStatus
+  subscriptionStatus?: Prisma.EnumTrustClubSubscriptionStatusFieldUpdateOperationsInput | $Enums.TrustClubSubscriptionStatus
+  planCode?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  activatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+
+/**
+ * Count Type TrustClubMemberCountOutputType
+ */
+
+export type TrustClubMemberCountOutputType = {
+  trusts: number
+}
+
+export type TrustClubMemberCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  trusts?: boolean | TrustClubMemberCountOutputTypeCountTrustsArgs
+}
+
+/**
+ * TrustClubMemberCountOutputType without action
+ */
+export type TrustClubMemberCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TrustClubMemberCountOutputType
+   */
+  select?: Prisma.TrustClubMemberCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * TrustClubMemberCountOutputType without action
+ */
+export type TrustClubMemberCountOutputTypeCountTrustsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TrustClubTrustRecordWhereInput
+}
 
 
 export type TrustClubMemberSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -486,6 +605,8 @@ export type TrustClubMemberSelect<ExtArgs extends runtime.Types.Extensions.Inter
   updatedAt?: boolean
   activatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  trusts?: boolean | Prisma.TrustClubMember$trustsArgs<ExtArgs>
+  _count?: boolean | Prisma.TrustClubMemberCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["trustClubMember"]>
 
 export type TrustClubMemberSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -526,6 +647,8 @@ export type TrustClubMemberSelectScalar = {
 export type TrustClubMemberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"memberId" | "userId" | "status" | "subscriptionStatus" | "planCode" | "createdAt" | "updatedAt" | "activatedAt", ExtArgs["result"]["trustClubMember"]>
 export type TrustClubMemberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  trusts?: boolean | Prisma.TrustClubMember$trustsArgs<ExtArgs>
+  _count?: boolean | Prisma.TrustClubMemberCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TrustClubMemberIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -538,6 +661,7 @@ export type $TrustClubMemberPayload<ExtArgs extends runtime.Types.Extensions.Int
   name: "TrustClubMember"
   objects: {
     user: Prisma.$UserPayload<ExtArgs>
+    trusts: Prisma.$TrustClubTrustRecordPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     memberId: string
@@ -943,6 +1067,7 @@ readonly fields: TrustClubMemberFieldRefs;
 export interface Prisma__TrustClubMemberClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  trusts<T extends Prisma.TrustClubMember$trustsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TrustClubMember$trustsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TrustClubTrustRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1378,6 +1503,30 @@ export type TrustClubMemberDeleteManyArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many TrustClubMembers to delete.
    */
   limit?: number
+}
+
+/**
+ * TrustClubMember.trusts
+ */
+export type TrustClubMember$trustsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TrustClubTrustRecord
+   */
+  select?: Prisma.TrustClubTrustRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TrustClubTrustRecord
+   */
+  omit?: Prisma.TrustClubTrustRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TrustClubTrustRecordInclude<ExtArgs> | null
+  where?: Prisma.TrustClubTrustRecordWhereInput
+  orderBy?: Prisma.TrustClubTrustRecordOrderByWithRelationInput | Prisma.TrustClubTrustRecordOrderByWithRelationInput[]
+  cursor?: Prisma.TrustClubTrustRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TrustClubTrustRecordScalarFieldEnum | Prisma.TrustClubTrustRecordScalarFieldEnum[]
 }
 
 /**

@@ -2,6 +2,10 @@ import type {
   TrustClubActionPersistenceService,
 } from '../application/trust-club-action-persistence.service';
 
+import type {
+  TrustClubTrustRegistryService,
+} from '../application/trust-club-trust-registry.service';
+
 import {
   createTrustClubPersistenceRuntime,
 } from './trust-club-persistence.runtime';
@@ -9,29 +13,41 @@ import {
 /**
  * TRUST-CLUB-V1
  *
- * Phase 5.7
+ * Phase 9.1-R23
  * Application Runtime Consumption Boundary
  *
  * Purpose:
  * Defines the controlled consumption boundary through which
- * future server-side Trust Club application operations may
- * use the certified Phase 5.6 persistence runtime.
+ * server-side Trust Club application operations may use the
+ * composed Trust Club persistence services.
  *
- * Phase 5.7 does not expose the concrete Prisma adapter.
+ * Consumers may receive:
  *
- * Consumers receive only the certified Phase 5.2
- * TrustClubActionPersistenceService.
+ * 1. TrustClubActionPersistenceService
+ *    - Action Record persistence;
+ *    - Action Outcome persistence;
+ *    - Action persistence reads.
+ *
+ * 2. TrustClubTrustRegistryService
+ *    - Canonical Trust Record persistence;
+ *    - Canonical Trust Record reads.
+ *
+ * Concrete Prisma adapters remain hidden.
  *
  * Runtime creation and controlled resource shutdown remain
- * owned by the certified Phase 5.6 runtime composition.
+ * owned by the runtime composition boundary.
  *
- * It does NOT:
+ * This boundary does NOT:
  * - expose Prisma;
- * - expose the concrete persistence adapter;
+ * - expose concrete persistence adapters;
  * - redefine persistence contracts;
  * - redefine domain models;
  * - control Action lifecycle authority;
  * - perform lifecycle transitions;
+ * - allocate Canonical Trust IDs;
+ * - infer Trust establishment;
+ * - automatically create Canonical Trust Records;
+ * - create Action Outcomes;
  * - authorize Trust actions;
  * - authenticate users;
  * - verify identity;
@@ -48,14 +64,21 @@ import {
 /**
  * Controlled Trust Club persistence operation.
  *
- * The operation receives only the application persistence
- * service and therefore cannot depend directly on the
- * concrete Prisma adapter through this boundary.
+ * Existing consumers may continue accepting only the first
+ * argument.
+ *
+ * New Canonical Trust Registry consumers may additionally
+ * accept the second application service.
+ *
+ * Neither argument exposes a concrete Prisma adapter.
  */
 export type TrustClubPersistenceOperation<T> =
   (
     persistence:
       TrustClubActionPersistenceService,
+
+    trustRegistry:
+      TrustClubTrustRegistryService,
   ) => Promise<T>;
 
 /**
@@ -63,8 +86,8 @@ export type TrustClubPersistenceOperation<T> =
  *
  * Resource lifecycle:
  *
- * 1. Create certified Phase 5.6 runtime.
- * 2. Provide only the Phase 5.2 application service.
+ * 1. Create the Trust Club persistence runtime.
+ * 2. Provide application services only.
  * 3. Execute the consumer operation.
  * 4. Always disconnect the runtime in finally.
  */
@@ -78,8 +101,10 @@ export async function withTrustClubPersistence<T>(
   try {
     return await operation(
       runtime.persistence,
+      runtime.trustRegistry,
     );
-  } finally {
+  }
+  finally {
     await runtime.disconnect();
   }
 }
@@ -87,36 +112,72 @@ export async function withTrustClubPersistence<T>(
 /**
  * Consumption-boundary rule.
  *
- * Runtime consumers receive the certified application
- * persistence service rather than the concrete adapter.
+ * Runtime consumers receive application persistence services
+ * rather than concrete persistence adapters.
  */
 export const TRUST_CLUB_PERSISTENCE_CONSUMPTION_BOUNDARY_RULE =
-  'RUNTIME_CONSUMERS_RECEIVE_APPLICATION_PERSISTENCE_SERVICE_ONLY' as const;
+  'RUNTIME_CONSUMERS_RECEIVE_APPLICATION_PERSISTENCE_SERVICES_ONLY' as const;
+
+/**
+ * Canonical Trust Registry consumption rule.
+ *
+ * Canonical Trust Registry access is exposed only through the
+ * application-layer Trust Registry service.
+ */
+export const TRUST_CLUB_PERSISTENCE_CONSUMPTION_TRUST_REGISTRY_RULE =
+  'CANONICAL_TRUST_REGISTRY_CONSUMPTION_USES_APPLICATION_SERVICE_ONLY' as const;
 
 /**
  * Adapter-isolation rule.
  *
  * Concrete persistence technology remains hidden behind the
- * certified runtime composition boundary.
+ * runtime composition boundary.
  */
 export const TRUST_CLUB_PERSISTENCE_CONSUMPTION_ADAPTER_RULE =
-  'RUNTIME_CONSUMERS_DO_NOT_RECEIVE_CONCRETE_PERSISTENCE_ADAPTER' as const;
+  'RUNTIME_CONSUMERS_DO_NOT_RECEIVE_CONCRETE_PERSISTENCE_ADAPTERS' as const;
+
+/**
+ * Lifecycle-authority rule.
+ *
+ * Receiving persistence services does not grant authority to
+ * transition an Action or establish lifecycle state.
+ */
+export const TRUST_CLUB_PERSISTENCE_CONSUMPTION_LIFECYCLE_RULE =
+  'RUNTIME_CONSUMPTION_DOES_NOT_GRANT_ACTION_LIFECYCLE_AUTHORITY' as const;
+
+/**
+ * Trust-ID authority rule.
+ *
+ * Runtime consumption does not allocate or derive Canonical
+ * Trust IDs.
+ */
+export const TRUST_CLUB_PERSISTENCE_CONSUMPTION_TRUST_ID_RULE =
+  'RUNTIME_CONSUMPTION_DOES_NOT_ALLOCATE_CANONICAL_TRUST_IDS' as const;
+
+/**
+ * Automatic-execution rule.
+ *
+ * Merely consuming the runtime does not create or recover a
+ * Canonical Trust Record.
+ */
+export const TRUST_CLUB_PERSISTENCE_CONSUMPTION_EXECUTION_RULE =
+  'RUNTIME_CONSUMPTION_DOES_NOT_AUTOMATICALLY_CREATE_OR_RECOVER_TRUST' as const;
 
 /**
  * Resource-lifecycle rule.
  *
  * Controlled runtime consumption must always release the
- * runtime resource after the consumer operation completes.
+ * runtime resources after the consumer operation completes.
  */
 export const TRUST_CLUB_PERSISTENCE_CONSUMPTION_RESOURCE_RULE =
-  'RUNTIME_CONSUMPTION_ALWAYS_RELEASES_RUNTIME_RESOURCE' as const;
+  'RUNTIME_CONSUMPTION_ALWAYS_RELEASES_RUNTIME_RESOURCES' as const;
 
 /**
  * Exposure rule.
  *
- * Phase 5.7 defines an internal application consumption
- * boundary only. It does not create a public API, route,
- * Server Action, or client-side persistence surface.
+ * This remains an internal application consumption boundary.
+ * It does not create a public API, route, Server Action, or
+ * client-side persistence surface.
  */
 export const TRUST_CLUB_PERSISTENCE_CONSUMPTION_EXPOSURE_RULE =
   'RUNTIME_CONSUMPTION_DOES_NOT_CREATE_PUBLIC_APPLICATION_EXPOSURE' as const;
