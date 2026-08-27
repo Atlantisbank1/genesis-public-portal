@@ -1,0 +1,318 @@
+﻿diff --git a/src/app/trust-club/dashboard/page.tsx b/src/app/trust-club/dashboard/page.tsx
+index 5d47a46..f108482 100644
+--- a/src/app/trust-club/dashboard/page.tsx
++++ b/src/app/trust-club/dashboard/page.tsx
+@@ -268,6 +268,120 @@ function isTrustClubMemberActionsResponse(
+   );
+ }
+ 
++type TrustClubCanonicalTrust = {
++  trustId:
++    string;
++
++  formationActionId:
++    string;
++
++  memberId:
++    string;
++
++  trustType:
++    'STANDARD_TRUST';
++
++  establishedAt:
++    string;
++
++  createdAt:
++    string;
++
++  updatedAt:
++    string;
++};
++
++type TrustClubCanonicalTrustsResponse = {
++  authenticatedUserId:
++    string;
++
++  memberId:
++    string;
++
++  membershipStatus:
++    string;
++
++  subscriptionStatus:
++    string;
++
++  trusts:
++    readonly TrustClubCanonicalTrust[];
++};
++
++function isTrustClubCanonicalTrustsResponse(
++  value:
++    unknown,
++): value is TrustClubCanonicalTrustsResponse {
++  if (
++    typeof value !==
++      'object' ||
++    value ===
++      null
++  ) {
++    return false;
++  }
++
++  const candidate =
++    value as Record<
++      string,
++      unknown
++    >;
++
++  if (
++    typeof candidate.authenticatedUserId !==
++      'string' ||
++    typeof candidate.memberId !==
++      'string' ||
++    typeof candidate.membershipStatus !==
++      'string' ||
++    typeof candidate.subscriptionStatus !==
++      'string' ||
++    !Array.isArray(
++      candidate.trusts,
++    )
++  ) {
++    return false;
++  }
++
++  return candidate.trusts.every(
++    (
++      trust,
++    ) => {
++      if (
++        typeof trust !==
++          'object' ||
++        trust ===
++          null
++      ) {
++        return false;
++      }
++
++      const record =
++        trust as Record<
++          string,
++          unknown
++        >;
++
++      return (
++        typeof record.trustId ===
++          'string' &&
++        typeof record.formationActionId ===
++          'string' &&
++        typeof record.memberId ===
++          'string' &&
++        record.trustType ===
++          'STANDARD_TRUST' &&
++        typeof record.establishedAt ===
++          'string' &&
++        typeof record.createdAt ===
++          'string' &&
++        typeof record.updatedAt ===
++          'string'
++      );
++    },
++  );
++}
++
+ type TrustClubSubmitReviewResponse = {
+   status:
+     'SUBMITTED_FOR_REVIEW';
+@@ -380,6 +494,24 @@ export default function TrustClubDashboardPage() {
+       null,
+     );
+ 
++  const [
++    canonicalTrusts,
++    setCanonicalTrusts,
++  ] =
++    useState<
++      readonly TrustClubCanonicalTrust[]
++    >(
++      [],
++    );
++
++  const [
++    canonicalTrustsError,
++    setCanonicalTrustsError,
++  ] =
++    useState<string | null>(
++      null,
++    );
++
+   const [
+     reviewSubmittingActionId,
+     setReviewSubmittingActionId,
+@@ -548,6 +680,71 @@ export default function TrustClubDashboardPage() {
+       ],
+     );
+ 
++  const loadCanonicalTrusts =
++    useCallback(
++      async () => {
++        setCanonicalTrustsError(
++          null,
++        );
++
++        const response =
++          await fetch(
++            '/api/trust-club/canonical-trusts',
++            {
++              method:
++                'GET',
++
++              cache:
++                'no-store',
++            },
++          );
++
++        if (
++          response.status ===
++            401
++        ) {
++          router.replace(
++            '/trust-club/login',
++          );
++
++          return;
++        }
++
++        if (
++          !response.ok
++        ) {
++          setCanonicalTrustsError(
++            'Your established Trusts could not be loaded.',
++          );
++
++          return;
++        }
++
++        const payload:
++          unknown =
++          await response.json();
++
++        if (
++          !isTrustClubCanonicalTrustsResponse(
++            payload,
++          )
++        ) {
++          setCanonicalTrustsError(
++            'Trust Club returned an unexpected Canonical Trust response.',
++          );
++
++          return;
++        }
++
++        setCanonicalTrusts(
++          payload.trusts,
++        );
++      },
++      [
++        router,
++      ],
++    );
++
+   useEffect(
+     () => {
+       void loadStatus();
+@@ -559,6 +756,23 @@ export default function TrustClubDashboardPage() {
+     ],
+   );
+ 
++  useEffect(
++    () => {
++      if (
++        status?.access.state !==
++          'ACTIVE'
++      ) {
++        return;
++      }
++
++      void loadCanonicalTrusts();
++    },
++    [
++      status,
++      loadCanonicalTrusts,
++    ],
++  );
++
+   async function handleSubmitForReview(
+     actionId:
+       string,
+@@ -1033,6 +1247,71 @@ export default function TrustClubDashboardPage() {
+           }
+         </section>
+ 
++        <section className="trustClubDashboardActions">
++          <div>
++            <p className="trustClubEyebrow">
++              YOUR TRUSTS
++            </p>
++
++            <h2>
++              Established Trusts
++            </h2>
++
++            {
++              canonicalTrustsError !==
++                null
++                ? (
++                    <p>
++                      {canonicalTrustsError}
++                    </p>
++                  )
++                : canonicalTrusts.length ===
++                    0
++                  ? (
++                      <p>
++                        No established Canonical Trust has been recorded yet.
++                      </p>
++                    )
++                  : (
++                      <div className="trustClubDashboardGrid">
++                        {
++                          canonicalTrusts.map(
++                            (
++                              trust,
++                            ) => (
++                              <article
++                                key={trust.trustId}
++                                className="trustClubDashboardCard"
++                              >
++                                <span>
++                                  Standard Trust
++                                </span>
++
++                                <strong>
++                                  {trust.trustId}
++                                </strong>
++
++                                <small>
++                                  Established: {
++                                    new Date(
++                                      trust.establishedAt,
++                                    ).toLocaleDateString()
++                                  }
++                                </small>
++
++                                <small>
++                                  Formation Action: {trust.formationActionId}
++                                </small>
++                              </article>
++                            ),
++                          )
++                        }
++                      </div>
++                    )
++            }
++          </div>
++        </section>
++
+         <section className="trustClubDashboardActions">
+           <div>
+             <p className="trustClubEyebrow">
