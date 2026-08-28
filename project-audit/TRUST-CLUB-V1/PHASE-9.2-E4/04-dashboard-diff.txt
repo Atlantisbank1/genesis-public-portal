@@ -1,0 +1,20 @@
+diff --git a/src/app/trust-club/dashboard/page.tsx b/src/app/trust-club/dashboard/page.tsx
+index f108482..cd782ab 100644
+--- a/src/app/trust-club/dashboard/page.tsx
++++ b/src/app/trust-club/dashboard/page.tsx
+@@ -1302,6 +1302,15 @@ export default function TrustClubDashboardPage() {
+                                 <small>
+                                   Formation Action: {trust.formationActionId}
+                                 </small>
++
++                                <Link
++                                  href={`/trust-club/trust/${encodeURIComponent(
++                                    trust.trustId,
++                                  )}`}
++                                  className="trustClubButton"
++                                >
++                                  Open Trust
++                                </Link>
+                               </article>
+                             ),
+                           )
