@@ -55,6 +55,8 @@ export const ModelName = {
   TrustClubActionOutcome: 'TrustClubActionOutcome',
   User: 'User',
   TrustClubInvitation: 'TrustClubInvitation',
+  TrustClubPaymentIntent: 'TrustClubPaymentIntent',
+  TrustClubSettlementReflection: 'TrustClubSettlementReflection',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -139,6 +141,49 @@ export const TrustClubInvitationScalarFieldEnum = {
 } as const
 
 export type TrustClubInvitationScalarFieldEnum = (typeof TrustClubInvitationScalarFieldEnum)[keyof typeof TrustClubInvitationScalarFieldEnum]
+
+
+export const TrustClubPaymentIntentScalarFieldEnum = {
+  paymentIntentId: 'paymentIntentId',
+  paymentReference: 'paymentReference',
+  invitationId: 'invitationId',
+  normalizedEmail: 'normalizedEmail',
+  planCode: 'planCode',
+  amountMinor: 'amountMinor',
+  currency: 'currency',
+  paymentMethod: 'paymentMethod',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  confirmedAt: 'confirmedAt',
+  cancelledAt: 'cancelledAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TrustClubPaymentIntentScalarFieldEnum = (typeof TrustClubPaymentIntentScalarFieldEnum)[keyof typeof TrustClubPaymentIntentScalarFieldEnum]
+
+
+export const TrustClubSettlementReflectionScalarFieldEnum = {
+  settlementId: 'settlementId',
+  paymentIntentId: 'paymentIntentId',
+  settlementReference: 'settlementReference',
+  originatingInstitution: 'originatingInstitution',
+  externalTransactionRef: 'externalTransactionRef',
+  amountMinor: 'amountMinor',
+  currency: 'currency',
+  status: 'status',
+  receivedAt: 'receivedAt',
+  confirmedAt: 'confirmedAt',
+  confirmedBy: 'confirmedBy',
+  rejectedAt: 'rejectedAt',
+  reversedAt: 'reversedAt',
+  verificationReference: 'verificationReference',
+  verifiedBy: 'verifiedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TrustClubSettlementReflectionScalarFieldEnum = (typeof TrustClubSettlementReflectionScalarFieldEnum)[keyof typeof TrustClubSettlementReflectionScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

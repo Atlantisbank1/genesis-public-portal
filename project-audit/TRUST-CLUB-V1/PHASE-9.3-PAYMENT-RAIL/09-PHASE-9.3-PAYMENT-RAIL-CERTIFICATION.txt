@@ -1,0 +1,243 @@
+GENESIS HERITAGE TRUST
+GENESIS TRUST CLUB V1
+
+============================================================
+PHASE 9.3 PAYMENT RAIL
+ENGINEERING CERTIFICATION
+============================================================
+
+CERTIFICATION STATUS:
+PASS
+
+BASELINE HEAD:
+09c62b3cd044055a603ea855f0cf3d1f0ca0affb
+
+AUTHORIZED PRODUCT FILES:
+30
+
+EVIDENCE FILES:
+8
+
+------------------------------------------------------------
+CERTIFIED IMPLEMENTATION
+------------------------------------------------------------
+
+1. PAYMENT INTENT FOUNDATION
+PASS
+
+- Payment Intent is server-created.
+- Payment Reference is server-generated and unique.
+- Amount is represented in minor units.
+- Currency is explicitly validated.
+- Payment Intent is separate from membership entitlement.
+- Caller cannot assert PAID or CONFIRMED state.
+
+2. SETTLEMENT REFLECTION FOUNDATION
+PASS
+
+- Settlement Reflection is separate from Payment Intent.
+- Settlement receipt does not itself confirm payment.
+- Settlement reference supports idempotent replay.
+- Existing exact settlement replay remains coherent after confirmation.
+- Amount and currency must match the Payment Intent.
+- New settlement receipt requires an awaiting Payment Intent.
+
+3. ATOMIC SETTLEMENT CONFIRMATION
+PASS
+
+- Settlement confirmation executes transactionally.
+- Settlement and Payment Intent transition together.
+- Both receive the same server-generated confirmation timestamp.
+- State-predicate updates protect the transition boundary.
+- Concurrent confirmation was runtime verified:
+  one request succeeded and the competing request was rejected.
+- Final database state remained one coherent confirmed pair.
+
+4. CONFIRMATION ACTOR AUDIT
+PASS
+
+- Confirmation actor is derived from authenticated TRUST_CLUB_ADMIN authority.
+- Caller cannot supply or override confirmedBy.
+- New confirmations persist confirmedBy.
+- Replay preserves the original confirmation actor.
+- Historical confirmed settlements with no recorded actor are not fabricated.
+- Historical actor-missing replay returns controlled HTTP 409.
+- Historical actor-missing replay performs no database mutation.
+
+5. PAYMENT-GATED REGISTRATION TOKEN
+PASS
+
+- Registration token issuance requires a coherent confirmed
+  Payment Intent and confirmed Settlement Reflection pair.
+- A later unsettled Payment Intent does not invalidate an older
+  coherent confirmed payment/settlement pair.
+- Payment-confirmation and settlement-confirmation failures remain distinct.
+- Registration token is not issued by settlement confirmation itself.
+
+6. REGISTRATION AND MEMBERSHIP BOUNDARY
+PASS
+
+- Confirmed settlement does not directly create a User.
+- Confirmed settlement does not directly create a Session.
+- Confirmed settlement does not directly create Membership.
+- Registration Admission remains a separate gate.
+- Better Auth signup remains protected by Registration Admission.
+- Membership eligibility and activation remain separate lifecycle controls.
+
+7. PRISMA / DATABASE FOUNDATION
+PASS
+
+- Payment Intent schema present.
+- Settlement Reflection schema present.
+- Confirmation actor field present.
+- Payment rail migration is additive.
+- Confirmation actor migration is additive.
+- Destructive DROP operations detected: 0.
+- Prisma schema validation passed.
+- Prisma Client generation passed.
+
+8. PRODUCTION BUILD
+PASS
+
+- Next.js production compilation passed.
+- TypeScript verification passed.
+- Static page generation passed.
+- Payment Intent route present.
+- Settlement Reflection route present.
+- Settlement Confirmation route present.
+
+------------------------------------------------------------
+SECURITY AND CLAIM BOUNDARIES
+------------------------------------------------------------
+
+EXTERNAL BANK MAY ASSERT PAID=TRUE:
+NO
+
+CLIENT MAY ASSERT SETTLED/CONFIRMED:
+NO
+
+CALLER MAY SUPPLY CONFIRMATION ACTOR:
+NO
+
+SETTLEMENT EVENT EQUALS MEMBERSHIP ENTITLEMENT:
+NO
+
+RAW CARD OR BANK CREDENTIAL PROCESSING CERTIFIED:
+NO
+
+CRYPTO PROCESSING CERTIFIED:
+NO
+
+ARBITRARY EXTERNAL BANK PRODUCTION CONNECTIVITY CERTIFIED:
+NO
+
+PUBLIC FIXED MEMBERSHIP PRICE CERTIFIED:
+NO
+
+COMMERCIAL PRICE MODEL:
+CUSTOM_QUOTE
+
+INSTITUTIONAL PAYMENT RAIL FOUNDATION:
+CERTIFIED
+
+CONTROLLED ADMINISTRATIVE SETTLEMENT RECEIPT:
+CERTIFIED
+
+ATOMIC SETTLEMENT CONFIRMATION:
+CERTIFIED
+
+PAYMENT-GATED REGISTRATION TOKEN:
+CERTIFIED
+
+------------------------------------------------------------
+RUNTIME VERIFICATION SUMMARY
+------------------------------------------------------------
+
+Controlled end-to-end runtime verification established:
+
+Confirmed Payment
+→ Confirmed Settlement
+→ Payment-Gated Registration Token
+→ Token Redemption
+→ Registration Admission
+→ Better Auth User / Account / Session
+→ Eligibility Review
+→ ELIGIBLE
+→ Pending Membership
+→ ACTIVE Membership
+→ Authenticated Service Access
+→ Standard Trust Formation Lifecycle
+→ Canonical Trust Establishment
+→ Authenticated Canonical Trust Visibility
+
+Additional hardening runtime verification established:
+
+- Settlement replay after confirmation is idempotent.
+- Concurrent settlement confirmation preserves atomic state.
+- Confirmation actor is persisted from authenticated admin authority.
+- Historical confirmation without actor returns HTTP 409.
+- Historical confirmation replay does not mutate historical state.
+
+------------------------------------------------------------
+CERTIFICATION LIMITATIONS
+------------------------------------------------------------
+
+This certification does NOT claim that arbitrary external banks
+are currently connected to Genesis or Atlantis.
+
+This certification does NOT claim live card processing,
+live PayPal processing, live crypto processing,
+or production settlement connectivity with external institutions.
+
+External institutional connectivity requires a separately
+certified bank-facing integration protocol, authentication,
+operational onboarding, reconciliation, acknowledgements,
+status handling, and real settlement connectivity.
+
+------------------------------------------------------------
+EVIDENCE SHA256
+------------------------------------------------------------
+
+5C96A0964A0ED990D1AD56CE685F65C26B1487D6C45A004B7E9D44A2C3189655  01-baseline-head.txt
+3B1B97690568831256A4B23BE25FB5AB68AC3F17F62C7D3E36B79046D498316B  02-working-tree-status.txt
+28B7FAB52C23D38502259F5FA3CE75FF08A7D77F59C8C1A8E6BFA66C388CD645  03-authorized-product-bundle.txt
+407A768AB741816253830BC8A55A92A97774F03449A6EF90A58322094B4F44A2  04-tracked-product-diff.txt
+C51F409DBFF81D42B46ACDDD61AEDD53A45B6D8A27D1E2B9233C68813CECDF3B  05-prisma-schema-boundary.txt
+87CAD49E6DC84CD0407EACFF79253F70190FED0DDA73C19978E8B4171D0F0D58  06-migration-safety.txt
+406BB8FCA22E3B6B8EB1B62BAE3F70B590FF84A5D62716CA03586EB4F92C9A07  07-payment-security-boundary.txt
+2179D82F46999E0C365AC2CAD7BE1EF6B01668807D6168FAFD72B96F8155A675  08-build-and-prisma-verification.txt
+
+------------------------------------------------------------
+CERTIFICATION DECISION
+------------------------------------------------------------
+
+PHASE 9.3 PAYMENT RAIL:
+ENGINEERING CERTIFIED
+
+PRODUCT BUNDLE:
+30 FILES
+
+EVIDENCE SET:
+8 FILES
+
+BASELINE:
+09c62b3cd044055a603ea855f0cf3d1f0ca0affb
+
+SOURCE MODIFICATION DURING CERTIFICATION:
+NO
+
+DATABASE WRITE DURING CERTIFICATION:
+NO
+
+STAGING:
+NO
+
+COMMIT:
+NO
+
+PUSH:
+NO
+
+============================================================
+END CERTIFICATION
+============================================================

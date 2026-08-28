@@ -1,0 +1,130 @@
+import {
+  prisma,
+} from '@/lib/prisma';
+
+import type {
+  CreateTrustClubPaymentIntentPersistenceInput,
+  TrustClubPaymentIntent,
+  TrustClubPaymentIntentPersistence,
+} from './trust-club-payment-intent.contracts';
+
+function requireText(
+  value:
+    string,
+  code:
+    string,
+): string {
+  const normalized =
+    value.trim();
+
+  if (
+    normalized.length ===
+      0
+  ) {
+    throw new Error(
+      code,
+    );
+  }
+
+  return normalized;
+}
+
+export const trustClubPaymentIntentPersistence:
+  TrustClubPaymentIntentPersistence = {
+    async create(
+      input:
+        CreateTrustClubPaymentIntentPersistenceInput,
+    ): Promise<TrustClubPaymentIntent> {
+      const paymentReference =
+        requireText(
+          input.paymentReference,
+          'TRUST_CLUB_PAYMENT_REFERENCE_REQUIRED',
+        );
+
+      const invitationId =
+        requireText(
+          input.invitationId,
+          'TRUST_CLUB_PAYMENT_INVITATION_ID_REQUIRED',
+        );
+
+      const normalizedEmail =
+        requireText(
+          input.normalizedEmail,
+          'TRUST_CLUB_PAYMENT_EMAIL_REQUIRED',
+        )
+          .toLowerCase();
+
+      const planCode =
+        requireText(
+          input.planCode,
+          'TRUST_CLUB_PAYMENT_PLAN_CODE_REQUIRED',
+        );
+
+      const currency =
+        requireText(
+          input.currency,
+          'TRUST_CLUB_PAYMENT_CURRENCY_REQUIRED',
+        )
+          .toUpperCase();
+
+      if (
+        input.amountMinor <=
+          BigInt(0)
+      ) {
+        throw new Error(
+          'TRUST_CLUB_PAYMENT_AMOUNT_MUST_BE_POSITIVE',
+        );
+      }
+
+      if (
+        input.expiresAt !==
+          null &&
+        !Number.isFinite(
+          input.expiresAt.getTime(),
+        )
+      ) {
+        throw new Error(
+          'TRUST_CLUB_PAYMENT_EXPIRATION_INVALID',
+        );
+      }
+
+      return prisma
+        .trustClubPaymentIntent
+        .create({
+          data: {
+            paymentReference,
+            invitationId,
+            normalizedEmail,
+            planCode,
+            amountMinor:
+              input.amountMinor,
+            currency,
+            paymentMethod:
+              input.paymentMethod,
+            status:
+              'AWAITING_SETTLEMENT',
+            expiresAt:
+              input.expiresAt,
+          },
+        });
+    },
+
+    async findByPaymentReference(
+      paymentReference,
+    ): Promise<TrustClubPaymentIntent | null> {
+      const normalizedReference =
+        requireText(
+          paymentReference,
+          'TRUST_CLUB_PAYMENT_REFERENCE_REQUIRED',
+        );
+
+      return prisma
+        .trustClubPaymentIntent
+        .findUnique({
+          where: {
+            paymentReference:
+              normalizedReference,
+          },
+        });
+    },
+  };

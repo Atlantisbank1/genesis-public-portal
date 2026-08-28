@@ -1,0 +1,13 @@
+GENESIS TRUST CLUB V1
+PHASE 9.3 PAYMENT RAIL
+PRISMA PAYMENT RAIL SCHEMA VERIFICATION
+
+TrustClubPaymentIntentStatus : 2
+TrustClubPaymentMethod : 2
+TrustClubSettlementStatus : 2
+TrustClubPaymentIntent : 5
+TrustClubSettlementReflection : 2
+confirmedBy : 1
+
+SCHEMA VALIDATION:
+PASS

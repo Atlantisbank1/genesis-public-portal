@@ -216,6 +216,84 @@ export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
 }
 
+export type BigIntFilter<$PrismaModel = never> = {
+  equals?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  in?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  notIn?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  lt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  lte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBigIntFilter<$PrismaModel> | bigint | number
+}
+
+export type EnumTrustClubPaymentMethodFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubPaymentMethod | Prisma.EnumTrustClubPaymentMethodFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubPaymentMethod[] | Prisma.ListEnumTrustClubPaymentMethodFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubPaymentMethod[] | Prisma.ListEnumTrustClubPaymentMethodFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubPaymentMethodFilter<$PrismaModel> | $Enums.TrustClubPaymentMethod
+}
+
+export type EnumTrustClubPaymentIntentStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubPaymentIntentStatus | Prisma.EnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubPaymentIntentStatus[] | Prisma.ListEnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubPaymentIntentStatus[] | Prisma.ListEnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubPaymentIntentStatusFilter<$PrismaModel> | $Enums.TrustClubPaymentIntentStatus
+}
+
+export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  in?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  notIn?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  lt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  lte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatFilter<$PrismaModel>
+  _sum?: Prisma.NestedBigIntFilter<$PrismaModel>
+  _min?: Prisma.NestedBigIntFilter<$PrismaModel>
+  _max?: Prisma.NestedBigIntFilter<$PrismaModel>
+}
+
+export type EnumTrustClubPaymentMethodWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubPaymentMethod | Prisma.EnumTrustClubPaymentMethodFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubPaymentMethod[] | Prisma.ListEnumTrustClubPaymentMethodFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubPaymentMethod[] | Prisma.ListEnumTrustClubPaymentMethodFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubPaymentMethodWithAggregatesFilter<$PrismaModel> | $Enums.TrustClubPaymentMethod
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTrustClubPaymentMethodFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTrustClubPaymentMethodFilter<$PrismaModel>
+}
+
+export type EnumTrustClubPaymentIntentStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubPaymentIntentStatus | Prisma.EnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubPaymentIntentStatus[] | Prisma.ListEnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubPaymentIntentStatus[] | Prisma.ListEnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubPaymentIntentStatusWithAggregatesFilter<$PrismaModel> | $Enums.TrustClubPaymentIntentStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTrustClubPaymentIntentStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTrustClubPaymentIntentStatusFilter<$PrismaModel>
+}
+
+export type EnumTrustClubSettlementStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubSettlementStatus | Prisma.EnumTrustClubSettlementStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubSettlementStatus[] | Prisma.ListEnumTrustClubSettlementStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubSettlementStatus[] | Prisma.ListEnumTrustClubSettlementStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubSettlementStatusFilter<$PrismaModel> | $Enums.TrustClubSettlementStatus
+}
+
+export type EnumTrustClubSettlementStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubSettlementStatus | Prisma.EnumTrustClubSettlementStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubSettlementStatus[] | Prisma.ListEnumTrustClubSettlementStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubSettlementStatus[] | Prisma.ListEnumTrustClubSettlementStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubSettlementStatusWithAggregatesFilter<$PrismaModel> | $Enums.TrustClubSettlementStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTrustClubSettlementStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTrustClubSettlementStatusFilter<$PrismaModel>
+}
+
 export type EnumTrustClubMemberStatusFilter<$PrismaModel = never> = {
   equals?: $Enums.TrustClubMemberStatus | Prisma.EnumTrustClubMemberStatusFieldRefInput<$PrismaModel>
   in?: $Enums.TrustClubMemberStatus[] | Prisma.ListEnumTrustClubMemberStatusFieldRefInput<$PrismaModel>
@@ -531,6 +609,95 @@ export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
   _max?: Prisma.NestedDateTimeNullableFilter<$PrismaModel>
+}
+
+export type NestedBigIntFilter<$PrismaModel = never> = {
+  equals?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  in?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  notIn?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  lt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  lte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBigIntFilter<$PrismaModel> | bigint | number
+}
+
+export type NestedEnumTrustClubPaymentMethodFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubPaymentMethod | Prisma.EnumTrustClubPaymentMethodFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubPaymentMethod[] | Prisma.ListEnumTrustClubPaymentMethodFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubPaymentMethod[] | Prisma.ListEnumTrustClubPaymentMethodFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubPaymentMethodFilter<$PrismaModel> | $Enums.TrustClubPaymentMethod
+}
+
+export type NestedEnumTrustClubPaymentIntentStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubPaymentIntentStatus | Prisma.EnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubPaymentIntentStatus[] | Prisma.ListEnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubPaymentIntentStatus[] | Prisma.ListEnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubPaymentIntentStatusFilter<$PrismaModel> | $Enums.TrustClubPaymentIntentStatus
+}
+
+export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  in?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  notIn?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  lt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  lte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatFilter<$PrismaModel>
+  _sum?: Prisma.NestedBigIntFilter<$PrismaModel>
+  _min?: Prisma.NestedBigIntFilter<$PrismaModel>
+  _max?: Prisma.NestedBigIntFilter<$PrismaModel>
+}
+
+export type NestedFloatFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel>
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatFilter<$PrismaModel> | number
+}
+
+export type NestedEnumTrustClubPaymentMethodWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubPaymentMethod | Prisma.EnumTrustClubPaymentMethodFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubPaymentMethod[] | Prisma.ListEnumTrustClubPaymentMethodFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubPaymentMethod[] | Prisma.ListEnumTrustClubPaymentMethodFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubPaymentMethodWithAggregatesFilter<$PrismaModel> | $Enums.TrustClubPaymentMethod
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTrustClubPaymentMethodFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTrustClubPaymentMethodFilter<$PrismaModel>
+}
+
+export type NestedEnumTrustClubPaymentIntentStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubPaymentIntentStatus | Prisma.EnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubPaymentIntentStatus[] | Prisma.ListEnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubPaymentIntentStatus[] | Prisma.ListEnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubPaymentIntentStatusWithAggregatesFilter<$PrismaModel> | $Enums.TrustClubPaymentIntentStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTrustClubPaymentIntentStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTrustClubPaymentIntentStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumTrustClubSettlementStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubSettlementStatus | Prisma.EnumTrustClubSettlementStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubSettlementStatus[] | Prisma.ListEnumTrustClubSettlementStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubSettlementStatus[] | Prisma.ListEnumTrustClubSettlementStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubSettlementStatusFilter<$PrismaModel> | $Enums.TrustClubSettlementStatus
+}
+
+export type NestedEnumTrustClubSettlementStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TrustClubSettlementStatus | Prisma.EnumTrustClubSettlementStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.TrustClubSettlementStatus[] | Prisma.ListEnumTrustClubSettlementStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TrustClubSettlementStatus[] | Prisma.ListEnumTrustClubSettlementStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTrustClubSettlementStatusWithAggregatesFilter<$PrismaModel> | $Enums.TrustClubSettlementStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTrustClubSettlementStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTrustClubSettlementStatusFilter<$PrismaModel>
 }
 
 export type NestedEnumTrustClubMemberStatusFilter<$PrismaModel = never> = {

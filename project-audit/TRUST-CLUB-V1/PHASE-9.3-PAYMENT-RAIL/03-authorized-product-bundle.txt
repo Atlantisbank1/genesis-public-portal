@@ -1,0 +1,43 @@
+GENESIS TRUST CLUB V1
+PHASE 9.3 PAYMENT RAIL
+AUTHORIZED PRODUCT BUNDLE
+
+AUTHORIZED PRODUCT FILE COUNT:
+30
+
+prisma/migrations/20260828102454_trust_club_payment_rail_foundation/migration.sql
+prisma/migrations/20260828180813_trust_club_settlement_confirmation_actor/migration.sql
+prisma/schema.prisma
+src/app/api/trust-club/admin/invitations/[invitationId]/issue-token/route.ts
+src/app/api/trust-club/admin/invitations/[invitationId]/payment-intent/route.ts
+src/app/api/trust-club/admin/payments/settlements/confirm/route.ts
+src/app/api/trust-club/admin/payments/settlements/route.ts
+src/generated/prisma/browser.ts
+src/generated/prisma/client.ts
+src/generated/prisma/commonInputTypes.ts
+src/generated/prisma/enums.ts
+src/generated/prisma/internal/class.ts
+src/generated/prisma/internal/prismaNamespace.ts
+src/generated/prisma/internal/prismaNamespaceBrowser.ts
+src/generated/prisma/models.ts
+src/generated/prisma/models/TrustClubInvitation.ts
+src/generated/prisma/models/TrustClubPaymentIntent.ts
+src/generated/prisma/models/TrustClubSettlementReflection.ts
+src/trust-club/invitation/trust-club-invitation-token-issuance.service.ts
+src/trust-club/payment/trust-club-payment-intent.contracts.ts
+src/trust-club/payment/trust-club-payment-intent.persistence.ts
+src/trust-club/payment/trust-club-payment-intent.service.ts
+src/trust-club/payment/trust-club-payment-intent-admin.service.ts
+src/trust-club/payment/trust-club-settlement-confirmation.service.ts
+src/trust-club/payment/trust-club-settlement-confirmation-admin.service.ts
+src/trust-club/payment/trust-club-settlement-reflection.contracts.ts
+src/trust-club/payment/trust-club-settlement-reflection.persistence.ts
+src/trust-club/payment/trust-club-settlement-reflection.service.ts
+src/trust-club/payment/trust-club-settlement-reflection-admin.service.ts
+src/trust-club/payment/trust-club-token-payment-gate.service.ts
+
+PROJECT-AUDIT HISTORICAL FILES:
+EXCLUDED
+
+AUTHORIZED PRODUCT BUNDLE:
+PASS

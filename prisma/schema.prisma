@@ -104,6 +104,31 @@ enum TrustClubTrustType {
   STANDARD_TRUST
 }
 
+enum TrustClubPaymentIntentStatus {
+  PENDING
+  AWAITING_SETTLEMENT
+  SETTLEMENT_RECEIVED
+  CONFIRMED
+  CANCELLED
+  EXPIRED
+}
+
+enum TrustClubPaymentMethod {
+  INSTITUTIONAL_RAIL
+  BANK_TRANSFER
+  STANDING_ORDER
+  CRYPTO
+  CASH
+  MANUAL
+}
+
+enum TrustClubSettlementStatus {
+  RECEIVED
+  CONFIRMED
+  REJECTED
+  REVERSED
+}
+
 model TrustClubActionRecord {
   actionId          String                @id
   actionType        TrustClubActionType
@@ -116,7 +141,7 @@ model TrustClubActionRecord {
 
   outcomes          TrustClubActionOutcome[]
   standardFormation TrustClubStandardTrustFormation?
-  formedTrust        TrustClubTrustRecord?
+  formedTrust       TrustClubTrustRecord?
 
   @@index([requestedByUserId])
   @@index([memberId])
@@ -158,7 +183,7 @@ model User {
   trustClubMember                TrustClubMember?
   trustClubEligibilityRecord     TrustClubEligibilityRecord?
   trustClubSystemRoleAssignments TrustClubSystemRoleAssignment[]
-  trustClubInvitationsApproved   TrustClubInvitation[] @relation("TrustClubInvitationApprovedBy")
+  trustClubInvitationsApproved   TrustClubInvitation[]           @relation("TrustClubInvitationApprovedBy")
 
   @@unique([email])
   @@map("user")
@@ -178,13 +203,69 @@ model TrustClubInvitation {
   createdAt        DateTime                  @default(now())
   updatedAt        DateTime                  @updatedAt
 
-  approvedBy User? @relation("TrustClubInvitationApprovedBy", fields: [approvedByUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  approvedBy     User?                    @relation("TrustClubInvitationApprovedBy", fields: [approvedByUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  paymentIntents TrustClubPaymentIntent[]
 
   @@index([normalizedEmail])
   @@index([status])
   @@index([expiresAt])
   @@index([approvedByUserId])
   @@map("trust_club_invitations")
+}
+
+model TrustClubPaymentIntent {
+  paymentIntentId  String                       @id @default(cuid())
+  paymentReference String                       @unique
+  invitationId     String
+  normalizedEmail  String
+  planCode         String                       @default("STANDARD_MEMBERSHIP")
+  amountMinor      BigInt
+  currency         String
+  paymentMethod    TrustClubPaymentMethod
+  status           TrustClubPaymentIntentStatus @default(PENDING)
+  expiresAt        DateTime?
+  confirmedAt      DateTime?
+  cancelledAt      DateTime?
+  createdAt        DateTime                     @default(now())
+  updatedAt        DateTime                     @updatedAt
+
+  invitation  TrustClubInvitation             @relation(fields: [invitationId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  settlements TrustClubSettlementReflection[]
+
+  @@index([invitationId])
+  @@index([normalizedEmail])
+  @@index([status])
+  @@index([paymentMethod])
+  @@index([expiresAt])
+  @@map("trust_club_payment_intents")
+}
+
+model TrustClubSettlementReflection {
+  settlementId           String                    @id @default(cuid())
+  paymentIntentId        String
+  settlementReference    String                    @unique
+  originatingInstitution String?
+  externalTransactionRef String?
+  amountMinor            BigInt
+  currency               String
+  status                 TrustClubSettlementStatus @default(RECEIVED)
+  receivedAt             DateTime                  @default(now())
+  confirmedAt            DateTime?
+  confirmedBy            String?
+  rejectedAt             DateTime?
+  reversedAt             DateTime?
+  verificationReference  String?
+  verifiedBy             String?
+  createdAt              DateTime                  @default(now())
+  updatedAt              DateTime                  @updatedAt
+
+  paymentIntent TrustClubPaymentIntent @relation(fields: [paymentIntentId], references: [paymentIntentId], onDelete: Restrict, onUpdate: Cascade)
+
+  @@index([paymentIntentId])
+  @@index([status])
+  @@index([externalTransactionRef])
+  @@index([receivedAt])
+  @@map("trust_club_settlement_reflections")
 }
 
 model Session {
@@ -205,7 +286,7 @@ model Session {
 }
 
 model Account {
-  id                    String   @id
+  id                    String    @id
   issuer                String
   accountId             String
   providerId            String
@@ -217,8 +298,8 @@ model Account {
   refreshTokenExpiresAt DateTime?
   scope                 String?
   password              String?
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

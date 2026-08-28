@@ -401,6 +401,8 @@ export const ModelName = {
   TrustClubActionOutcome: 'TrustClubActionOutcome',
   User: 'User',
   TrustClubInvitation: 'TrustClubInvitation',
+  TrustClubPaymentIntent: 'TrustClubPaymentIntent',
+  TrustClubSettlementReflection: 'TrustClubSettlementReflection',
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
@@ -424,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "trustClubActionRecord" | "trustClubActionOutcome" | "user" | "trustClubInvitation" | "session" | "account" | "verification" | "trustClubMember" | "trustClubEligibilityRecord" | "trustClubSystemRoleAssignment" | "trustClubTrustRecord" | "trustClubStandardTrustFormation"
+    modelProps: "trustClubActionRecord" | "trustClubActionOutcome" | "user" | "trustClubInvitation" | "trustClubPaymentIntent" | "trustClubSettlementReflection" | "session" | "account" | "verification" | "trustClubMember" | "trustClubEligibilityRecord" | "trustClubSystemRoleAssignment" | "trustClubTrustRecord" | "trustClubStandardTrustFormation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -721,6 +723,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.TrustClubInvitationCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.TrustClubInvitationCountAggregateOutputType> | number
+        }
+      }
+    }
+    TrustClubPaymentIntent: {
+      payload: Prisma.$TrustClubPaymentIntentPayload<ExtArgs>
+      fields: Prisma.TrustClubPaymentIntentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TrustClubPaymentIntentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubPaymentIntentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TrustClubPaymentIntentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubPaymentIntentPayload>
+        }
+        findFirst: {
+          args: Prisma.TrustClubPaymentIntentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubPaymentIntentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TrustClubPaymentIntentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubPaymentIntentPayload>
+        }
+        findMany: {
+          args: Prisma.TrustClubPaymentIntentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubPaymentIntentPayload>[]
+        }
+        create: {
+          args: Prisma.TrustClubPaymentIntentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubPaymentIntentPayload>
+        }
+        createMany: {
+          args: Prisma.TrustClubPaymentIntentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TrustClubPaymentIntentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubPaymentIntentPayload>[]
+        }
+        delete: {
+          args: Prisma.TrustClubPaymentIntentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubPaymentIntentPayload>
+        }
+        update: {
+          args: Prisma.TrustClubPaymentIntentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubPaymentIntentPayload>
+        }
+        deleteMany: {
+          args: Prisma.TrustClubPaymentIntentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TrustClubPaymentIntentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TrustClubPaymentIntentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubPaymentIntentPayload>[]
+        }
+        upsert: {
+          args: Prisma.TrustClubPaymentIntentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubPaymentIntentPayload>
+        }
+        aggregate: {
+          args: Prisma.TrustClubPaymentIntentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTrustClubPaymentIntent>
+        }
+        groupBy: {
+          args: Prisma.TrustClubPaymentIntentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TrustClubPaymentIntentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TrustClubPaymentIntentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TrustClubPaymentIntentCountAggregateOutputType> | number
+        }
+      }
+    }
+    TrustClubSettlementReflection: {
+      payload: Prisma.$TrustClubSettlementReflectionPayload<ExtArgs>
+      fields: Prisma.TrustClubSettlementReflectionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TrustClubSettlementReflectionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSettlementReflectionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TrustClubSettlementReflectionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSettlementReflectionPayload>
+        }
+        findFirst: {
+          args: Prisma.TrustClubSettlementReflectionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSettlementReflectionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TrustClubSettlementReflectionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSettlementReflectionPayload>
+        }
+        findMany: {
+          args: Prisma.TrustClubSettlementReflectionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSettlementReflectionPayload>[]
+        }
+        create: {
+          args: Prisma.TrustClubSettlementReflectionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSettlementReflectionPayload>
+        }
+        createMany: {
+          args: Prisma.TrustClubSettlementReflectionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TrustClubSettlementReflectionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSettlementReflectionPayload>[]
+        }
+        delete: {
+          args: Prisma.TrustClubSettlementReflectionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSettlementReflectionPayload>
+        }
+        update: {
+          args: Prisma.TrustClubSettlementReflectionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSettlementReflectionPayload>
+        }
+        deleteMany: {
+          args: Prisma.TrustClubSettlementReflectionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TrustClubSettlementReflectionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TrustClubSettlementReflectionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSettlementReflectionPayload>[]
+        }
+        upsert: {
+          args: Prisma.TrustClubSettlementReflectionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TrustClubSettlementReflectionPayload>
+        }
+        aggregate: {
+          args: Prisma.TrustClubSettlementReflectionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTrustClubSettlementReflection>
+        }
+        groupBy: {
+          args: Prisma.TrustClubSettlementReflectionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TrustClubSettlementReflectionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TrustClubSettlementReflectionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TrustClubSettlementReflectionCountAggregateOutputType> | number
         }
       }
     }
@@ -1415,6 +1565,49 @@ export const TrustClubInvitationScalarFieldEnum = {
 export type TrustClubInvitationScalarFieldEnum = (typeof TrustClubInvitationScalarFieldEnum)[keyof typeof TrustClubInvitationScalarFieldEnum]
 
 
+export const TrustClubPaymentIntentScalarFieldEnum = {
+  paymentIntentId: 'paymentIntentId',
+  paymentReference: 'paymentReference',
+  invitationId: 'invitationId',
+  normalizedEmail: 'normalizedEmail',
+  planCode: 'planCode',
+  amountMinor: 'amountMinor',
+  currency: 'currency',
+  paymentMethod: 'paymentMethod',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  confirmedAt: 'confirmedAt',
+  cancelledAt: 'cancelledAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TrustClubPaymentIntentScalarFieldEnum = (typeof TrustClubPaymentIntentScalarFieldEnum)[keyof typeof TrustClubPaymentIntentScalarFieldEnum]
+
+
+export const TrustClubSettlementReflectionScalarFieldEnum = {
+  settlementId: 'settlementId',
+  paymentIntentId: 'paymentIntentId',
+  settlementReference: 'settlementReference',
+  originatingInstitution: 'originatingInstitution',
+  externalTransactionRef: 'externalTransactionRef',
+  amountMinor: 'amountMinor',
+  currency: 'currency',
+  status: 'status',
+  receivedAt: 'receivedAt',
+  confirmedAt: 'confirmedAt',
+  confirmedBy: 'confirmedBy',
+  rejectedAt: 'rejectedAt',
+  reversedAt: 'reversedAt',
+  verificationReference: 'verificationReference',
+  verifiedBy: 'verifiedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TrustClubSettlementReflectionScalarFieldEnum = (typeof TrustClubSettlementReflectionScalarFieldEnum)[keyof typeof TrustClubSettlementReflectionScalarFieldEnum]
+
+
 export const SessionScalarFieldEnum = {
   id: 'id',
   expiresAt: 'expiresAt',
@@ -1657,6 +1850,62 @@ export type ListEnumTrustClubInvitationStatusFieldRefInput<$PrismaModel> = Field
 
 
 /**
+ * Reference to a field of type 'BigInt'
+ */
+export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+/**
+ * Reference to a field of type 'BigInt[]'
+ */
+export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TrustClubPaymentMethod'
+ */
+export type EnumTrustClubPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TrustClubPaymentMethod'>
+    
+
+
+/**
+ * Reference to a field of type 'TrustClubPaymentMethod[]'
+ */
+export type ListEnumTrustClubPaymentMethodFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TrustClubPaymentMethod[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TrustClubPaymentIntentStatus'
+ */
+export type EnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TrustClubPaymentIntentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TrustClubPaymentIntentStatus[]'
+ */
+export type ListEnumTrustClubPaymentIntentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TrustClubPaymentIntentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TrustClubSettlementStatus'
+ */
+export type EnumTrustClubSettlementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TrustClubSettlementStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TrustClubSettlementStatus[]'
+ */
+export type ListEnumTrustClubSettlementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TrustClubSettlementStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'TrustClubMemberStatus'
  */
 export type EnumTrustClubMemberStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TrustClubMemberStatus'>
@@ -1751,6 +2000,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -1908,6 +2171,8 @@ export type GlobalOmitConfig = {
   trustClubActionOutcome?: Prisma.TrustClubActionOutcomeOmit
   user?: Prisma.UserOmit
   trustClubInvitation?: Prisma.TrustClubInvitationOmit
+  trustClubPaymentIntent?: Prisma.TrustClubPaymentIntentOmit
+  trustClubSettlementReflection?: Prisma.TrustClubSettlementReflectionOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit

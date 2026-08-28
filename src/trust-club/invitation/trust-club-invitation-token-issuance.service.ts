@@ -1,4 +1,4 @@
-﻿import {
+import {
   createHash,
   randomBytes,
 } from 'node:crypto';
@@ -10,6 +10,10 @@ import type {
 import {
   authorizeTrustClubAdminReview,
 } from '../server/trust-club-admin-review-authorization.service';
+
+import {
+  requireTrustClubTokenPaymentConfirmation,
+} from '../payment/trust-club-token-payment-gate.service';
 
 import {
   trustClubInvitationPersistence,
@@ -198,6 +202,10 @@ export async function issueTrustClubInvitationTokenAsAdmin(
       'TRUST_CLUB_INVITATION_ISSUANCE_REQUESTED_STATE_NOT_CLEAN',
     );
   }
+
+  await requireTrustClubTokenPaymentConfirmation({
+    invitationId,
+  });
 
   const approvedAt =
     new Date();

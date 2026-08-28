@@ -134,3 +134,37 @@ export const TrustClubTrustType = {
 } as const
 
 export type TrustClubTrustType = (typeof TrustClubTrustType)[keyof typeof TrustClubTrustType]
+
+
+export const TrustClubPaymentIntentStatus = {
+  PENDING: 'PENDING',
+  AWAITING_SETTLEMENT: 'AWAITING_SETTLEMENT',
+  SETTLEMENT_RECEIVED: 'SETTLEMENT_RECEIVED',
+  CONFIRMED: 'CONFIRMED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type TrustClubPaymentIntentStatus = (typeof TrustClubPaymentIntentStatus)[keyof typeof TrustClubPaymentIntentStatus]
+
+
+export const TrustClubPaymentMethod = {
+  INSTITUTIONAL_RAIL: 'INSTITUTIONAL_RAIL',
+  BANK_TRANSFER: 'BANK_TRANSFER',
+  STANDING_ORDER: 'STANDING_ORDER',
+  CRYPTO: 'CRYPTO',
+  CASH: 'CASH',
+  MANUAL: 'MANUAL'
+} as const
+
+export type TrustClubPaymentMethod = (typeof TrustClubPaymentMethod)[keyof typeof TrustClubPaymentMethod]
+
+
+export const TrustClubSettlementStatus = {
+  RECEIVED: 'RECEIVED',
+  CONFIRMED: 'CONFIRMED',
+  REJECTED: 'REJECTED',
+  REVERSED: 'REVERSED'
+} as const
+
+export type TrustClubSettlementStatus = (typeof TrustClubSettlementStatus)[keyof typeof TrustClubSettlementStatus]

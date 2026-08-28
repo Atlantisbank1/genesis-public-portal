@@ -224,6 +224,22 @@ export async function POST(
 
     if (
       code ===
+        'TRUST_CLUB_TOKEN_PAYMENT_CONFIRMATION_REQUIRED' ||
+      code ===
+        'TRUST_CLUB_TOKEN_SETTLEMENT_CONFIRMATION_REQUIRED' ||
+      code ===
+        'TRUST_CLUB_TOKEN_PAYMENT_AMOUNT_MISMATCH' ||
+      code ===
+        'TRUST_CLUB_TOKEN_PAYMENT_CURRENCY_MISMATCH'
+    ) {
+      return errorResponse(
+        409,
+        code,
+      );
+    }
+
+    if (
+      code ===
         'TRUST_CLUB_INVITATION_EXPIRATION_INVALID' ||
       code ===
         'TRUST_CLUB_INVITATION_EXPIRATION_NOT_AFTER_APPROVAL'

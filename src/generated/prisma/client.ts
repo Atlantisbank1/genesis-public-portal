@@ -62,6 +62,16 @@ export type User = Prisma.UserModel
  */
 export type TrustClubInvitation = Prisma.TrustClubInvitationModel
 /**
+ * Model TrustClubPaymentIntent
+ * 
+ */
+export type TrustClubPaymentIntent = Prisma.TrustClubPaymentIntentModel
+/**
+ * Model TrustClubSettlementReflection
+ * 
+ */
+export type TrustClubSettlementReflection = Prisma.TrustClubSettlementReflectionModel
+/**
  * Model Session
  * 
  */
