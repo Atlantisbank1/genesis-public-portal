@@ -1,0 +1,261 @@
+TRUST CLUB V1
+PHASE 9.4-P8.21
+GROUP B ADMIN LAUNCH QUEUE
+ENGINEERING CERTIFICATION
+
+============================================================
+CERTIFIED BASELINE
+============================================================
+
+BASELINE HEAD:
+ef75ed9a801f3a4a299309b32dd6bfd7c73ba945
+
+COMPONENT:
+Trust Club Admin Launch Queue
+
+PRODUCT FILES:
+1. src/app/api/trust-club/admin/invitations/route.ts
+2. src/app/trust-club/admin/page.tsx
+3. src/trust-club/server/trust-club-admin-launch-queue.service.ts
+
+============================================================
+SOURCE SHA256
+============================================================
+
+73A9DBF20FD35A56B4B80D4EDF274AE3AC5DB71D4E25E41E2FAA51C6A6E13D72  src/app/api/trust-club/admin/invitations/route.ts
+9F42579DF68254ECBE09EC80996CF868F68CB53A267F3A87E3BEF76275AD9108  src/app/trust-club/admin/page.tsx
+19F6D001E8161C33E23BFD33CEF08E9D11FED539C8E2793BB321CB02258BB192  src/trust-club/server/trust-club-admin-launch-queue.service.ts
+
+SOURCE / EVIDENCE SNAPSHOT PAIRS:
+BYTE-IDENTICAL / VERIFIED
+
+============================================================
+BUILD CERTIFICATION
+============================================================
+
+PRODUCTION BUILD:
+PASS
+
+BUILD EXIT CODE:
+0
+
+NEXT.JS:
+16.2.9
+
+CERTIFIED ROUTES:
+- /api/trust-club/admin/invitations
+- /trust-club/admin
+
+GROUP B SOURCE HASHES PRESERVED:
+PASS
+
+============================================================
+STATIC CERTIFICATION
+============================================================
+
+CORRECTED STATIC VERIFICATION:
+PHASE 9.4-P8.21-B1-R1
+
+RESULT:
+PASS
+
+INITIAL B1 FAILURE CLASSIFICATION:
+VERIFICATION SCRIPT ASSERTION DEFECT ONLY
+
+PRODUCT SOURCE DEFECT:
+NO
+
+BUILD DEFECT:
+NO
+
+ROUTE:
+- Better Auth request authentication adapter verified
+- GET-only queue route verified
+- 401 unauthenticated mapping verified
+- 403 non-admin role mapping verified
+- mutation surface absent
+- sensitive token material absent
+
+SERVICE:
+- persisted admin authorization verified
+- unauthenticated fail-closed verified
+- non-admin fail-closed verified
+- invitation read via listRecent verified
+- read-only projection verified
+- persistence mutation absent
+- payment mutation absent
+- membership mutation absent
+
+PAGE:
+- admin queue endpoint verified
+- GET-only fetch verified
+- same-origin credentials verified
+- no-store verified
+- 401 / 403 UI states verified
+- mutation controls absent
+- payment controls absent
+- activation controls absent
+
+============================================================
+RUNTIME CERTIFICATION
+============================================================
+
+UNAUTHENTICATED REQUEST:
+HTTP 401 / PASS
+
+ERROR:
+TRUST_CLUB_ADMIN_LAUNCH_QUEUE_AUTHENTICATION_REQUIRED
+
+AUTHENTICATED NON-ADMIN:
+HTTP 403 / PASS
+
+ERROR:
+TRUST_CLUB_ADMIN_LAUNCH_QUEUE_SYSTEM_ROLE_REQUIRED
+
+PERSISTED TRUST_CLUB_ADMIN:
+HTTP 200 / PASS
+
+AUTHORIZATION MATRIX:
+401 / 403 / 200 VERIFIED
+
+ADMIN QUEUE ITEM COUNT AT CERTIFIED RUNTIME:
+11
+
+STATUS SUMMARY:
+APPROVED|3
+CONSUMED|4
+REQUESTED|4
+
+QUEUE RESPONSE CONTRACT:
+PASS
+
+QUEUE FIELD WHITELIST:
+PASS
+
+QUEUE CONTENT EXPOSED TO NON-ADMIN:
+NO
+
+SENSITIVE RESPONSE MATERIAL:
+NONE
+
+============================================================
+AUTHENTICATION ACTIVITY CLASSIFICATION
+============================================================
+
+BETTER AUTH:
+AUTHENTICATION AUTHORITY
+
+REAL EMAIL/PASSWORD SIGN-IN:
+VERIFIED
+
+SESSION COOKIE:
+ISSUED AND VALIDATED BY BETTER AUTH
+
+BETTER AUTH SESSION ACTIVITY:
+AUTHORIZED
+
+AUTHENTICATION SESSION DATABASE ACTIVITY:
+MAY OCCUR AS PART OF AUTHENTICATION
+
+TRUST CLUB DOMAIN DATABASE MUTATION DURING AUTHORIZATION PROOF:
+NONE
+
+============================================================
+SECURITY / AUTHORITY CERTIFICATION
+============================================================
+
+ADMIN AUTHORITY:
+PERSISTED TRUST_CLUB_ADMIN SYSTEM ROLE
+
+ADMIN QUEUE:
+READ ONLY
+
+HTTP DOMAIN MUTATION METHODS:
+NONE
+
+PAYMENT INTENT CREATION:
+NONE
+
+MEMBERSHIP ACTIVATION:
+NONE
+
+CUSTOMER SERVICE SELECTION AUTHORITY:
+NONE
+
+CUSTOMER PAYMENT METHOD AUTHORITY:
+NONE
+
+RAW INVITATION TOKEN:
+NOT EXPOSED
+
+TOKEN HASH:
+NOT EXPOSED
+
+PASSWORD:
+NOT EXPOSED
+
+SESSION TOKEN:
+NOT EXPOSED
+
+PRIVATE KEY:
+NOT EXPOSED
+
+SECRET KEY:
+NOT EXPOSED
+
+SEED:
+NOT EXPOSED
+
+MNEMONIC:
+NOT EXPOSED
+
+CERTIFIED QUEUE FIELD WHITELIST:
+- invitationId
+- normalizedEmail
+- status
+- expiresAt
+- approvedAt
+- consumedAt
+- createdAt
+- updatedAt
+
+============================================================
+ENGINEERING RESULT
+============================================================
+
+BUILD:
+PASS
+
+STATIC VERIFICATION:
+PASS
+
+RUNTIME VERIFICATION:
+PASS
+
+AUTHORIZATION MATRIX:
+PASS
+
+SECURITY BOUNDARY:
+PASS
+
+READ-ONLY ADMIN QUEUE BOUNDARY:
+PASS
+
+GROUP B SOURCE INTEGRITY:
+PASS
+
+ENGINEERING CERTIFICATION:
+PASS
+
+STAGING:
+NO
+
+COMMIT:
+NO
+
+PUSH:
+NO
+
+============================================================
+END CERTIFICATION
+============================================================

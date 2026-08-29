@@ -1,0 +1,145 @@
+import {
+  trustClubInvitationPersistence,
+} from '../invitation/trust-club-invitation.persistence';
+
+import type {
+  TrustClubInvitation,
+} from '../invitation/trust-club-invitation.contracts';
+
+import {
+  authorizeTrustClubAdminReview,
+} from './trust-club-admin-review-authorization.service';
+
+import type {
+  TrustClubServerApplicationEntryAuthenticationSource,
+} from './trust-club-server-application-entry.contracts';
+
+/**
+ * TRUST-CLUB-V1
+ * PHASE 9.4-P7B
+ *
+ * Administrative Launch Queue
+ *
+ * Read-only administrative projection of recent
+ * Trust Club invitation requests.
+ *
+ * Authority:
+ * authenticated identity
+ * -> persisted TRUST_CLUB_ADMIN System Role
+ * -> read-only invitation persistence.
+ *
+ * This service does not:
+ * - create or mutate invitations;
+ * - issue invitation tokens;
+ * - create payment intents;
+ * - confirm settlements;
+ * - activate memberships;
+ * - expose token hashes to callers.
+ */
+
+export interface TrustClubAdminLaunchQueueItem {
+  invitationId:
+    string;
+
+  normalizedEmail:
+    string;
+
+  status:
+    TrustClubInvitation['status'];
+
+  expiresAt:
+    Date | null;
+
+  approvedAt:
+    Date | null;
+
+  consumedAt:
+    Date | null;
+
+  createdAt:
+    Date;
+
+  updatedAt:
+    Date;
+}
+
+export interface TrustClubAdminLaunchQueue {
+  items:
+    readonly TrustClubAdminLaunchQueueItem[];
+}
+
+export async function readTrustClubAdminLaunchQueue(
+  authenticationSource:
+    TrustClubServerApplicationEntryAuthenticationSource,
+): Promise<TrustClubAdminLaunchQueue> {
+  const authorization =
+    await authorizeTrustClubAdminReview(
+      authenticationSource,
+    );
+
+  if (
+    authorization.status ===
+      'UNAUTHENTICATED'
+  ) {
+    throw new Error(
+      'TRUST_CLUB_ADMIN_LAUNCH_QUEUE_AUTHENTICATION_REQUIRED',
+    );
+  }
+
+  if (
+    authorization.status ===
+      'ADMIN_SYSTEM_ROLE_REQUIRED'
+  ) {
+    throw new Error(
+      'TRUST_CLUB_ADMIN_LAUNCH_QUEUE_SYSTEM_ROLE_REQUIRED',
+    );
+  }
+
+  const invitations =
+    await trustClubInvitationPersistence
+      .listRecent(
+        100,
+      );
+
+  return {
+    items:
+      invitations.map(
+        (
+          invitation,
+        ): TrustClubAdminLaunchQueueItem => ({
+          invitationId:
+            invitation.id,
+
+          normalizedEmail:
+            invitation.normalizedEmail,
+
+          status:
+            invitation.status,
+
+          expiresAt:
+            invitation.expiresAt,
+
+          approvedAt:
+            invitation.approvedAt,
+
+          consumedAt:
+            invitation.consumedAt,
+
+          createdAt:
+            invitation.createdAt,
+
+          updatedAt:
+            invitation.updatedAt,
+        }),
+      ),
+  };
+}
+
+export const TRUST_CLUB_ADMIN_LAUNCH_QUEUE_AUTHORITY_RULE =
+  'ADMIN_LAUNCH_QUEUE_REQUIRES_AUTHENTICATED_PERSISTED_TRUST_CLUB_ADMIN' as const;
+
+export const TRUST_CLUB_ADMIN_LAUNCH_QUEUE_READ_ONLY_RULE =
+  'ADMIN_LAUNCH_QUEUE_IS_READ_ONLY' as const;
+
+export const TRUST_CLUB_ADMIN_LAUNCH_QUEUE_TOKEN_RULE =
+  'ADMIN_LAUNCH_QUEUE_DOES_NOT_EXPOSE_TOKEN_HASH_OR_RAW_TOKEN' as const;
