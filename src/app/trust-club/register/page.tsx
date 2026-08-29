@@ -2,6 +2,7 @@
 
 import {
   FormEvent,
+  useEffect,
   useState,
 } from 'react';
 
@@ -62,6 +63,56 @@ export default function TrustClubRegisterPage() {
     setSubmitting,
   ] =
     useState(false);
+
+  useEffect(
+    () => {
+      const searchParams =
+        new URLSearchParams(
+          window.location.search,
+        );
+
+      const queryToken =
+        searchParams
+          .get(
+            'token',
+          )
+          ?.trim();
+
+      if (
+        queryToken ===
+          undefined ||
+        queryToken.length ===
+          0
+      ) {
+        return;
+      }
+
+      setRawInvitationToken(
+        queryToken,
+      );
+
+      searchParams.delete(
+        'token',
+      );
+
+      const remainingQuery =
+        searchParams.toString();
+
+      const scrubbedUrl =
+        `${window.location.pathname}${
+          remainingQuery.length > 0
+            ? `?${remainingQuery}`
+            : ''
+        }${window.location.hash}`;
+
+      window.history.replaceState(
+        window.history.state,
+        '',
+        scrubbedUrl,
+      );
+    },
+    [],
+  );
 
   async function handleSubmit(
     event:

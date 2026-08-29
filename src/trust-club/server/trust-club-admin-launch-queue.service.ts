@@ -1,4 +1,8 @@
 import {
+  prisma,
+} from '@/lib/prisma';
+
+import {
   trustClubInvitationPersistence,
 } from '../invitation/trust-club-invitation.persistence';
 
@@ -16,26 +20,93 @@ import type {
 
 /**
  * TRUST-CLUB-V1
- * PHASE 9.4-P7B
+ * PHASE 9.4-P8.25
  *
  * Administrative Launch Queue
  *
  * Read-only administrative projection of recent
- * Trust Club invitation requests.
+ * Trust Club invitation requests together with the
+ * current server-authoritative payment and settlement
+ * state required for launch operations.
  *
  * Authority:
  * authenticated identity
  * -> persisted TRUST_CLUB_ADMIN System Role
- * -> read-only invitation persistence.
+ * -> read-only invitation/payment/settlement persistence.
  *
  * This service does not:
  * - create or mutate invitations;
  * - issue invitation tokens;
  * - create payment intents;
+ * - receive settlements;
  * - confirm settlements;
  * - activate memberships;
- * - expose token hashes to callers.
+ * - expose token hashes or raw tokens to callers.
  */
+
+export interface TrustClubAdminLaunchQueuePayment {
+  paymentIntentId:
+    string;
+
+  paymentReference:
+    string;
+
+  amountMinor:
+    string;
+
+  currency:
+    string;
+
+  paymentMethod:
+    string;
+
+  status:
+    string;
+
+  expiresAt:
+    Date | null;
+
+  confirmedAt:
+    Date | null;
+
+  createdAt:
+    Date;
+
+  settlement:
+    TrustClubAdminLaunchQueueSettlement | null;
+}
+
+export interface TrustClubAdminLaunchQueueSettlement {
+  settlementId:
+    string;
+
+  settlementReference:
+    string;
+
+  originatingInstitution:
+    string | null;
+
+  externalTransactionRef:
+    string | null;
+
+  amountMinor:
+    string;
+
+  currency:
+    string;
+
+  status:
+    string;
+
+  receivedAt:
+    Date;
+
+  confirmedAt:
+    Date | null;
+
+  verificationReference:
+    string | null;
+}
 
 export interface TrustClubAdminLaunchQueueItem {
   invitationId:
@@ -64,6 +135,9 @@ export interface TrustClubAdminLaunchQueueItem {
 
   updatedAt:
     Date;
+
+  payment:
+    TrustClubAdminLaunchQueuePayment | null;
 }
 
 export interface TrustClubAdminLaunchQueue {
@@ -104,40 +178,151 @@ export async function readTrustClubAdminLaunchQueue(
         100,
       );
 
-  return {
-    items:
+  const items =
+    await Promise.all(
       invitations.map(
-        (
+        async (
           invitation,
-        ): TrustClubAdminLaunchQueueItem => ({
-          invitationId:
-            invitation.id,
+        ): Promise<TrustClubAdminLaunchQueueItem> => {
+          const paymentIntent =
+            await prisma.trustClubPaymentIntent.findFirst({
+              where: {
+                invitationId:
+                  invitation.id,
 
-          normalizedEmail:
-            invitation.normalizedEmail,
+                status: {
+                  notIn: [
+                    'CANCELLED',
+                    'EXPIRED',
+                  ],
+                },
+              },
 
-          status:
-            invitation.status,
+              orderBy: {
+                createdAt:
+                  'desc',
+              },
 
-          expiresAt:
-            invitation.expiresAt,
+              include: {
+                settlements: {
+                  orderBy: {
+                    receivedAt:
+                      'desc',
+                  },
 
-          paymentAccessExpiresAt:
-            invitation.paymentAccessExpiresAt,
+                  take:
+                    1,
+                },
+              },
+            });
 
-          approvedAt:
-            invitation.approvedAt,
+          const settlement =
+            paymentIntent?.settlements[0] ??
+            null;
 
-          consumedAt:
-            invitation.consumedAt,
+          return {
+            invitationId:
+              invitation.id,
 
-          createdAt:
-            invitation.createdAt,
+            normalizedEmail:
+              invitation.normalizedEmail,
 
-          updatedAt:
-            invitation.updatedAt,
-        }),
+            status:
+              invitation.status,
+
+            expiresAt:
+              invitation.expiresAt,
+
+            paymentAccessExpiresAt:
+              invitation.paymentAccessExpiresAt,
+
+            approvedAt:
+              invitation.approvedAt,
+
+            consumedAt:
+              invitation.consumedAt,
+
+            createdAt:
+              invitation.createdAt,
+
+            updatedAt:
+              invitation.updatedAt,
+
+            payment:
+              paymentIntent ===
+              null
+                ? null
+                : {
+                    paymentIntentId:
+                      paymentIntent.paymentIntentId,
+
+                    paymentReference:
+                      paymentIntent.paymentReference,
+
+                    amountMinor:
+                      paymentIntent.amountMinor.toString(),
+
+                    currency:
+                      paymentIntent.currency,
+
+                    paymentMethod:
+                      paymentIntent.paymentMethod,
+
+                    status:
+                      paymentIntent.status,
+
+                    expiresAt:
+                      paymentIntent.expiresAt,
+
+                    confirmedAt:
+                      paymentIntent.confirmedAt,
+
+                    createdAt:
+                      paymentIntent.createdAt,
+
+                    settlement:
+                      settlement ===
+                      null
+                        ? null
+                        : {
+                            settlementId:
+                              settlement.settlementId,
+
+                            settlementReference:
+                              settlement.settlementReference,
+
+                            originatingInstitution:
+                              settlement.originatingInstitution,
+
+                            externalTransactionRef:
+                              settlement.externalTransactionRef,
+
+                            amountMinor:
+                              settlement.amountMinor.toString(),
+
+                            currency:
+                              settlement.currency,
+
+                            status:
+                              settlement.status,
+
+                            receivedAt:
+                              settlement.receivedAt,
+
+                            confirmedAt:
+                              settlement.confirmedAt,
+
+                            verificationReference:
+                              settlement.verificationReference,
+                          },
+                  },
+          };
+        },
       ),
+    );
+
+  return {
+    items,
   };
 }
 
@@ -149,3 +334,9 @@ export const TRUST_CLUB_ADMIN_LAUNCH_QUEUE_READ_ONLY_RULE =
 
 export const TRUST_CLUB_ADMIN_LAUNCH_QUEUE_TOKEN_RULE =
   'ADMIN_LAUNCH_QUEUE_DOES_NOT_EXPOSE_TOKEN_HASH_OR_RAW_TOKEN' as const;
+
+export const TRUST_CLUB_ADMIN_LAUNCH_QUEUE_PAYMENT_RULE =
+  'ADMIN_LAUNCH_QUEUE_EXPOSES_SERVER_AUTHORITATIVE_PAYMENT_STATE_READ_ONLY' as const;
+
+export const TRUST_CLUB_ADMIN_LAUNCH_QUEUE_SETTLEMENT_RULE =
+  'ADMIN_LAUNCH_QUEUE_EXPOSES_SERVER_AUTHORITATIVE_SETTLEMENT_STATE_READ_ONLY' as const;

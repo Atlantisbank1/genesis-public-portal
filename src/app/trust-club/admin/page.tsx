@@ -32,6 +32,69 @@ interface LaunchQueueItem {
   paymentAccessExpiresAt:
     string | null;
 
+  payment:
+    {
+      paymentIntentId:
+        string;
+
+      paymentReference:
+        string;
+
+      amountMinor:
+        string;
+
+      currency:
+        string;
+
+      paymentMethod:
+        string;
+
+      status:
+        string;
+
+      expiresAt:
+        string | null;
+
+      confirmedAt:
+        string | null;
+
+      createdAt:
+        string;
+
+      settlement:
+        {
+          settlementId:
+            string;
+
+          settlementReference:
+            string;
+
+          originatingInstitution:
+            string | null;
+
+          externalTransactionRef:
+            string | null;
+
+          amountMinor:
+            string;
+
+          currency:
+            string;
+
+          status:
+            string;
+
+          receivedAt:
+            string;
+
+          confirmedAt:
+            string | null;
+
+          verificationReference:
+            string | null;
+        } | null;
+    } | null;
+
   approvedAt:
     string | null;
 
@@ -158,6 +221,78 @@ export default function TrustClubAdminPage() {
   const [
     paymentLinkError,
     setPaymentLinkError,
+  ] =
+    useState<string | null>(
+      null,
+    );
+
+  const [
+    settlementReferences,
+    setSettlementReferences,
+  ] =
+    useState<Record<string, string>>(
+      {},
+    );
+
+  const [
+    originatingInstitutions,
+    setOriginatingInstitutions,
+  ] =
+    useState<Record<string, string>>(
+      {},
+    );
+
+  const [
+    externalTransactionRefs,
+    setExternalTransactionRefs,
+  ] =
+    useState<Record<string, string>>(
+      {},
+    );
+
+  const [
+    verificationReferences,
+    setVerificationReferences,
+  ] =
+    useState<Record<string, string>>(
+      {},
+    );
+
+  const [
+    settlementActionFor,
+    setSettlementActionFor,
+  ] =
+    useState<string | null>(
+      null,
+    );
+
+  const [
+    settlementError,
+    setSettlementError,
+  ] =
+    useState<string | null>(
+      null,
+    );
+
+  const [
+    registrationActionFor,
+    setRegistrationActionFor,
+  ] =
+    useState<string | null>(
+      null,
+    );
+
+  const [
+    privateRegistrationLinks,
+    setPrivateRegistrationLinks,
+  ] =
+    useState<Record<string, string>>(
+      {},
+    );
+
+  const [
+    registrationError,
+    setRegistrationError,
   ] =
     useState<string | null>(
       null,
@@ -425,6 +560,367 @@ export default function TrustClubAdminPage() {
     } catch {
       setPaymentLinkError(
         'TRUST_CLUB_PRIVATE_PAYMENT_LINK_COPY_FAILED',
+      );
+    }
+  }
+  async function recordSettlement(
+    item:
+      LaunchQueueItem,
+  ) {
+    if (
+      item.payment ===
+      null
+    ) {
+      setSettlementError(
+        'TRUST_CLUB_ADMIN_PAYMENT_INTENT_REQUIRED',
+      );
+
+      return;
+    }
+
+    const settlementReference =
+      settlementReferences[
+        item.invitationId
+      ]?.trim() ??
+      '';
+
+    if (
+      settlementReference.length ===
+      0
+    ) {
+      setSettlementError(
+        'TRUST_CLUB_SETTLEMENT_REFERENCE_REQUIRED',
+      );
+
+      return;
+    }
+
+    setSettlementActionFor(
+      item.invitationId,
+    );
+
+    setSettlementError(
+      null,
+    );
+
+    try {
+      const response =
+        await fetch(
+          '/api/trust-club/admin/payments/settlements',
+          {
+            method:
+              'POST',
+
+            credentials:
+              'same-origin',
+
+            cache:
+              'no-store',
+
+            headers: {
+              'Content-Type':
+                'application/json',
+
+              Accept:
+                'application/json',
+            },
+
+            body:
+              JSON.stringify({
+                paymentReference:
+                  item.payment.paymentReference,
+
+                settlementReference,
+
+                originatingInstitution:
+                  originatingInstitutions[
+                    item.invitationId
+                  ]?.trim() ||
+                  null,
+
+                externalTransactionRef:
+                  externalTransactionRefs[
+                    item.invitationId
+                  ]?.trim() ||
+                  null,
+
+                amountMinor:
+                  item.payment.amountMinor,
+
+                currency:
+                  item.payment.currency,
+
+                verificationReference:
+                  verificationReferences[
+                    item.invitationId
+                  ]?.trim() ||
+                  null,
+              }),
+          },
+        );
+
+      const payload =
+        await response.json() as {
+          ok:
+            boolean;
+
+          error?:
+            string;
+        };
+
+      if (
+        !response.ok ||
+        payload.ok !==
+          true
+      ) {
+        setSettlementError(
+          payload.error ??
+            'TRUST_CLUB_SETTLEMENT_RECEIPT_FAILED',
+        );
+
+        return;
+      }
+
+      await loadQueue();
+    } catch {
+      setSettlementError(
+        'TRUST_CLUB_SETTLEMENT_RECEIPT_FAILED',
+      );
+    } finally {
+      setSettlementActionFor(
+        null,
+      );
+    }
+  }
+
+  async function confirmSettlement(
+    item:
+      LaunchQueueItem,
+  ) {
+    const settlement =
+      item.payment?.settlement ??
+      null;
+
+    if (
+      settlement ===
+      null
+    ) {
+      setSettlementError(
+        'TRUST_CLUB_ADMIN_SETTLEMENT_REQUIRED',
+      );
+
+      return;
+    }
+
+    setSettlementActionFor(
+      item.invitationId,
+    );
+
+    setSettlementError(
+      null,
+    );
+
+    try {
+      const response =
+        await fetch(
+          '/api/trust-club/admin/payments/settlements/confirm',
+          {
+            method:
+              'POST',
+
+            credentials:
+              'same-origin',
+
+            cache:
+              'no-store',
+
+            headers: {
+              'Content-Type':
+                'application/json',
+
+              Accept:
+                'application/json',
+            },
+
+            body:
+              JSON.stringify({
+                settlementReference:
+                  settlement.settlementReference,
+              }),
+          },
+        );
+
+      const payload =
+        await response.json() as {
+          ok:
+            boolean;
+
+          error?:
+            string;
+        };
+
+      if (
+        !response.ok ||
+        payload.ok !==
+          true
+      ) {
+        setSettlementError(
+          payload.error ??
+            'TRUST_CLUB_SETTLEMENT_CONFIRMATION_FAILED',
+        );
+
+        return;
+      }
+
+      await loadQueue();
+    } catch {
+      setSettlementError(
+        'TRUST_CLUB_SETTLEMENT_CONFIRMATION_FAILED',
+      );
+    } finally {
+      setSettlementActionFor(
+        null,
+      );
+    }
+  }
+
+  async function issuePrivateRegistrationLink(
+    invitationId:
+      string,
+  ) {
+    setRegistrationActionFor(
+      invitationId,
+    );
+
+    setRegistrationError(
+      null,
+    );
+
+    try {
+      const expiresAt =
+        new Date(
+          Date.now() +
+            24 *
+            60 *
+            60 *
+            1000,
+        );
+
+      const response =
+        await fetch(
+          `/api/trust-club/admin/invitations/${encodeURIComponent(
+            invitationId,
+          )}/issue-token`,
+          {
+            method:
+              'POST',
+
+            credentials:
+              'same-origin',
+
+            cache:
+              'no-store',
+
+            headers: {
+              'Content-Type':
+                'application/json',
+
+              Accept:
+                'application/json',
+            },
+
+            body:
+              JSON.stringify({
+                expiresAt:
+                  expiresAt.toISOString(),
+              }),
+          },
+        );
+
+      const payload =
+        await response.json() as {
+          ok:
+            boolean;
+
+          rawToken?:
+            string;
+
+          error?:
+            string;
+        };
+
+      if (
+        !response.ok ||
+        payload.ok !==
+          true ||
+        typeof payload.rawToken !==
+          'string' ||
+        payload.rawToken.trim().length ===
+          0
+      ) {
+        setRegistrationError(
+          payload.error ??
+            'TRUST_CLUB_PRIVATE_REGISTRATION_LINK_ISSUANCE_FAILED',
+        );
+
+        return;
+      }
+
+      const privateLink =
+        `${window.location.origin}/trust-club/register?token=${encodeURIComponent(
+          payload.rawToken,
+        )}`;
+
+      setPrivateRegistrationLinks(
+        (
+          current,
+        ) => ({
+          ...current,
+
+          [invitationId]:
+            privateLink,
+        }),
+      );
+
+      await loadQueue();
+    } catch {
+      setRegistrationError(
+        'TRUST_CLUB_PRIVATE_REGISTRATION_LINK_ISSUANCE_FAILED',
+      );
+    } finally {
+      setRegistrationActionFor(
+        null,
+      );
+    }
+  }
+
+  async function copyPrivateRegistrationLink(
+    invitationId:
+      string,
+  ) {
+    const privateLink =
+      privateRegistrationLinks[
+        invitationId
+      ];
+
+    if (
+      privateLink ===
+      undefined
+    ) {
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(
+        privateLink,
+      );
+
+      setRegistrationError(
+        null,
+      );
+    } catch {
+      setRegistrationError(
+        'TRUST_CLUB_PRIVATE_REGISTRATION_LINK_COPY_FAILED',
       );
     }
   }
@@ -719,6 +1215,56 @@ export default function TrustClubAdminPage() {
                 </section>
               ) : null}
 
+            {settlementError !==
+              null ? (
+                <section
+                  role="alert"
+                  style={{
+                    border:
+                      '1px solid #7c2d12',
+                    borderRadius:
+                      12,
+                    padding:
+                      14,
+                    marginBottom:
+                      16,
+                    background:
+                      '#1c1917',
+                  }}
+                >
+                  Settlement operation failed.
+                  {' '}
+                  <code>
+                    {settlementError}
+                  </code>
+                </section>
+              ) : null}
+
+            {registrationError !==
+              null ? (
+                <section
+                  role="alert"
+                  style={{
+                    border:
+                      '1px solid #7c2d12',
+                    borderRadius:
+                      12,
+                    padding:
+                      14,
+                    marginBottom:
+                      16,
+                    background:
+                      '#1c1917',
+                  }}
+                >
+                  Private registration link operation failed.
+                  {' '}
+                  <code>
+                    {registrationError}
+                  </code>
+                </section>
+              ) : null}
+
             <section
               style={{
                 display:
@@ -977,6 +1523,8 @@ export default function TrustClubAdminPage() {
                             'Consumed',
                             'Invitation ID',
                             'Private Payment',
+                              'Payment / Settlement',
+                              'Private Registration',
                           ].map(
                             (
                               heading,
@@ -1215,6 +1763,346 @@ export default function TrustClubAdminPage() {
                                   </span>
                                 )}
                             </td>
+                              <td
+                                style={{
+                                  padding:
+                                    '14px 16px',
+                                  borderBottom:
+                                    '1px solid #1e293b',
+                                  minWidth:
+                                    320,
+                                  verticalAlign:
+                                    'top',
+                                }}
+                              >
+                                {item.payment ===
+                                null ? (
+                                  <span
+                                    style={{
+                                      color:
+                                        '#64748b',
+                                    }}
+                                  >
+                                    No Payment Intent
+                                  </span>
+                                ) : (
+                                  <>
+                                    <div
+                                      style={{
+                                        marginBottom:
+                                          8,
+                                      }}
+                                    >
+                                      <strong>
+                                        {item.payment.paymentReference}
+                                      </strong>
+                                    </div>
+
+                                    <div
+                                      style={{
+                                        color:
+                                          '#cbd5e1',
+                                        fontSize:
+                                          12,
+                                        marginBottom:
+                                          8,
+                                      }}
+                                    >
+                                      {`${item.payment.amountMinor} ${item.payment.currency} · ${item.payment.paymentMethod} · ${item.payment.status}`}
+                                    </div>
+
+                                    {item.payment.settlement ===
+                                    null ? (
+                                      <>
+                                        <input
+                                          type="text"
+                                          value={
+                                            settlementReferences[
+                                              item.invitationId
+                                            ] ??
+                                            ''
+                                          }
+                                          onChange={
+                                            (
+                                              event,
+                                            ) => {
+                                              setSettlementReferences(
+                                                (
+                                                  current,
+                                                ) => ({
+                                                  ...current,
+                                                  [item.invitationId]:
+                                                    event.target.value,
+                                                }),
+                                              );
+                                            }
+                                          }
+                                          placeholder="Settlement reference"
+                                          aria-label="Settlement reference"
+                                          style={{
+                                            width:
+                                              '100%',
+                                            marginBottom:
+                                              6,
+                                          }}
+                                        />
+
+                                        <input
+                                          type="text"
+                                          value={
+                                            originatingInstitutions[
+                                              item.invitationId
+                                            ] ??
+                                            ''
+                                          }
+                                          onChange={
+                                            (
+                                              event,
+                                            ) => {
+                                              setOriginatingInstitutions(
+                                                (
+                                                  current,
+                                                ) => ({
+                                                  ...current,
+                                                  [item.invitationId]:
+                                                    event.target.value,
+                                                }),
+                                              );
+                                            }
+                                          }
+                                          placeholder="Originating institution (optional)"
+                                          aria-label="Originating institution"
+                                          style={{
+                                            width:
+                                              '100%',
+                                            marginBottom:
+                                              6,
+                                          }}
+                                        />
+
+                                        <input
+                                          type="text"
+                                          value={
+                                            externalTransactionRefs[
+                                              item.invitationId
+                                            ] ??
+                                            ''
+                                          }
+                                          onChange={
+                                            (
+                                              event,
+                                            ) => {
+                                              setExternalTransactionRefs(
+                                                (
+                                                  current,
+                                                ) => ({
+                                                  ...current,
+                                                  [item.invitationId]:
+                                                    event.target.value,
+                                                }),
+                                              );
+                                            }
+                                          }
+                                          placeholder="External transaction reference (optional)"
+                                          aria-label="External transaction reference"
+                                          style={{
+                                            width:
+                                              '100%',
+                                            marginBottom:
+                                              6,
+                                          }}
+                                        />
+
+                                        <input
+                                          type="text"
+                                          value={
+                                            verificationReferences[
+                                              item.invitationId
+                                            ] ??
+                                            ''
+                                          }
+                                          onChange={
+                                            (
+                                              event,
+                                            ) => {
+                                              setVerificationReferences(
+                                                (
+                                                  current,
+                                                ) => ({
+                                                  ...current,
+                                                  [item.invitationId]:
+                                                    event.target.value,
+                                                }),
+                                              );
+                                            }
+                                          }
+                                          placeholder="Verification reference (optional)"
+                                          aria-label="Verification reference"
+                                          style={{
+                                            width:
+                                              '100%',
+                                            marginBottom:
+                                              8,
+                                          }}
+                                        />
+
+                                        <button
+                                          type="button"
+                                          disabled={
+                                            settlementActionFor ===
+                                              item.invitationId ||
+                                            item.payment.status !==
+                                              'AWAITING_SETTLEMENT'
+                                          }
+                                          onClick={
+                                            () => {
+                                              void recordSettlement(
+                                                item,
+                                              );
+                                            }
+                                          }
+                                        >
+                                          {settlementActionFor ===
+                                          item.invitationId
+                                            ? 'Recording...'
+                                            : 'Record Settlement Receipt'}
+                                        </button>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <div
+                                          style={{
+                                            color:
+                                              '#cbd5e1',
+                                            fontSize:
+                                              12,
+                                            marginBottom:
+                                              8,
+                                          }}
+                                        >
+                                          {`Settlement ${item.payment.settlement.settlementReference} · ${item.payment.settlement.status}`}
+                                        </div>
+
+                                        {item.payment.settlement.status ===
+                                        'RECEIVED' ? (
+                                          <button
+                                            type="button"
+                                            disabled={
+                                              settlementActionFor ===
+                                              item.invitationId
+                                            }
+                                            onClick={
+                                              () => {
+                                                void confirmSettlement(
+                                                  item,
+                                                );
+                                              }
+                                            }
+                                          >
+                                            {settlementActionFor ===
+                                            item.invitationId
+                                              ? 'Confirming...'
+                                              : 'Confirm Settlement'}
+                                          </button>
+                                        ) : null}
+                                      </>
+                                    )}
+                                  </>
+                                )}
+                              </td>
+
+                              <td
+                                style={{
+                                  padding:
+                                    '14px 16px',
+                                  borderBottom:
+                                    '1px solid #1e293b',
+                                  minWidth:
+                                    280,
+                                  verticalAlign:
+                                    'top',
+                                }}
+                              >
+                                {item.status ===
+                                  'REQUESTED' &&
+                                item.payment?.status ===
+                                  'CONFIRMED' &&
+                                item.payment.settlement?.status ===
+                                  'CONFIRMED' ? (
+                                  <>
+                                    <button
+                                      type="button"
+                                      disabled={
+                                        registrationActionFor ===
+                                        item.invitationId
+                                      }
+                                      onClick={
+                                        () => {
+                                          void issuePrivateRegistrationLink(
+                                            item.invitationId,
+                                          );
+                                        }
+                                      }
+                                    >
+                                      {registrationActionFor ===
+                                      item.invitationId
+                                        ? 'Issuing...'
+                                        : 'Issue Private Registration Link'}
+                                    </button>
+
+                                    {privateRegistrationLinks[
+                                      item.invitationId
+                                    ] !==
+                                    undefined ? (
+                                      <div
+                                        style={{
+                                          marginTop:
+                                            10,
+                                        }}
+                                      >
+                                        <input
+                                          type="text"
+                                          readOnly
+                                          value={
+                                            privateRegistrationLinks[
+                                              item.invitationId
+                                            ]
+                                          }
+                                          aria-label="Private registration link"
+                                          style={{
+                                            width:
+                                              '100%',
+                                            marginBottom:
+                                              8,
+                                          }}
+                                        />
+
+                                        <button
+                                          type="button"
+                                          onClick={
+                                            () => {
+                                              void copyPrivateRegistrationLink(
+                                                item.invitationId,
+                                              );
+                                            }
+                                          }
+                                        >
+                                          Copy Private Registration Link
+                                        </button>
+                                      </div>
+                                    ) : null}
+                                  </>
+                                ) : (
+                                  <span
+                                    style={{
+                                      color:
+                                        '#64748b',
+                                    }}
+                                  >
+                                    Payment and settlement confirmation required
+                                  </span>
+                                )}
+                              </td>
                           </tr>
                         ),
                       )}
