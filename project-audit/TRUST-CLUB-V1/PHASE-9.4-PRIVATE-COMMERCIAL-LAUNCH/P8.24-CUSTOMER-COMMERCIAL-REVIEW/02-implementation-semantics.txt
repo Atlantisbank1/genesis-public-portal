@@ -1,0 +1,70 @@
+TRUST CLUB V1
+PHASE 9.4-P8.24
+CUSTOMER COMMERCIAL REVIEW SEMANTICS
+
+IMPLEMENTED PRODUCT BOUNDARY
+
+1. Standard Family Membership is the immediately payable
+   commercial product in this phase.
+
+2. The customer page presents 14 standard services as
+   included services.
+
+3. The customer page presents 5 separately scoped services
+   as Custom Quote services.
+
+4. Custom Quote services do not mutate the Standard Family
+   Membership PaymentIntent amount.
+
+5. Customer commercial confirmation is required in the UI
+   before payment-method submission.
+
+6. Customer selects payment method.
+
+7. Customer does not submit authoritative:
+   - amount;
+   - currency;
+   - invitationId;
+   - plan price;
+   - settlement status;
+   - payment status;
+   - membership status.
+
+8. Customer PaymentIntent POST body remains:
+   - paymentAccessToken;
+   - paymentMethod.
+
+9. Server-authoritative membership pricing remains unchanged.
+
+10. Payment-method selection is not settlement confirmation.
+
+11. Commercial confirmation is not membership activation,
+    registration authorization, or entitlement activation.
+
+12. Raw payment-access capability remains transient:
+    - query token ingested into React state;
+    - visible URL scrubbed;
+    - no localStorage;
+    - no sessionStorage.
+
+13. No Prisma schema change was required.
+
+14. No migration was required.
+
+15. No PaymentIntent API contract change was required.
+
+16. No settlement implementation was changed.
+
+17. No registration implementation was changed.
+
+18. No membership implementation was changed.
+
+OUT OF SCOPE
+
+- persistent basket model;
+- customer-authored pricing;
+- automatic pricing of Custom Quote services;
+- Custom Quote approval engine;
+- settlement confirmation;
+- registration-token issuance;
+- membership activation.
