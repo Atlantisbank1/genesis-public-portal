@@ -1,0 +1,118 @@
+TRUST CLUB V1
+PHASE 9.4-P8.23
+PRIVATE PAYMENT UI + ACTIVE PAYMENT INTENT REPLAY PROTECTION
+CERTIFICATION
+
+BASELINE:
+bd50fca0f4b99e9fe6865517e5a2daef3ff20917
+
+STATUS:
+PASS
+
+CERTIFIED COMPONENTS:
+1. Private customer payment page.
+2. Admin private payment-link issuance presentation.
+3. Admin queue payment-access expiry visibility.
+4. Customer payment-access capability bridge.
+5. Immediate raw token URL scrubbing.
+6. Server-authoritative 9900 ILS family membership Payment Intent.
+7. Database-enforced one non-terminal Payment Intent per invitation.
+8. Stable HTTP 409 duplicate domain mapping.
+9. Historical Payment Intent preservation.
+10. Controlled migration to CANCELLED for the single historical unsettled duplicate.
+
+DATABASE MIGRATION:
+20260829170000_trust_club_payment_intent_invitation_unique
+
+MIGRATION STATUS:
+FINISHED
+NOT ROLLED BACK
+
+LIVE DATABASE CONSTRAINT:
+trust_club_payment_intents_active_invitationId_key
+
+LIVE ACTIVE DUPLICATE GROUP COUNT:
+0
+
+CONTROLLED REPLAY VERIFICATION:
+Invitation:
+cmtemqtxo0000y0n9xl162ey9
+
+Payment Intent:
+cmtemracs0001y0n9deqlrh6q
+
+First creation:
+HTTP 201
+
+Same-capability replay:
+HTTP 409
+
+Domain error:
+TRUST_CLUB_PAYMENT_INTENT_INVITATION_ALREADY_HAS_PAYMENT_INTENT
+
+Final Payment Intent count for controlled invitation:
+1
+
+Authoritative amount:
+9900 ILS
+
+Payment method:
+BANK_TRANSFER
+
+Payment status:
+AWAITING_SETTLEMENT
+
+Registration token:
+NONE
+
+SECURITY LIMIT:
+Payment-access capability itself is NOT certified as single-use.
+The certified guarantee is that repeated capability use cannot create a second non-terminal Payment Intent for the same invitation.
+
+HISTORICAL DATA:
+Confirmed Payment Intent preserved.
+Confirmed Settlement preserved.
+Unsettled duplicate preserved as CANCELLED.
+No historical Payment Intent deletion.
+
+DATABASE WRITE DURING CERTIFICATION WORK:
+Migration apply already completed under controlled R5-R7.
+Controlled R5-R8B writes:
+- one test invitation creation
+- one payment-access issuance
+- one payment-intent creation
+- replay creation blocked
+
+Settlement write:
+NONE
+
+Registration-token write:
+NONE
+
+Membership write:
+NONE
+
+BETTER AUTH:
+Real Admin login used for authorized payment-access issuance.
+Password and session-token values are not recorded.
+
+PRODUCTION BUILD:
+PASS
+
+RUNTIME:
+PASS
+
+SOURCE DEFECT:
+NONE REMAINING IN CERTIFIED P8.23 SCOPE
+
+STAGING:
+NO
+
+COMMIT:
+NO
+
+PUSH:
+NO
+
+READY FOR SHA256 LOCK:
+YES

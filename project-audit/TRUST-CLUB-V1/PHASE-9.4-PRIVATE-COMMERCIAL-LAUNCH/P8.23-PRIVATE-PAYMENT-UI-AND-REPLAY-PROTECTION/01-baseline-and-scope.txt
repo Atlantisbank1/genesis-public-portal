@@ -1,0 +1,25 @@
+TRUST CLUB V1
+PHASE 9.4-P8.23
+BASELINE AND SCOPE
+
+CERTIFIED P8.22 HEAD:
+bd50fca0f4b99e9fe6865517e5a2daef3ff20917
+
+BRANCH:
+main
+
+STAGING BEFORE CERTIFICATION:
+CLEAN
+
+TRACKED PRODUCT CHANGES:
+src/app/api/trust-club/invitations/payment-intent/route.ts
+src/app/trust-club/admin/page.tsx
+src/trust-club/payment/trust-club-payment-intent.persistence.ts
+src/trust-club/server/trust-club-admin-launch-queue.service.ts
+
+REQUIRED NEW PRODUCT ARTIFACTS:
+prisma/migrations/20260829170000_trust_club_payment_intent_invitation_unique/migration.sql
+src/app/trust-club/payment/page.tsx
+
+NO COMMIT
+NO PUSH
