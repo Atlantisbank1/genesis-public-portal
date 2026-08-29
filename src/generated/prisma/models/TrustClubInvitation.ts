@@ -30,6 +30,8 @@ export type TrustClubInvitationMinAggregateOutputType = {
   status: $Enums.TrustClubInvitationStatus | null
   tokenHash: string | null
   expiresAt: Date | null
+  paymentAccessTokenHash: string | null
+  paymentAccessExpiresAt: Date | null
   approvedByUserId: string | null
   registeredUserId: string | null
   approvedAt: Date | null
@@ -46,6 +48,8 @@ export type TrustClubInvitationMaxAggregateOutputType = {
   status: $Enums.TrustClubInvitationStatus | null
   tokenHash: string | null
   expiresAt: Date | null
+  paymentAccessTokenHash: string | null
+  paymentAccessExpiresAt: Date | null
   approvedByUserId: string | null
   registeredUserId: string | null
   approvedAt: Date | null
@@ -62,6 +66,8 @@ export type TrustClubInvitationCountAggregateOutputType = {
   status: number
   tokenHash: number
   expiresAt: number
+  paymentAccessTokenHash: number
+  paymentAccessExpiresAt: number
   approvedByUserId: number
   registeredUserId: number
   approvedAt: number
@@ -80,6 +86,8 @@ export type TrustClubInvitationMinAggregateInputType = {
   status?: true
   tokenHash?: true
   expiresAt?: true
+  paymentAccessTokenHash?: true
+  paymentAccessExpiresAt?: true
   approvedByUserId?: true
   registeredUserId?: true
   approvedAt?: true
@@ -96,6 +104,8 @@ export type TrustClubInvitationMaxAggregateInputType = {
   status?: true
   tokenHash?: true
   expiresAt?: true
+  paymentAccessTokenHash?: true
+  paymentAccessExpiresAt?: true
   approvedByUserId?: true
   registeredUserId?: true
   approvedAt?: true
@@ -112,6 +122,8 @@ export type TrustClubInvitationCountAggregateInputType = {
   status?: true
   tokenHash?: true
   expiresAt?: true
+  paymentAccessTokenHash?: true
+  paymentAccessExpiresAt?: true
   approvedByUserId?: true
   registeredUserId?: true
   approvedAt?: true
@@ -201,6 +213,8 @@ export type TrustClubInvitationGroupByOutputType = {
   status: $Enums.TrustClubInvitationStatus
   tokenHash: string | null
   expiresAt: Date | null
+  paymentAccessTokenHash: string | null
+  paymentAccessExpiresAt: Date | null
   approvedByUserId: string | null
   registeredUserId: string | null
   approvedAt: Date | null
@@ -238,6 +252,8 @@ export type TrustClubInvitationWhereInput = {
   status?: Prisma.EnumTrustClubInvitationStatusFilter<"TrustClubInvitation"> | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.StringNullableFilter<"TrustClubInvitation"> | string | null
   expiresAt?: Prisma.DateTimeNullableFilter<"TrustClubInvitation"> | Date | string | null
+  paymentAccessTokenHash?: Prisma.StringNullableFilter<"TrustClubInvitation"> | string | null
+  paymentAccessExpiresAt?: Prisma.DateTimeNullableFilter<"TrustClubInvitation"> | Date | string | null
   approvedByUserId?: Prisma.StringNullableFilter<"TrustClubInvitation"> | string | null
   registeredUserId?: Prisma.StringNullableFilter<"TrustClubInvitation"> | string | null
   approvedAt?: Prisma.DateTimeNullableFilter<"TrustClubInvitation"> | Date | string | null
@@ -257,6 +273,8 @@ export type TrustClubInvitationOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   tokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentAccessTokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentAccessExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedByUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   registeredUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -273,6 +291,7 @@ export type TrustClubInvitationOrderByWithRelationInput = {
 export type TrustClubInvitationWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   tokenHash?: string
+  paymentAccessTokenHash?: string
   registeredUserId?: string
   AND?: Prisma.TrustClubInvitationWhereInput | Prisma.TrustClubInvitationWhereInput[]
   OR?: Prisma.TrustClubInvitationWhereInput[]
@@ -280,6 +299,7 @@ export type TrustClubInvitationWhereUniqueInput = Prisma.AtLeast<{
   normalizedEmail?: Prisma.StringFilter<"TrustClubInvitation"> | string
   status?: Prisma.EnumTrustClubInvitationStatusFilter<"TrustClubInvitation"> | $Enums.TrustClubInvitationStatus
   expiresAt?: Prisma.DateTimeNullableFilter<"TrustClubInvitation"> | Date | string | null
+  paymentAccessExpiresAt?: Prisma.DateTimeNullableFilter<"TrustClubInvitation"> | Date | string | null
   approvedByUserId?: Prisma.StringNullableFilter<"TrustClubInvitation"> | string | null
   approvedAt?: Prisma.DateTimeNullableFilter<"TrustClubInvitation"> | Date | string | null
   rejectedAt?: Prisma.DateTimeNullableFilter<"TrustClubInvitation"> | Date | string | null
@@ -290,7 +310,7 @@ export type TrustClubInvitationWhereUniqueInput = Prisma.AtLeast<{
   approvedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   registeredUser?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   paymentIntents?: Prisma.TrustClubPaymentIntentListRelationFilter
-}, "id" | "tokenHash" | "registeredUserId">
+}, "id" | "tokenHash" | "paymentAccessTokenHash" | "registeredUserId">
 
 export type TrustClubInvitationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -298,6 +318,8 @@ export type TrustClubInvitationOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   tokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentAccessTokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  paymentAccessExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedByUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   registeredUserId?: Prisma.SortOrderInput | Prisma.SortOrder
   approvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -320,6 +342,8 @@ export type TrustClubInvitationScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumTrustClubInvitationStatusWithAggregatesFilter<"TrustClubInvitation"> | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.StringNullableWithAggregatesFilter<"TrustClubInvitation"> | string | null
   expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TrustClubInvitation"> | Date | string | null
+  paymentAccessTokenHash?: Prisma.StringNullableWithAggregatesFilter<"TrustClubInvitation"> | string | null
+  paymentAccessExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TrustClubInvitation"> | Date | string | null
   approvedByUserId?: Prisma.StringNullableWithAggregatesFilter<"TrustClubInvitation"> | string | null
   registeredUserId?: Prisma.StringNullableWithAggregatesFilter<"TrustClubInvitation"> | string | null
   approvedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"TrustClubInvitation"> | Date | string | null
@@ -336,6 +360,8 @@ export type TrustClubInvitationCreateInput = {
   status?: $Enums.TrustClubInvitationStatus
   tokenHash?: string | null
   expiresAt?: Date | string | null
+  paymentAccessTokenHash?: string | null
+  paymentAccessExpiresAt?: Date | string | null
   approvedAt?: Date | string | null
   rejectedAt?: Date | string | null
   revokedAt?: Date | string | null
@@ -353,6 +379,8 @@ export type TrustClubInvitationUncheckedCreateInput = {
   status?: $Enums.TrustClubInvitationStatus
   tokenHash?: string | null
   expiresAt?: Date | string | null
+  paymentAccessTokenHash?: string | null
+  paymentAccessExpiresAt?: Date | string | null
   approvedByUserId?: string | null
   registeredUserId?: string | null
   approvedAt?: Date | string | null
@@ -370,6 +398,8 @@ export type TrustClubInvitationUpdateInput = {
   status?: Prisma.EnumTrustClubInvitationStatusFieldUpdateOperationsInput | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentAccessTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccessExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -387,6 +417,8 @@ export type TrustClubInvitationUncheckedUpdateInput = {
   status?: Prisma.EnumTrustClubInvitationStatusFieldUpdateOperationsInput | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentAccessTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccessExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registeredUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -404,6 +436,8 @@ export type TrustClubInvitationCreateManyInput = {
   status?: $Enums.TrustClubInvitationStatus
   tokenHash?: string | null
   expiresAt?: Date | string | null
+  paymentAccessTokenHash?: string | null
+  paymentAccessExpiresAt?: Date | string | null
   approvedByUserId?: string | null
   registeredUserId?: string | null
   approvedAt?: Date | string | null
@@ -420,6 +454,8 @@ export type TrustClubInvitationUpdateManyMutationInput = {
   status?: Prisma.EnumTrustClubInvitationStatusFieldUpdateOperationsInput | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentAccessTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccessExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -434,6 +470,8 @@ export type TrustClubInvitationUncheckedUpdateManyInput = {
   status?: Prisma.EnumTrustClubInvitationStatusFieldUpdateOperationsInput | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentAccessTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccessExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registeredUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -465,6 +503,8 @@ export type TrustClubInvitationCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   tokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
+  paymentAccessTokenHash?: Prisma.SortOrder
+  paymentAccessExpiresAt?: Prisma.SortOrder
   approvedByUserId?: Prisma.SortOrder
   registeredUserId?: Prisma.SortOrder
   approvedAt?: Prisma.SortOrder
@@ -481,6 +521,8 @@ export type TrustClubInvitationMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   tokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
+  paymentAccessTokenHash?: Prisma.SortOrder
+  paymentAccessExpiresAt?: Prisma.SortOrder
   approvedByUserId?: Prisma.SortOrder
   registeredUserId?: Prisma.SortOrder
   approvedAt?: Prisma.SortOrder
@@ -497,6 +539,8 @@ export type TrustClubInvitationMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   tokenHash?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
+  paymentAccessTokenHash?: Prisma.SortOrder
+  paymentAccessExpiresAt?: Prisma.SortOrder
   approvedByUserId?: Prisma.SortOrder
   registeredUserId?: Prisma.SortOrder
   approvedAt?: Prisma.SortOrder
@@ -614,6 +658,8 @@ export type TrustClubInvitationCreateWithoutApprovedByInput = {
   status?: $Enums.TrustClubInvitationStatus
   tokenHash?: string | null
   expiresAt?: Date | string | null
+  paymentAccessTokenHash?: string | null
+  paymentAccessExpiresAt?: Date | string | null
   approvedAt?: Date | string | null
   rejectedAt?: Date | string | null
   revokedAt?: Date | string | null
@@ -630,6 +676,8 @@ export type TrustClubInvitationUncheckedCreateWithoutApprovedByInput = {
   status?: $Enums.TrustClubInvitationStatus
   tokenHash?: string | null
   expiresAt?: Date | string | null
+  paymentAccessTokenHash?: string | null
+  paymentAccessExpiresAt?: Date | string | null
   registeredUserId?: string | null
   approvedAt?: Date | string | null
   rejectedAt?: Date | string | null
@@ -656,6 +704,8 @@ export type TrustClubInvitationCreateWithoutRegisteredUserInput = {
   status?: $Enums.TrustClubInvitationStatus
   tokenHash?: string | null
   expiresAt?: Date | string | null
+  paymentAccessTokenHash?: string | null
+  paymentAccessExpiresAt?: Date | string | null
   approvedAt?: Date | string | null
   rejectedAt?: Date | string | null
   revokedAt?: Date | string | null
@@ -672,6 +722,8 @@ export type TrustClubInvitationUncheckedCreateWithoutRegisteredUserInput = {
   status?: $Enums.TrustClubInvitationStatus
   tokenHash?: string | null
   expiresAt?: Date | string | null
+  paymentAccessTokenHash?: string | null
+  paymentAccessExpiresAt?: Date | string | null
   approvedByUserId?: string | null
   approvedAt?: Date | string | null
   rejectedAt?: Date | string | null
@@ -712,6 +764,8 @@ export type TrustClubInvitationScalarWhereInput = {
   status?: Prisma.EnumTrustClubInvitationStatusFilter<"TrustClubInvitation"> | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.StringNullableFilter<"TrustClubInvitation"> | string | null
   expiresAt?: Prisma.DateTimeNullableFilter<"TrustClubInvitation"> | Date | string | null
+  paymentAccessTokenHash?: Prisma.StringNullableFilter<"TrustClubInvitation"> | string | null
+  paymentAccessExpiresAt?: Prisma.DateTimeNullableFilter<"TrustClubInvitation"> | Date | string | null
   approvedByUserId?: Prisma.StringNullableFilter<"TrustClubInvitation"> | string | null
   registeredUserId?: Prisma.StringNullableFilter<"TrustClubInvitation"> | string | null
   approvedAt?: Prisma.DateTimeNullableFilter<"TrustClubInvitation"> | Date | string | null
@@ -739,6 +793,8 @@ export type TrustClubInvitationUpdateWithoutRegisteredUserInput = {
   status?: Prisma.EnumTrustClubInvitationStatusFieldUpdateOperationsInput | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentAccessTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccessExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -755,6 +811,8 @@ export type TrustClubInvitationUncheckedUpdateWithoutRegisteredUserInput = {
   status?: Prisma.EnumTrustClubInvitationStatusFieldUpdateOperationsInput | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentAccessTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccessExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -771,6 +829,8 @@ export type TrustClubInvitationCreateWithoutPaymentIntentsInput = {
   status?: $Enums.TrustClubInvitationStatus
   tokenHash?: string | null
   expiresAt?: Date | string | null
+  paymentAccessTokenHash?: string | null
+  paymentAccessExpiresAt?: Date | string | null
   approvedAt?: Date | string | null
   rejectedAt?: Date | string | null
   revokedAt?: Date | string | null
@@ -787,6 +847,8 @@ export type TrustClubInvitationUncheckedCreateWithoutPaymentIntentsInput = {
   status?: $Enums.TrustClubInvitationStatus
   tokenHash?: string | null
   expiresAt?: Date | string | null
+  paymentAccessTokenHash?: string | null
+  paymentAccessExpiresAt?: Date | string | null
   approvedByUserId?: string | null
   registeredUserId?: string | null
   approvedAt?: Date | string | null
@@ -819,6 +881,8 @@ export type TrustClubInvitationUpdateWithoutPaymentIntentsInput = {
   status?: Prisma.EnumTrustClubInvitationStatusFieldUpdateOperationsInput | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentAccessTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccessExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -835,6 +899,8 @@ export type TrustClubInvitationUncheckedUpdateWithoutPaymentIntentsInput = {
   status?: Prisma.EnumTrustClubInvitationStatusFieldUpdateOperationsInput | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentAccessTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccessExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedByUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   registeredUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -851,6 +917,8 @@ export type TrustClubInvitationCreateManyApprovedByInput = {
   status?: $Enums.TrustClubInvitationStatus
   tokenHash?: string | null
   expiresAt?: Date | string | null
+  paymentAccessTokenHash?: string | null
+  paymentAccessExpiresAt?: Date | string | null
   registeredUserId?: string | null
   approvedAt?: Date | string | null
   rejectedAt?: Date | string | null
@@ -866,6 +934,8 @@ export type TrustClubInvitationUpdateWithoutApprovedByInput = {
   status?: Prisma.EnumTrustClubInvitationStatusFieldUpdateOperationsInput | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentAccessTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccessExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   revokedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -882,6 +952,8 @@ export type TrustClubInvitationUncheckedUpdateWithoutApprovedByInput = {
   status?: Prisma.EnumTrustClubInvitationStatusFieldUpdateOperationsInput | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentAccessTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccessExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   registeredUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -898,6 +970,8 @@ export type TrustClubInvitationUncheckedUpdateManyWithoutApprovedByInput = {
   status?: Prisma.EnumTrustClubInvitationStatusFieldUpdateOperationsInput | $Enums.TrustClubInvitationStatus
   tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  paymentAccessTokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  paymentAccessExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   registeredUserId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   approvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   rejectedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -944,6 +1018,8 @@ export type TrustClubInvitationSelect<ExtArgs extends runtime.Types.Extensions.I
   status?: boolean
   tokenHash?: boolean
   expiresAt?: boolean
+  paymentAccessTokenHash?: boolean
+  paymentAccessExpiresAt?: boolean
   approvedByUserId?: boolean
   registeredUserId?: boolean
   approvedAt?: boolean
@@ -964,6 +1040,8 @@ export type TrustClubInvitationSelectCreateManyAndReturn<ExtArgs extends runtime
   status?: boolean
   tokenHash?: boolean
   expiresAt?: boolean
+  paymentAccessTokenHash?: boolean
+  paymentAccessExpiresAt?: boolean
   approvedByUserId?: boolean
   registeredUserId?: boolean
   approvedAt?: boolean
@@ -982,6 +1060,8 @@ export type TrustClubInvitationSelectUpdateManyAndReturn<ExtArgs extends runtime
   status?: boolean
   tokenHash?: boolean
   expiresAt?: boolean
+  paymentAccessTokenHash?: boolean
+  paymentAccessExpiresAt?: boolean
   approvedByUserId?: boolean
   registeredUserId?: boolean
   approvedAt?: boolean
@@ -1000,6 +1080,8 @@ export type TrustClubInvitationSelectScalar = {
   status?: boolean
   tokenHash?: boolean
   expiresAt?: boolean
+  paymentAccessTokenHash?: boolean
+  paymentAccessExpiresAt?: boolean
   approvedByUserId?: boolean
   registeredUserId?: boolean
   approvedAt?: boolean
@@ -1010,7 +1092,7 @@ export type TrustClubInvitationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type TrustClubInvitationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "normalizedEmail" | "status" | "tokenHash" | "expiresAt" | "approvedByUserId" | "registeredUserId" | "approvedAt" | "rejectedAt" | "revokedAt" | "consumedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["trustClubInvitation"]>
+export type TrustClubInvitationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "normalizedEmail" | "status" | "tokenHash" | "expiresAt" | "paymentAccessTokenHash" | "paymentAccessExpiresAt" | "approvedByUserId" | "registeredUserId" | "approvedAt" | "rejectedAt" | "revokedAt" | "consumedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["trustClubInvitation"]>
 export type TrustClubInvitationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   approvedBy?: boolean | Prisma.TrustClubInvitation$approvedByArgs<ExtArgs>
   registeredUser?: boolean | Prisma.TrustClubInvitation$registeredUserArgs<ExtArgs>
@@ -1039,6 +1121,8 @@ export type $TrustClubInvitationPayload<ExtArgs extends runtime.Types.Extensions
     status: $Enums.TrustClubInvitationStatus
     tokenHash: string | null
     expiresAt: Date | null
+    paymentAccessTokenHash: string | null
+    paymentAccessExpiresAt: Date | null
     approvedByUserId: string | null
     registeredUserId: string | null
     approvedAt: Date | null
@@ -1478,6 +1562,8 @@ export interface TrustClubInvitationFieldRefs {
   readonly status: Prisma.FieldRef<"TrustClubInvitation", 'TrustClubInvitationStatus'>
   readonly tokenHash: Prisma.FieldRef<"TrustClubInvitation", 'String'>
   readonly expiresAt: Prisma.FieldRef<"TrustClubInvitation", 'DateTime'>
+  readonly paymentAccessTokenHash: Prisma.FieldRef<"TrustClubInvitation", 'String'>
+  readonly paymentAccessExpiresAt: Prisma.FieldRef<"TrustClubInvitation", 'DateTime'>
   readonly approvedByUserId: Prisma.FieldRef<"TrustClubInvitation", 'String'>
   readonly registeredUserId: Prisma.FieldRef<"TrustClubInvitation", 'String'>
   readonly approvedAt: Prisma.FieldRef<"TrustClubInvitation", 'DateTime'>

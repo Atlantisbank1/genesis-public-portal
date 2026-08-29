@@ -1,0 +1,119 @@
+TRUST CLUB V1
+PHASE 9.4-P8.22
+PRIVATE COMMERCIAL BRIDGE
+ENGINEERING CERTIFICATION
+
+STATUS
+PASS
+
+CERTIFIED BASELINE
+ea4dd57fe183b0a9019740b1f21e82d08f57ad23
+
+SCOPE
+Private pre-registration payment access capability and customer payment-intent authorization boundary.
+
+ARCHITECTURE VERIFIED
+
+1. Private payment access capability is distinct from the post-payment registration token.
+
+2. Payment access token entropy is 256 bits.
+
+3. Raw payment access token is returned only at the authenticated Admin issuance boundary.
+
+4. Raw payment access token is never persisted.
+
+5. SHA-256 token hash is persisted with an expiration timestamp.
+
+6. Payment access issuance requires authenticated persisted TRUST_CLUB_ADMIN authority.
+
+7. Payment access issuance preserves TrustClubInvitation status REQUESTED.
+
+8. Payment access issuance does not create a Payment Intent.
+
+9. Payment access issuance does not confirm settlement.
+
+10. Payment access issuance does not issue the registration token.
+
+11. Customer payment-intent creation requires the private payment access token.
+
+12. Customer invitationId is not an authorization capability.
+
+13. Customer payment access token is SHA-256 hashed server-side before lookup.
+
+14. Payment access expiration is enforced.
+
+15. REQUESTED invitation state is enforced.
+
+16. Registration-token boundary must remain clean before customer payment-intent creation.
+
+17. Customer controls payment-method selection only.
+
+18. Customer does not control authoritative amount or currency.
+
+19. Server-authoritative Standard Family Membership price remains 9900 minor units / ILS.
+
+20. Customer payment-method selection does not constitute settlement confirmation.
+
+21. Payment Intent remains AWAITING_SETTLEMENT until settlement verification.
+
+22. Registration token remains absent before verified settlement.
+
+CONTROLLED RUNTIME RESULT
+
+Admin authentication
+PASS
+
+Admin payment-access issuance
+PASS
+
+Hash-only persistence
+PASS
+
+Customer payment intent by capability
+PASS
+
+Invitation-id-only authority rejection
+PASS
+
+Server-authoritative 9900 ILS
+PASS
+
+Settlement remains required
+PASS
+
+Registration token remains absent
+PASS
+
+Runtime cleanup
+PASS
+
+DATABASE WRITES DURING CONTROLLED VERIFICATION
+
+- one controlled REQUESTED invitation created in U16
+- payment access token hash + expiry written in U17
+- one controlled Payment Intent created in U17
+
+NO SETTLEMENT CONFIRMATION
+NO REGISTRATION TOKEN ISSUANCE
+NO MEMBERSHIP ACTIVATION
+
+BUILD
+PASS
+
+PRISMA GENERATE
+PASS
+
+DATABASE MIGRATION
+APPLIED AND VERIFIED
+
+STAGING
+NO
+
+COMMIT
+NO
+
+PUSH
+NO
+
+CERTIFICATION RESULT
+PHASE 9.4-P8.22 PRIVATE COMMERCIAL BRIDGE: PASS
