@@ -15,14 +15,12 @@ import {
   trustClubPaymentIntentPersistence,
 } from './trust-club-payment-intent.persistence';
 
+import {
+  resolveTrustClubMembershipPrice,
+} from './trust-club-server-pricing.service';
+
 export interface CreateTrustClubPaymentIntentInput {
   invitationId:
-    string;
-
-  amountMinor:
-    bigint;
-
-  currency:
     string;
 
   paymentMethod:
@@ -58,30 +56,6 @@ export async function createTrustClubPaymentIntent(
   ) {
     throw new Error(
       'TRUST_CLUB_PAYMENT_INVITATION_ID_REQUIRED',
-    );
-  }
-
-  if (
-    input.amountMinor <=
-      BigInt(0)
-  ) {
-    throw new Error(
-      'TRUST_CLUB_PAYMENT_AMOUNT_MUST_BE_POSITIVE',
-    );
-  }
-
-  const currency =
-    input.currency
-      .trim()
-      .toUpperCase();
-
-  if (
-    !/^[A-Z]{3,12}$/.test(
-      currency,
-    )
-  ) {
-    throw new Error(
-      'TRUST_CLUB_PAYMENT_CURRENCY_INVALID',
     );
   }
 
@@ -122,6 +96,11 @@ export async function createTrustClubPaymentIntent(
     );
   }
 
+  const serverPrice =
+    resolveTrustClubMembershipPrice(
+      'STANDARD_MEMBERSHIP',
+    );
+
   const expiresAt =
     input.expiresAt ??
     null;
@@ -153,9 +132,10 @@ export async function createTrustClubPaymentIntent(
           'STANDARD_MEMBERSHIP',
 
         amountMinor:
-          input.amountMinor,
+          serverPrice.amountMinor,
 
-        currency,
+        currency:
+          serverPrice.currency,
 
         paymentMethod:
           input.paymentMethod,

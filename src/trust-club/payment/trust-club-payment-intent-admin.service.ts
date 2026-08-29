@@ -23,11 +23,6 @@ export interface CreateTrustClubPaymentIntentAsAdminInput {
     invitationId:
       string;
 
-    amountMinor:
-      bigint;
-
-    currency:
-      string;
 
     paymentMethod:
       TrustClubPaymentMethod;

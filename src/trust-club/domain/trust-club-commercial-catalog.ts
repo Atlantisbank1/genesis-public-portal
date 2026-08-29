@@ -39,6 +39,35 @@ import type {
 const TRUST_CLUB_BASE_MEMBERSHIP_SERVICES:
   readonly TrustClubServiceCode[] =
   getTrustClubBaseMembershipServices();
+export const TRUST_CLUB_BASE_FAMILY_MEMBERSHIP_MONTHLY_PRICE = {
+  currency:
+    'ILS',
+
+  amount:
+    '99',
+} as const;
+
+export const TRUST_CLUB_SPOUSE_OR_PARTNER_MONTHLY_SURCHARGE = {
+  currency:
+    'ILS',
+
+  amount:
+    '0',
+} as const;
+
+export const TRUST_CLUB_STANDARD_FAMILY_MONTHLY_CAP = {
+  currency:
+    'ILS',
+
+  amount:
+    '450',
+} as const;
+
+export const TRUST_CLUB_FAMILY_PRICING_RULE =
+  'BASE_FAMILY_MEMBERSHIP_IS_99_ILS_MONTHLY_SPOUSE_OR_PARTNER_SURCHARGE_IS_ZERO_AND_CAP_COVERED_STANDARD_MONTHLY_CHARGES_CANNOT_EXCEED_450_ILS' as const;
+
+export const TRUST_CLUB_PREMIUM_PRICING_RULE =
+  'PREMIUM_BESPOKE_AND_CUSTOM_QUOTE_SERVICES_ARE_OUTSIDE_THE_STANDARD_FAMILY_MONTHLY_CAP' as const;
 
 const TRUST_CLUB_BASE_MEMBERSHIP_ENTITLEMENTS:
   readonly TrustClubEntitlement[] = [
@@ -62,26 +91,29 @@ export const TRUST_CLUB_MEMBERSHIP_PLANS = {
       'STANDARD_MEMBERSHIP',
 
     name:
-      'Standard Membership',
+      'Standard Family Membership',
 
     description:
-      'Standard recurring Genesis Trust Club Membership providing access to the expressly included Base services and entitlements.',
+      'Genesis Trust Club recurring Family Membership providing access to the expressly included Base services and entitlements. One spouse or partner is included without an additional Base Membership surcharge.',
 
     recurring:
       true,
 
     price: {
       priceKind:
-        'CUSTOM_QUOTE',
+        'FIXED',
 
       billingInterval:
         'MONTHLY',
+
+      amount:
+        TRUST_CLUB_BASE_FAMILY_MEMBERSHIP_MONTHLY_PRICE,
 
       externalFeesIncluded:
         false,
 
       description:
-        'Membership price is commercially defined separately and is not asserted by this domain catalog until expressly approved.',
+        'Base Family Membership is 99 ILS per month. One spouse or partner is included without an additional Base Membership surcharge. External and third-party fees are excluded unless expressly stated.',
     },
 
     includedEntitlements:

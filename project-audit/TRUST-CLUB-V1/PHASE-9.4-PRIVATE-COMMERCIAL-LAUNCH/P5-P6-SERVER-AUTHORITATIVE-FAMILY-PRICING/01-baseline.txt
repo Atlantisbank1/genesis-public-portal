@@ -1,0 +1,26 @@
+TRUST CLUB V1
+PHASE 9.4-P5/P6
+SERVER-AUTHORITATIVE FAMILY PRICING
+
+BASELINE HEAD:
+2e00f2a7d4a474492878f691c3cd8835117ced2b
+
+BRANCH:
+main
+
+PRODUCT FILE COUNT:
+6
+
+PRODUCT FILES:
+src/app/api/trust-club/admin/invitations/[invitationId]/payment-intent/route.ts
+src/trust-club/domain/trust-club-commercial-catalog.ts
+src/trust-club/domain/trust-club-plan-pricing.contracts.ts
+src/trust-club/payment/trust-club-payment-intent-admin.service.ts
+src/trust-club/payment/trust-club-payment-intent.service.ts
+src/trust-club/payment/trust-club-server-pricing.service.ts
+
+STAGED FILE COUNT:
+0
+
+RUNTIME PORT 3008:
+CLOSED

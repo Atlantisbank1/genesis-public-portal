@@ -1,0 +1,10 @@
+      paymentIntentId      |         paymentReference         |       invitationId        |                normalizedEmail                 |      planCode       | amountMinor | currency |   paymentMethod    |       status        
+---------------------------+----------------------------------+---------------------------+------------------------------------------------+---------------------+-------------+----------+--------------------+---------------------
+ cmte5h1fg0000ugn9fplywqmm | GTC-PAY-581C9396C4683800216DF1A7 | cmte4u4ab0000awn9y0jzmrgo | p6.server.price.1787992947@genesistrust.online | STANDARD_MEMBERSHIP |        9900 | ILS      | INSTITUTIONAL_RAIL | AWAITING_SETTLEMENT
+(1 row)
+
+            id             |                normalizedEmail                 |  status   | token_state 
+---------------------------+------------------------------------------------+-----------+-------------
+ cmte4u4ab0000awn9y0jzmrgo | p6.server.price.1787992947@genesistrust.online | REQUESTED | NULL
+(1 row)
+

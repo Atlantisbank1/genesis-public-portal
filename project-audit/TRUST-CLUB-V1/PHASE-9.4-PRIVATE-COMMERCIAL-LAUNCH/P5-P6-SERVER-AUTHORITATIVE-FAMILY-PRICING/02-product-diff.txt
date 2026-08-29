@@ -1,0 +1,259 @@
+diff --git a/src/app/api/trust-club/admin/invitations/[invitationId]/payment-intent/route.ts b/src/app/api/trust-club/admin/invitations/[invitationId]/payment-intent/route.ts
+index 122937e..8cf759f 100644
+--- a/src/app/api/trust-club/admin/invitations/[invitationId]/payment-intent/route.ts
++++ b/src/app/api/trust-club/admin/invitations/[invitationId]/payment-intent/route.ts
+@@ -19,12 +19,6 @@ interface RouteContext {
+ }
+ 
+ interface PaymentIntentRequestBody {
+-  amountMinor?:
+-    unknown;
+-
+-  currency?:
+-    unknown;
+-
+   paymentMethod?:
+     unknown;
+ 
+@@ -119,47 +113,6 @@ export async function POST(
+     );
+   }
+ 
+-  if (
+-    typeof body.amountMinor !==
+-      'string' ||
+-    !/^[1-9][0-9]*$/.test(
+-      body.amountMinor,
+-    )
+-  ) {
+-    return errorResponse(
+-      400,
+-      'TRUST_CLUB_PAYMENT_AMOUNT_MINOR_INVALID',
+-    );
+-  }
+-
+-  let amountMinor:
+-    bigint;
+-
+-  try {
+-    amountMinor =
+-      BigInt(
+-        body.amountMinor,
+-      );
+-  } catch {
+-    return errorResponse(
+-      400,
+-      'TRUST_CLUB_PAYMENT_AMOUNT_MINOR_INVALID',
+-    );
+-  }
+-
+-  if (
+-    typeof body.currency !==
+-      'string' ||
+-    !/^[A-Za-z]{3,12}$/.test(
+-      body.currency.trim(),
+-    )
+-  ) {
+-    return errorResponse(
+-      400,
+-      'TRUST_CLUB_PAYMENT_CURRENCY_INVALID',
+-    );
+-  }
+-
+   if (
+     typeof body.paymentMethod !==
+       'string' ||
+@@ -232,10 +185,6 @@ export async function POST(
+           invitationId:
+             normalizedInvitationId,
+ 
+-          amountMinor,
+-
+-          currency:
+-            body.currency,
+ 
+           paymentMethod:
+             body.paymentMethod,
+diff --git a/src/trust-club/domain/trust-club-commercial-catalog.ts b/src/trust-club/domain/trust-club-commercial-catalog.ts
+index a687612..23f93de 100644
+--- a/src/trust-club/domain/trust-club-commercial-catalog.ts
++++ b/src/trust-club/domain/trust-club-commercial-catalog.ts
+@@ -39,6 +39,35 @@ import type {
+ const TRUST_CLUB_BASE_MEMBERSHIP_SERVICES:
+   readonly TrustClubServiceCode[] =
+   getTrustClubBaseMembershipServices();
++export const TRUST_CLUB_BASE_FAMILY_MEMBERSHIP_MONTHLY_PRICE = {
++  currency:
++    'ILS',
++
++  amount:
++    '99',
++} as const;
++
++export const TRUST_CLUB_SPOUSE_OR_PARTNER_MONTHLY_SURCHARGE = {
++  currency:
++    'ILS',
++
++  amount:
++    '0',
++} as const;
++
++export const TRUST_CLUB_STANDARD_FAMILY_MONTHLY_CAP = {
++  currency:
++    'ILS',
++
++  amount:
++    '450',
++} as const;
++
++export const TRUST_CLUB_FAMILY_PRICING_RULE =
++  'BASE_FAMILY_MEMBERSHIP_IS_99_ILS_MONTHLY_SPOUSE_OR_PARTNER_SURCHARGE_IS_ZERO_AND_CAP_COVERED_STANDARD_MONTHLY_CHARGES_CANNOT_EXCEED_450_ILS' as const;
++
++export const TRUST_CLUB_PREMIUM_PRICING_RULE =
++  'PREMIUM_BESPOKE_AND_CUSTOM_QUOTE_SERVICES_ARE_OUTSIDE_THE_STANDARD_FAMILY_MONTHLY_CAP' as const;
+ 
+ const TRUST_CLUB_BASE_MEMBERSHIP_ENTITLEMENTS:
+   readonly TrustClubEntitlement[] = [
+@@ -62,26 +91,29 @@ export const TRUST_CLUB_MEMBERSHIP_PLANS = {
+       'STANDARD_MEMBERSHIP',
+ 
+     name:
+-      'Standard Membership',
++      'Standard Family Membership',
+ 
+     description:
+-      'Standard recurring Genesis Trust Club Membership providing access to the expressly included Base services and entitlements.',
++      'Genesis Trust Club recurring Family Membership providing access to the expressly included Base services and entitlements. One spouse or partner is included without an additional Base Membership surcharge.',
+ 
+     recurring:
+       true,
+ 
+     price: {
+       priceKind:
+-        'CUSTOM_QUOTE',
++        'FIXED',
+ 
+       billingInterval:
+         'MONTHLY',
+ 
++      amount:
++        TRUST_CLUB_BASE_FAMILY_MEMBERSHIP_MONTHLY_PRICE,
++
+       externalFeesIncluded:
+         false,
+ 
+       description:
+-        'Membership price is commercially defined separately and is not asserted by this domain catalog until expressly approved.',
++        'Base Family Membership is 99 ILS per month. One spouse or partner is included without an additional Base Membership surcharge. External and third-party fees are excluded unless expressly stated.',
+     },
+ 
+     includedEntitlements:
+diff --git a/src/trust-club/domain/trust-club-plan-pricing.contracts.ts b/src/trust-club/domain/trust-club-plan-pricing.contracts.ts
+index 2401c64..dcde3b5 100644
+--- a/src/trust-club/domain/trust-club-plan-pricing.contracts.ts
++++ b/src/trust-club/domain/trust-club-plan-pricing.contracts.ts
+@@ -42,6 +42,7 @@ export type TrustClubBillingInterval =
+   | 'CUSTOM_QUOTE';
+ 
+ export type TrustClubPriceCurrency =
++  | 'ILS'
+   | 'USD';
+ 
+ export type TrustClubPriceKind =
+diff --git a/src/trust-club/payment/trust-club-payment-intent-admin.service.ts b/src/trust-club/payment/trust-club-payment-intent-admin.service.ts
+index cc7aae4..41003b0 100644
+--- a/src/trust-club/payment/trust-club-payment-intent-admin.service.ts
++++ b/src/trust-club/payment/trust-club-payment-intent-admin.service.ts
+@@ -23,11 +23,6 @@ export interface CreateTrustClubPaymentIntentAsAdminInput {
+     invitationId:
+       string;
+ 
+-    amountMinor:
+-      bigint;
+-
+-    currency:
+-      string;
+ 
+     paymentMethod:
+       TrustClubPaymentMethod;
+diff --git a/src/trust-club/payment/trust-club-payment-intent.service.ts b/src/trust-club/payment/trust-club-payment-intent.service.ts
+index 145d0f3..ef67133 100644
+--- a/src/trust-club/payment/trust-club-payment-intent.service.ts
++++ b/src/trust-club/payment/trust-club-payment-intent.service.ts
+@@ -15,16 +15,14 @@ import {
+   trustClubPaymentIntentPersistence,
+ } from './trust-club-payment-intent.persistence';
+ 
++import {
++  resolveTrustClubMembershipPrice,
++} from './trust-club-server-pricing.service';
++
+ export interface CreateTrustClubPaymentIntentInput {
+   invitationId:
+     string;
+ 
+-  amountMinor:
+-    bigint;
+-
+-  currency:
+-    string;
+-
+   paymentMethod:
+     TrustClubPaymentMethod;
+ 
+@@ -61,30 +59,6 @@ export async function createTrustClubPaymentIntent(
+     );
+   }
+ 
+-  if (
+-    input.amountMinor <=
+-      BigInt(0)
+-  ) {
+-    throw new Error(
+-      'TRUST_CLUB_PAYMENT_AMOUNT_MUST_BE_POSITIVE',
+-    );
+-  }
+-
+-  const currency =
+-    input.currency
+-      .trim()
+-      .toUpperCase();
+-
+-  if (
+-    !/^[A-Z]{3,12}$/.test(
+-      currency,
+-    )
+-  ) {
+-    throw new Error(
+-      'TRUST_CLUB_PAYMENT_CURRENCY_INVALID',
+-    );
+-  }
+-
+   const invitation =
+     await trustClubInvitationPersistence
+       .findById(
+@@ -122,6 +96,11 @@ export async function createTrustClubPaymentIntent(
+     );
+   }
+ 
++  const serverPrice =
++    resolveTrustClubMembershipPrice(
++      'STANDARD_MEMBERSHIP',
++    );
++
+   const expiresAt =
+     input.expiresAt ??
+     null;
+@@ -153,9 +132,10 @@ export async function createTrustClubPaymentIntent(
+           'STANDARD_MEMBERSHIP',
+ 
+         amountMinor:
+-          input.amountMinor,
++          serverPrice.amountMinor,
+ 
+-        currency,
++        currency:
++          serverPrice.currency,
+ 
+         paymentMethod:
+           input.paymentMethod,

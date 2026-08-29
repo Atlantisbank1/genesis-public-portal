@@ -42,6 +42,7 @@ export type TrustClubBillingInterval =
   | 'CUSTOM_QUOTE';
 
 export type TrustClubPriceCurrency =
+  | 'ILS'
   | 'USD';
 
 export type TrustClubPriceKind =

@@ -19,12 +19,6 @@ interface RouteContext {
 }
 
 interface PaymentIntentRequestBody {
-  amountMinor?:
-    unknown;
-
-  currency?:
-    unknown;
-
   paymentMethod?:
     unknown;
 
@@ -120,47 +114,6 @@ export async function POST(
   }
 
   if (
-    typeof body.amountMinor !==
-      'string' ||
-    !/^[1-9][0-9]*$/.test(
-      body.amountMinor,
-    )
-  ) {
-    return errorResponse(
-      400,
-      'TRUST_CLUB_PAYMENT_AMOUNT_MINOR_INVALID',
-    );
-  }
-
-  let amountMinor:
-    bigint;
-
-  try {
-    amountMinor =
-      BigInt(
-        body.amountMinor,
-      );
-  } catch {
-    return errorResponse(
-      400,
-      'TRUST_CLUB_PAYMENT_AMOUNT_MINOR_INVALID',
-    );
-  }
-
-  if (
-    typeof body.currency !==
-      'string' ||
-    !/^[A-Za-z]{3,12}$/.test(
-      body.currency.trim(),
-    )
-  ) {
-    return errorResponse(
-      400,
-      'TRUST_CLUB_PAYMENT_CURRENCY_INVALID',
-    );
-  }
-
-  if (
     typeof body.paymentMethod !==
       'string' ||
     !isTrustClubPaymentMethod(
@@ -232,10 +185,6 @@ export async function POST(
           invitationId:
             normalizedInvitationId,
 
-          amountMinor,
-
-          currency:
-            body.currency,
 
           paymentMethod:
             body.paymentMethod,
