@@ -40,6 +40,9 @@ export interface TrustClubInvitation {
   approvedByUserId:
     string | null;
 
+  registeredUserId:
+    string | null;
+
   approvedAt:
     Date | null;
 
@@ -108,6 +111,18 @@ export interface TrustClubInvitationPersistence {
     TrustClubInvitation
   >;
 
+  bindConsumedToRegisteredUser(
+    input: {
+      invitationId:
+        string;
+
+      registeredUserId:
+        string;
+    },
+  ): Promise<
+    TrustClubInvitation
+  >;
+
   findById(
     invitationId:
       string,
@@ -127,6 +142,13 @@ export interface TrustClubInvitationPersistence {
       string,
   ): Promise<
     TrustClubInvitation | null
+  >;
+
+  listRecent(
+    limit:
+      number,
+  ): Promise<
+    readonly TrustClubInvitation[]
   >;
 }
 

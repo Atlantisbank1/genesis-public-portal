@@ -1,4 +1,4 @@
-﻿import {
+import {
   betterAuth,
 } from 'better-auth';
 
@@ -18,6 +18,10 @@ import {
 import {
   authorizeTrustClubRegistrationAdmission,
 } from '@/trust-club/invitation/trust-club-registration-admission.service';
+
+import {
+  trustClubInvitationPersistence,
+} from '@/trust-club/invitation/trust-club-invitation.persistence';
 
 /**
  * TRUST-CLUB-V1
@@ -120,13 +124,21 @@ export const auth =
                 ? body.rawInvitationToken
                 : '';
 
-            try {
-              await authorizeTrustClubRegistrationAdmission({
-                normalizedEmail:
-                  email,
+            let admission:
+              Awaited<
+                ReturnType<
+                  typeof authorizeTrustClubRegistrationAdmission
+                >
+              >;
 
-                rawInvitationToken,
-              });
+            try {
+              admission =
+                await authorizeTrustClubRegistrationAdmission({
+                  normalizedEmail:
+                    email,
+
+                  rawInvitationToken,
+                });
             }
             catch {
               throw APIError.from(
@@ -148,6 +160,123 @@ export const auth =
              * persistence, account creation, or session creation.
              */
             delete body.rawInvitationToken;
+
+            return {
+              context: {
+                trustClubRegistrationAdmission: {
+                  invitationId:
+                    admission.invitationId,
+
+                  normalizedEmail:
+                    admission.normalizedEmail,
+                },
+              },
+            };
+          },
+        ),
+
+      after:
+        createAuthMiddleware(
+          async (
+            ctx,
+          ) => {
+            if (
+              ctx.path !==
+                '/sign-up/email'
+            ) {
+              return;
+            }
+
+            const registrationContext =
+              ctx as typeof ctx & {
+                trustClubRegistrationAdmission?: {
+                  invitationId:
+                    string;
+
+                  normalizedEmail:
+                    string;
+                };
+              };
+
+            const admission =
+              registrationContext
+                .trustClubRegistrationAdmission;
+
+            const newSession =
+              ctx.context.newSession;
+
+            if (
+              newSession ===
+                null ||
+              newSession ===
+                undefined
+            ) {
+              return;
+            }
+
+            if (
+              admission ===
+                undefined
+            ) {
+              throw APIError.from(
+                'INTERNAL_SERVER_ERROR',
+                {
+                  code:
+                    'TRUST_CLUB_REGISTRATION_BINDING_CONTEXT_MISSING',
+
+                  message:
+                    'Trust Club registration binding context is missing.',
+                },
+              );
+            }
+
+            const registeredUserId =
+              newSession.user.id.trim();
+
+            const registeredUserEmail =
+              newSession.user.email
+                .trim()
+                .toLowerCase();
+
+            if (
+              registeredUserId.length ===
+                0 ||
+              registeredUserEmail !==
+                admission.normalizedEmail
+            ) {
+              throw APIError.from(
+                'INTERNAL_SERVER_ERROR',
+                {
+                  code:
+                    'TRUST_CLUB_REGISTRATION_BINDING_IDENTITY_MISMATCH',
+
+                  message:
+                    'Trust Club registration identity binding failed.',
+                },
+              );
+            }
+
+            try {
+              await trustClubInvitationPersistence
+                .bindConsumedToRegisteredUser({
+                  invitationId:
+                    admission.invitationId,
+
+                  registeredUserId,
+                });
+            }
+            catch {
+              throw APIError.from(
+                'INTERNAL_SERVER_ERROR',
+                {
+                  code:
+                    'TRUST_CLUB_REGISTRATION_BINDING_PERSISTENCE_FAILED',
+
+                  message:
+                    'Trust Club registration identity binding could not be persisted.',
+                },
+              );
+            }
           },
         ),
     },

@@ -314,6 +314,119 @@ export const trustClubInvitationPersistence:
       return consumed;
     },
 
+    async bindConsumedToRegisteredUser(
+      input,
+    ): Promise<
+      TrustClubInvitation
+    > {
+      const invitationId =
+        input.invitationId.trim();
+
+      if (
+        invitationId.length ===
+          0
+      ) {
+        throw new Error(
+          'TRUST_CLUB_INVITATION_ID_REQUIRED',
+        );
+      }
+
+      const registeredUserId =
+        input.registeredUserId.trim();
+
+      if (
+        registeredUserId.length ===
+          0
+      ) {
+        throw new Error(
+          'TRUST_CLUB_INVITATION_REGISTERED_USER_ID_REQUIRED',
+        );
+      }
+
+      const mutation =
+        await prisma
+          .trustClubInvitation
+          .updateMany({
+            where: {
+              id:
+                invitationId,
+
+              status:
+                'CONSUMED',
+
+              consumedAt: {
+                not:
+                  null,
+              },
+
+              registeredUserId:
+                null,
+            },
+
+            data: {
+              registeredUserId,
+            },
+          });
+
+      if (
+        mutation.count !==
+          1
+      ) {
+        const existing =
+          await prisma
+            .trustClubInvitation
+            .findUnique({
+              where: {
+                id:
+                  invitationId,
+              },
+            });
+
+        if (
+          existing !==
+            null &&
+          existing.status ===
+            'CONSUMED' &&
+          existing.consumedAt !==
+            null &&
+          existing.registeredUserId ===
+            registeredUserId
+        ) {
+          return existing;
+        }
+
+        throw new Error(
+          'TRUST_CLUB_INVITATION_REGISTERED_USER_BINDING_PRECONDITION_FAILED',
+        );
+      }
+
+      const bound =
+        await prisma
+          .trustClubInvitation
+          .findUnique({
+            where: {
+              id:
+                invitationId,
+            },
+          });
+
+      if (
+        bound ===
+          null ||
+        bound.status !==
+          'CONSUMED' ||
+        bound.consumedAt ===
+          null ||
+        bound.registeredUserId !==
+          registeredUserId
+      ) {
+        throw new Error(
+          'TRUST_CLUB_INVITATION_REGISTERED_USER_BINDING_PERSISTENCE_VERIFICATION_FAILED',
+        );
+      }
+
+      return bound;
+    },
     async findById(
       invitationId,
     ): Promise<
@@ -361,6 +474,36 @@ export const trustClubInvitationPersistence:
             createdAt:
               'desc',
           },
+        });
+    },
+
+    async listRecent(
+      limit,
+    ): Promise<
+      readonly TrustClubInvitation[]
+    > {
+      if (
+        !Number.isInteger(
+          limit,
+        ) ||
+        limit < 1 ||
+        limit > 100
+      ) {
+        throw new Error(
+          'TRUST_CLUB_INVITATION_LIST_LIMIT_INVALID',
+        );
+      }
+
+      return prisma
+        .trustClubInvitation
+        .findMany({
+          orderBy: {
+            createdAt:
+              'desc',
+          },
+
+          take:
+            limit,
         });
     },
 

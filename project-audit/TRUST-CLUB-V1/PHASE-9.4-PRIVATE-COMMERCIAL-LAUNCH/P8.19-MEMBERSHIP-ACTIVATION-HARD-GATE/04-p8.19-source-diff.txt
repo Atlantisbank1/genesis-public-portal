@@ -1,0 +1,112 @@
+diff --git a/src/app/api/trust-club/admin/membership/activate/route.ts b/src/app/api/trust-club/admin/membership/activate/route.ts
+index 694ddd5..413ad75 100644
+--- a/src/app/api/trust-club/admin/membership/activate/route.ts
++++ b/src/app/api/trust-club/admin/membership/activate/route.ts
+@@ -176,6 +176,18 @@ export async function POST(
+         'TRUST_CLUB_MEMBERSHIP_ACTIVATION_REQUIRES_ELIGIBLE_STATUS' ||
+       code ===
+         'TRUST_CLUB_MEMBERSHIP_ACTIVATION_REQUIRES_PENDING_STATE' ||
++      code ===
++        'TRUST_CLUB_MEMBERSHIP_ACTIVATION_REGISTRATION_INVITATION_REQUIRED' ||
++      code ===
++        'TRUST_CLUB_MEMBERSHIP_ACTIVATION_CONSUMED_INVITATION_REQUIRED' ||
++      code ===
++        'TRUST_CLUB_TOKEN_PAYMENT_CONFIRMATION_REQUIRED' ||
++      code ===
++        'TRUST_CLUB_TOKEN_SETTLEMENT_CONFIRMATION_REQUIRED' ||
++      code ===
++        'TRUST_CLUB_TOKEN_PAYMENT_AMOUNT_MISMATCH' ||
++      code ===
++        'TRUST_CLUB_TOKEN_PAYMENT_CURRENCY_MISMATCH' ||
+       code ===
+         'TRUST_CLUB_MEMBERSHIP_ACTIVATION_PRECONDITION_FAILED'
+     ) {
+@@ -204,7 +216,7 @@ export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_ROUTE_ADMIN_RULE =
+   'MEMBERSHIP_ACTIVATION_ROUTE_DELEGATES_ADMIN_AUTHORITY_TO_CERTIFIED_ADMIN_REVIEW_BOUNDARY' as const;
+ 
+ export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_ROUTE_CALLER_AUTHORITY_RULE =
+-  'MEMBERSHIP_ACTIVATION_ROUTE_ACCEPTS_NO_CALLER_SUPPLIED_ADMIN_IDENTITY' as const;
++  'MEMBERSHIP_ACTIVATION_ROUTE_ACCEPTS_NO_CALLER_SUPPLIED_ADMIN_IDENTITY_PAYMENT_OR_SETTLEMENT_AUTHORITY' as const;
+ 
+ export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_ROUTE_CACHE_RULE =
+   'MEMBERSHIP_ACTIVATION_RESPONSE_IS_NOT_CACHEABLE' as const;
+\ No newline at end of file
+diff --git a/src/trust-club/server/trust-club-membership-activation.service.ts b/src/trust-club/server/trust-club-membership-activation.service.ts
+index f4697c5..6dc46b0 100644
+--- a/src/trust-club/server/trust-club-membership-activation.service.ts
++++ b/src/trust-club/server/trust-club-membership-activation.service.ts
+@@ -2,6 +2,10 @@ import {
+   prisma,
+ } from '@/lib/prisma';
+ 
++import {
++  requireTrustClubTokenPaymentConfirmation,
++} from '@/trust-club/payment/trust-club-token-payment-gate.service';
++
+ import {
+   authorizeTrustClubAdminReview,
+ } from './trust-club-admin-review-authorization.service';
+@@ -126,6 +130,41 @@ export async function activateTrustClubMembershipAsAdmin(
+     );
+   }
+ 
++  const registrationInvitation =
++    await prisma
++      .trustClubInvitation
++      .findUnique({
++        where: {
++          registeredUserId:
++            targetUserId,
++        },
++      });
++
++  if (
++    registrationInvitation ===
++      null
++  ) {
++    throw new Error(
++      'TRUST_CLUB_MEMBERSHIP_ACTIVATION_REGISTRATION_INVITATION_REQUIRED',
++    );
++  }
++
++  if (
++    registrationInvitation.status !==
++      'CONSUMED' ||
++    registrationInvitation.consumedAt ===
++      null
++  ) {
++    throw new Error(
++      'TRUST_CLUB_MEMBERSHIP_ACTIVATION_CONSUMED_INVITATION_REQUIRED',
++    );
++  }
++
++  await requireTrustClubTokenPaymentConfirmation({
++    invitationId:
++      registrationInvitation.id,
++  });
++
+   const activatedAt =
+     new Date();
+ 
+@@ -229,8 +268,20 @@ export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_SOURCE_STATE_RULE =
+ export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_ELIGIBILITY_STATE_RULE =
+   'MEMBERSHIP_ACTIVATION_REQUIRES_ELIGIBLE_TARGET_USER' as const;
+ 
++export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_REGISTRATION_BINDING_RULE =
++  'MEMBERSHIP_ACTIVATION_REQUIRES_CANONICAL_REGISTERED_USER_INVITATION_BINDING' as const;
++
++export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_INVITATION_STATE_RULE =
++  'MEMBERSHIP_ACTIVATION_REQUIRES_CONSUMED_REGISTRATION_INVITATION' as const;
++
++export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_PAYMENT_RULE =
++  'MEMBERSHIP_ACTIVATION_REQUIRES_CONFIRMED_PAYMENT_INTENT_AND_CONFIRMED_SETTLEMENT_FOR_BOUND_INVITATION' as const;
++
++export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_CALLER_PAYMENT_AUTHORITY_RULE =
++  'MEMBERSHIP_ACTIVATION_ACCEPTS_NO_CALLER_SUPPLIED_PAYMENT_OR_SETTLEMENT_AUTHORITY' as const;
++
+ export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_ATOMIC_RULE =
+-  'MEMBERSHIP_ACTIVATION_ATOMICALLY_TRANSITIONS_PENDING_PENDING_TO_ACTIVE_ACTIVE' as const;
++  'MEMBERSHIP_ACTIVATION_ATOMICALLY_TRANSITIONS_PENDING_PENDING_TO_ACTIVE_ACTIVE_AFTER_HARD_GATE_VALIDATION' as const;
+ 
+ export const TRUST_CLUB_MEMBERSHIP_ACTIVATION_REPLAY_RULE =
+   'MEMBERSHIP_ACTIVATION_CANNOT_REPLAY_AFTER_PENDING_STATE_EXIT' as const;

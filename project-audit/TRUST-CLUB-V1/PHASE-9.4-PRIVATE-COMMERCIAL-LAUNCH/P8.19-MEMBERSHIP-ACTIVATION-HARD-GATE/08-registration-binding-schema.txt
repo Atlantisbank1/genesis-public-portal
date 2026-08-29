@@ -1,0 +1,46 @@
+model TrustClubInvitation {
+  id               String                    @id @default(cuid())
+  normalizedEmail  String
+  status           TrustClubInvitationStatus @default(REQUESTED)
+  tokenHash        String?                   @unique
+  expiresAt        DateTime?
+  approvedByUserId String?
+  registeredUserId String?                    @unique
+  approvedAt       DateTime?
+  rejectedAt       DateTime?
+  revokedAt        DateTime?
+  consumedAt       DateTime?
+  createdAt        DateTime                  @default(now())
+  updatedAt        DateTime                  @updatedAt
+
+  approvedBy      User?                    @relation("TrustClubInvitationApprovedBy", fields: [approvedByUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  registeredUser  User?                    @relation("TrustClubInvitationRegisteredUser", fields: [registeredUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  paymentIntents  TrustClubPaymentIntent[]
+
+  @@index([normalizedEmail])
+  @@index([status])
+  @@index([expiresAt])
+  @@index([approvedByUserId])
+  @@map("trust_club_invitations")
+}
+
+model User {
+  id            String   @id
+  name          String
+  email         String
+  emailVerified Boolean  @default(false)
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sessions                       Session[]
+  accounts                       Account[]
+  trustClubMember                TrustClubMember?
+  trustClubEligibilityRecord     TrustClubEligibilityRecord?
+  trustClubSystemRoleAssignments TrustClubSystemRoleAssignment[]
+  trustClubInvitationsApproved   TrustClubInvitation[]           @relation("TrustClubInvitationApprovedBy")
+  trustClubInvitationRegistered  TrustClubInvitation?            @relation("TrustClubInvitationRegisteredUser")
+
+  @@unique([email])
+  @@map("user")
+}

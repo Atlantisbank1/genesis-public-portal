@@ -184,6 +184,7 @@ model User {
   trustClubEligibilityRecord     TrustClubEligibilityRecord?
   trustClubSystemRoleAssignments TrustClubSystemRoleAssignment[]
   trustClubInvitationsApproved   TrustClubInvitation[]           @relation("TrustClubInvitationApprovedBy")
+  trustClubInvitationRegistered  TrustClubInvitation?            @relation("TrustClubInvitationRegisteredUser")
 
   @@unique([email])
   @@map("user")
@@ -196,6 +197,7 @@ model TrustClubInvitation {
   tokenHash        String?                   @unique
   expiresAt        DateTime?
   approvedByUserId String?
+  registeredUserId String?                    @unique
   approvedAt       DateTime?
   rejectedAt       DateTime?
   revokedAt        DateTime?
@@ -203,8 +205,9 @@ model TrustClubInvitation {
   createdAt        DateTime                  @default(now())
   updatedAt        DateTime                  @updatedAt
 
-  approvedBy     User?                    @relation("TrustClubInvitationApprovedBy", fields: [approvedByUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
-  paymentIntents TrustClubPaymentIntent[]
+  approvedBy      User?                    @relation("TrustClubInvitationApprovedBy", fields: [approvedByUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  registeredUser  User?                    @relation("TrustClubInvitationRegisteredUser", fields: [registeredUserId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  paymentIntents  TrustClubPaymentIntent[]
 
   @@index([normalizedEmail])
   @@index([status])

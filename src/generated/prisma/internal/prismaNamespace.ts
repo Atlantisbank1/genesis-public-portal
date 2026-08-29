@@ -1554,6 +1554,7 @@ export const TrustClubInvitationScalarFieldEnum = {
   tokenHash: 'tokenHash',
   expiresAt: 'expiresAt',
   approvedByUserId: 'approvedByUserId',
+  registeredUserId: 'registeredUserId',
   approvedAt: 'approvedAt',
   rejectedAt: 'rejectedAt',
   revokedAt: 'revokedAt',

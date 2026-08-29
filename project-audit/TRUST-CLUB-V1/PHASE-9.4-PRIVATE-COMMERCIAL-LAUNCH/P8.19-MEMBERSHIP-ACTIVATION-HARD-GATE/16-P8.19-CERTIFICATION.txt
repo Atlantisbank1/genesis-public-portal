@@ -1,0 +1,322 @@
+TRUST CLUB V1
+PHASE 9.4-P8.19
+MEMBERSHIP ACTIVATION HARD-GATE
+ENGINEERING CERTIFICATION
+
+============================================================
+CERTIFICATION ID
+============================================================
+
+TRUST-CLUB-V1-PHASE-9.4-P8.19
+
+CERTIFIED COMPONENT:
+Membership Activation Hard-Gate
+
+CERTIFIED PRE-P8.19 BASELINE HEAD:
+e1dcc434e43c6b045bceac534aba966d6dd8b6bc
+
+CERTIFICATION STATUS:
+PASS
+
+
+============================================================
+CERTIFIED SECURITY RULE
+============================================================
+
+NOT PAID -> NOT ACTIVE
+
+Membership activation requires all of the following:
+
+1. Authorized Genesis Admin execution.
+2. Target user eligibility status ELIGIBLE.
+3. Existing membership state PENDING.
+4. Existing subscription state PENDING.
+5. Canonical TrustClubInvitation registeredUserId binding.
+6. Canonically bound invitation status CONSUMED.
+7. Canonically bound invitation consumedAt present.
+8. Confirmed payment intent for the canonically bound invitation.
+9. Confirmed settlement for that payment intent.
+10. Payment / settlement amount consistency.
+11. Payment / settlement currency consistency.
+
+Only after these hard-gate validations may membership transition:
+PENDING -> ACTIVE
+
+Only after these hard-gate validations may subscription transition:
+PENDING -> ACTIVE
+
+
+============================================================
+CALLER AUTHORITY BOUNDARY
+============================================================
+
+The activation route accepts targetUserId only as the target selection input.
+
+Caller-supplied invitation authority:
+NONE
+
+Caller-supplied payment authority:
+NONE
+
+Caller-supplied settlement authority:
+NONE
+
+Canonical registration invitation resolution:
+SERVER / DATABASE
+
+Payment confirmation authority:
+SERVER / VERIFIED PAYMENT STATE
+
+Settlement confirmation authority:
+SERVER / VERIFIED SETTLEMENT STATE
+
+
+============================================================
+POSITIVE RUNTIME VERIFICATION
+============================================================
+
+Controlled canonical user:
+bMReZwR1tFMTxez3bBoSUPdS02zRvWux
+
+Preconditions verified:
+
+ELIGIBILITY:
+ELIGIBLE
+
+MEMBERSHIP:
+PENDING
+
+SUBSCRIPTION:
+PENDING
+
+CANONICAL REGISTERED INVITATION:
+PRESENT
+
+INVITATION:
+CONSUMED
+
+PAYMENT:
+CONFIRMED
+9900 ILS
+
+SETTLEMENT:
+CONFIRMED
+9900 ILS
+
+Activation runtime result:
+HTTP 200
+
+Final membership:
+ACTIVE
+
+Final subscription:
+ACTIVE
+
+activatedAt:
+PRESENT
+
+RESULT:
+PASS
+
+
+============================================================
+NEGATIVE RUNTIME VERIFICATION 1
+CANONICAL REGISTRATION BINDING
+============================================================
+
+Controlled isolated fixture:
+
+ELIGIBILITY:
+ELIGIBLE
+
+MEMBERSHIP:
+PENDING
+
+SUBSCRIPTION:
+PENDING
+
+REGISTERED INVITATION:
+ABSENT
+
+Activation result:
+HTTP 409
+
+Error:
+TRUST_CLUB_MEMBERSHIP_ACTIVATION_REGISTRATION_INVITATION_REQUIRED
+
+Membership after rejected activation:
+PENDING
+
+Subscription after rejected activation:
+PENDING
+
+activatedAt:
+NULL
+
+Fixture residual data after cleanup:
+NONE
+
+RESULT:
+PASS
+
+
+============================================================
+NEGATIVE RUNTIME VERIFICATION 2
+PAYMENT CONFIRMATION HARD GATE
+============================================================
+
+Controlled isolated fixture:
+
+ELIGIBILITY:
+ELIGIBLE
+
+MEMBERSHIP:
+PENDING
+
+SUBSCRIPTION:
+PENDING
+
+CANONICAL REGISTERED INVITATION:
+PRESENT
+
+INVITATION:
+CONSUMED
+
+consumedAt:
+PRESENT
+
+PAYMENT INTENT:
+ABSENT
+
+Activation result:
+HTTP 409
+
+Error:
+TRUST_CLUB_TOKEN_PAYMENT_CONFIRMATION_REQUIRED
+
+Membership after rejected activation:
+PENDING
+
+Subscription after rejected activation:
+PENDING
+
+activatedAt:
+NULL
+
+Fixture residual data after cleanup:
+NONE
+
+RESULT:
+PASS
+
+
+============================================================
+BUILD VERIFICATION
+============================================================
+
+Initial evidence-collection build:
+FAILED DURING TYPESCRIPT CHECK
+
+Failure classification:
+EVIDENCE TYPESCRIPT SNAPSHOT BUILD-SCOPE CONTAMINATION
+
+Product source defect:
+NO
+
+Cause:
+Source snapshots were initially copied into project-audit with .ts
+extensions. TypeScript treated the copied evidence as compilation input,
+and relative imports inside the copied evidence could not resolve from
+the audit directory.
+
+Correction:
+Evidence snapshots changed from .ts to build-inert .txt files.
+
+Product source changed by correction:
+NO
+
+Source snapshot integrity after correction:
+SHA256 EXACT MATCH
+
+Recovery production build:
+PASS
+
+Known Next.js multiple-lockfile workspace-root warning:
+NON-BLOCKING / OUT OF P8.19 SCOPE
+
+
+============================================================
+SOURCE SNAPSHOT SHA256
+============================================================
+
+src\trust-club\server\trust-club-membership-activation.service.ts|D6EA68AF23E9FB86DF471741168DA380B289CA5149B2DBB4D3655D020B367BED
+src\app\api\trust-club\admin\membership\activate\route.ts|D8E7500B2386C950FFCA326BD863A1AA4274E825126735D4171BB8911962DFAA
+src\trust-club\payment\trust-club-token-payment-gate.service.ts|B205BD978AB74B8DCBF15C9E6F4E9EF58AD18A06AD98D9AFC2193235E3C74ED0
+
+
+============================================================
+FINAL DATABASE CONTROL
+============================================================
+
+bMReZwR1tFMTxez3bBoSUPdS02zRvWux|ELIGIBLE|ACTIVE|ACTIVE|ACTIVATED_AT_PRESENT|CONSUMED|CONFIRMED|9900|ILS|CONFIRMED|9900|ILS
+
+RESULT:
+PASS
+
+
+============================================================
+CERTIFICATION CONCLUSION
+============================================================
+
+CANONICAL USER -> INVITATION BINDING:
+VERIFIED
+
+CONSUMED INVITATION REQUIREMENT:
+VERIFIED
+
+CONFIRMED PAYMENT REQUIREMENT:
+VERIFIED
+
+CONFIRMED SETTLEMENT REQUIREMENT:
+VERIFIED
+
+PAYMENT AMOUNT CONSISTENCY:
+ENFORCED BY EXISTING PAYMENT GATE
+
+PAYMENT CURRENCY CONSISTENCY:
+ENFORCED BY EXISTING PAYMENT GATE
+
+MISSING CANONICAL INVITATION:
+FAIL CLOSED VERIFIED
+
+MISSING PAYMENT CONFIRMATION:
+FAIL CLOSED VERIFIED
+
+PAID CANONICAL ACTIVATION:
+SUCCESS VERIFIED
+
+NOT PAID -> NOT ACTIVE:
+VERIFIED
+
+PRODUCTION BUILD:
+PASS
+
+P8.19 ENGINEERING CERTIFICATION:
+PASS
+
+
+============================================================
+CHANGE CONTROL
+============================================================
+
+STAGING:
+NO
+
+COMMIT:
+NO
+
+PUSH:
+NO
+
+CERTIFICATION FILE CREATION ONLY:
+YES
