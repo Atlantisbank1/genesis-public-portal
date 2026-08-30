@@ -463,10 +463,86 @@ export default function TrustClubPrivatePaymentPage() {
           </dd>
         </dl>
 
+        <section
+          style={{
+            marginTop:
+              '28px',
+            padding:
+              '20px',
+            border:
+              '1px solid rgba(255,255,255,0.16)',
+            borderRadius:
+              '12px',
+          }}
+        >
+          <h2>
+            External Bank / Institutional Settlement
+          </h2>
+
+          <p>
+            Genesis currently receives external institutional
+            settlement through its approved Stellar settlement
+            rail. No IBAN, SWIFT or BIC routing instruction is
+            published for this payment.
+          </p>
+
+          <p>
+            If payment is being sent by an external bank,
+            financial institution or payment provider, provide
+            them with the Payment Reference shown above and ask
+            them to obtain the current institutional settlement
+            instructions from Genesis before transmitting funds.
+          </p>
+
+          <dl>
+            <dt>
+              Institutional Settlement Contact
+            </dt>
+            <dd>
+              <a
+                href={`mailto:genesisheritagetrust@proton.me?subject=${encodeURIComponent(
+                  `Trust Club Settlement ${paymentIntent.paymentReference}`,
+                )}`}
+              >
+                genesisheritagetrust@proton.me
+              </a>
+            </dd>
+
+            <dt>
+              Stellar Network Discovery
+            </dt>
+            <dd>
+              <a
+                href="/.well-known/stellar.toml"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Genesis Stellar Network Profile
+              </a>
+            </dd>
+
+            <dt>
+              Required Reference
+            </dt>
+            <dd>
+              <strong>
+                {paymentIntent.paymentReference}
+              </strong>
+            </dd>
+          </dl>
+
+          <p>
+            Do not transmit funds until the sending institution
+            has received and validated the applicable settlement
+            instructions. The Payment Reference must accompany
+            the settlement so Genesis can reconcile it to this
+            payment instruction.
+          </p>
+        </section>
+
         <p>
-          Use the payment reference exactly as shown.
-          Registration is not active until Genesis verifies
-          settlement and issues the separate private
+          Registration is not active until Genesis independently
+          verifies settlement and issues the separate private
           registration invitation.
         </p>
 
