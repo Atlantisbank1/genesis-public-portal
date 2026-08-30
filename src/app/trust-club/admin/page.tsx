@@ -23,6 +23,18 @@ interface LaunchQueueItem {
   normalizedEmail:
     string;
 
+  registeredUserId:
+    string | null;
+
+  eligibilityStatus:
+    string | null;
+
+  membershipStatus:
+    string | null;
+
+  subscriptionStatus:
+    string | null;
+
   status:
     InvitationStatus;
 
@@ -297,6 +309,22 @@ export default function TrustClubAdminPage() {
     useState<string | null>(
       null,
     );
+  const [
+    postRegistrationActionFor,
+    setPostRegistrationActionFor,
+  ] =
+    useState<string | null>(
+      null,
+    );
+
+  const [
+    postRegistrationError,
+    setPostRegistrationError,
+  ] =
+    useState<string | null>(
+      null,
+    );
+
   const loadQueue =
     useCallback(
       async () => {
@@ -924,6 +952,189 @@ export default function TrustClubAdminPage() {
       );
     }
   }
+  async function markEligible(
+    item:
+      LaunchQueueItem,
+  ) {
+    const targetUserId =
+      item.registeredUserId?.trim() ??
+      '';
+
+    if (
+      targetUserId.length ===
+      0
+    ) {
+      setPostRegistrationError(
+        'TRUST_CLUB_REGISTERED_USER_REQUIRED',
+      );
+
+      return;
+    }
+
+    setPostRegistrationActionFor(
+      item.invitationId,
+    );
+
+    setPostRegistrationError(
+      null,
+    );
+
+    try {
+      const response =
+        await fetch(
+          '/api/trust-club/admin/eligibility/decision',
+          {
+            method:
+              'POST',
+
+            credentials:
+              'same-origin',
+
+            cache:
+              'no-store',
+
+            headers: {
+              'Content-Type':
+                'application/json',
+
+              Accept:
+                'application/json',
+            },
+
+            body:
+              JSON.stringify({
+                targetUserId,
+
+                decision:
+                  'ELIGIBLE',
+              }),
+          },
+        );
+
+      const payload =
+        await response.json() as {
+          ok:
+            boolean;
+
+          error?:
+            string;
+        };
+
+      if (
+        !response.ok ||
+        payload.ok !==
+          true
+      ) {
+        setPostRegistrationError(
+          payload.error ??
+            'TRUST_CLUB_ELIGIBILITY_DECISION_FAILED',
+        );
+
+        return;
+      }
+
+      await loadQueue();
+    } catch {
+      setPostRegistrationError(
+        'TRUST_CLUB_ELIGIBILITY_DECISION_FAILED',
+      );
+    } finally {
+      setPostRegistrationActionFor(
+        null,
+      );
+    }
+  }
+
+  async function activateMembership(
+    item:
+      LaunchQueueItem,
+  ) {
+    const targetUserId =
+      item.registeredUserId?.trim() ??
+      '';
+
+    if (
+      targetUserId.length ===
+      0
+    ) {
+      setPostRegistrationError(
+        'TRUST_CLUB_REGISTERED_USER_REQUIRED',
+      );
+
+      return;
+    }
+
+    setPostRegistrationActionFor(
+      item.invitationId,
+    );
+
+    setPostRegistrationError(
+      null,
+    );
+
+    try {
+      const response =
+        await fetch(
+          '/api/trust-club/admin/membership/activate',
+          {
+            method:
+              'POST',
+
+            credentials:
+              'same-origin',
+
+            cache:
+              'no-store',
+
+            headers: {
+              'Content-Type':
+                'application/json',
+
+              Accept:
+                'application/json',
+            },
+
+            body:
+              JSON.stringify({
+                targetUserId,
+              }),
+          },
+        );
+
+      const payload =
+        await response.json() as {
+          ok:
+            boolean;
+
+          error?:
+            string;
+        };
+
+      if (
+        !response.ok ||
+        payload.ok !==
+          true
+      ) {
+        setPostRegistrationError(
+          payload.error ??
+            'TRUST_CLUB_MEMBERSHIP_ACTIVATION_FAILED',
+        );
+
+        return;
+      }
+
+      await loadQueue();
+    } catch {
+      setPostRegistrationError(
+        'TRUST_CLUB_MEMBERSHIP_ACTIVATION_FAILED',
+      );
+    } finally {
+      setPostRegistrationActionFor(
+        null,
+      );
+    }
+  }
+
   useEffect(
     () => {
       void loadQueue();
@@ -1265,6 +1476,31 @@ export default function TrustClubAdminPage() {
                 </section>
               ) : null}
 
+            {postRegistrationError !==
+              null ? (
+                <section
+                  role="alert"
+                  style={{
+                    border:
+                      '1px solid #7c2d12',
+                    borderRadius:
+                      12,
+                    padding:
+                      14,
+                    marginBottom:
+                      16,
+                    background:
+                      '#1c1917',
+                  }}
+                >
+                  Post-registration operation failed.
+                  {' '}
+                  <code>
+                    {postRegistrationError}
+                  </code>
+                </section>
+              ) : null}
+
             <section
               style={{
                 display:
@@ -1525,6 +1761,7 @@ export default function TrustClubAdminPage() {
                             'Private Payment',
                               'Payment / Settlement',
                               'Private Registration',
+                              'Post-Registration Access',
                           ].map(
                             (
                               heading,
@@ -2100,6 +2337,128 @@ export default function TrustClubAdminPage() {
                                     }}
                                   >
                                     Payment and settlement confirmation required
+                                  </span>
+                                )}
+                              </td>
+
+                              <td
+                                style={{
+                                  padding:
+                                    '14px 16px',
+                                  borderBottom:
+                                    '1px solid #1e293b',
+                                  minWidth:
+                                    260,
+                                  verticalAlign:
+                                    'top',
+                                }}
+                              >
+                                {item.registeredUserId !==
+                                null ? (
+                                  <>
+                                    <div
+                                      style={{
+                                        color:
+                                          '#cbd5e1',
+                                        fontSize:
+                                          12,
+                                        marginBottom:
+                                          8,
+                                      }}
+                                    >
+                                      Registered account bound
+                                    </div>
+
+                                    {item.eligibilityStatus ===
+                                      'REVIEW_REQUIRED' &&
+                                    item.membershipStatus ===
+                                      'PENDING' &&
+                                    item.subscriptionStatus ===
+                                      'PENDING' ? (
+                                      <button
+                                        type="button"
+                                        disabled={
+                                          postRegistrationActionFor ===
+                                          item.invitationId
+                                        }
+                                        onClick={
+                                          () => {
+                                            void markEligible(
+                                              item,
+                                            );
+                                          }
+                                        }
+                                      >
+                                        {postRegistrationActionFor ===
+                                        item.invitationId
+                                          ? 'Processing...'
+                                          : 'Mark Eligible'}
+                                      </button>
+                                    ) : null}
+
+                                    {item.eligibilityStatus ===
+                                      'ELIGIBLE' &&
+                                    item.membershipStatus ===
+                                      'PENDING' &&
+                                    item.subscriptionStatus ===
+                                      'PENDING' ? (
+                                      <button
+                                        type="button"
+                                        disabled={
+                                          postRegistrationActionFor ===
+                                          item.invitationId
+                                        }
+                                        onClick={
+                                          () => {
+                                            void activateMembership(
+                                              item,
+                                            );
+                                          }
+                                        }
+                                      >
+                                        {postRegistrationActionFor ===
+                                        item.invitationId
+                                          ? 'Processing...'
+                                          : 'Activate Membership'}
+                                      </button>
+                                    ) : null}
+
+                                    {item.eligibilityStatus ===
+                                      'ELIGIBLE' &&
+                                    item.membershipStatus ===
+                                      'ACTIVE' &&
+                                    item.subscriptionStatus ===
+                                      'ACTIVE' ? (
+                                      <span
+                                        style={{
+                                          color:
+                                            '#86efac',
+                                        }}
+                                      >
+                                        Membership active
+                                      </span>
+                                    ) : null}
+
+                                    {item.eligibilityStatus ===
+                                      'RESTRICTED' ? (
+                                      <span
+                                        style={{
+                                          color:
+                                            '#fca5a5',
+                                        }}
+                                      >
+                                        Eligibility restricted
+                                      </span>
+                                    ) : null}
+                                  </>
+                                ) : (
+                                  <span
+                                    style={{
+                                      color:
+                                        '#64748b',
+                                    }}
+                                  >
+                                    Awaiting account registration
                                   </span>
                                 )}
                               </td>

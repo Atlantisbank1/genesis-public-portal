@@ -115,6 +115,18 @@ export interface TrustClubAdminLaunchQueueItem {
   normalizedEmail:
     string;
 
+  registeredUserId:
+    string | null;
+
+  eligibilityStatus:
+    string | null;
+
+  membershipStatus:
+    string | null;
+
+  subscriptionStatus:
+    string | null;
+
   status:
     TrustClubInvitation['status'];
 
@@ -220,12 +232,60 @@ export async function readTrustClubAdminLaunchQueue(
             paymentIntent?.settlements[0] ??
             null;
 
+          const registeredUserState =
+            invitation.registeredUserId ===
+              null
+              ? null
+              : await prisma.user.findUnique({
+                  where: {
+                    id:
+                      invitation.registeredUserId,
+                  },
+                  select: {
+                    trustClubEligibilityRecord: {
+                      select: {
+                        status:
+                          true,
+                      },
+                    },
+                    trustClubMember: {
+                      select: {
+                        status:
+                          true,
+                        subscriptionStatus:
+                          true,
+                      },
+                    },
+                  },
+                });
+
           return {
             invitationId:
               invitation.id,
 
             normalizedEmail:
               invitation.normalizedEmail,
+
+            registeredUserId:
+              invitation.registeredUserId,
+
+            eligibilityStatus:
+              registeredUserState
+                ?.trustClubEligibilityRecord
+                ?.status ??
+              null,
+
+            membershipStatus:
+              registeredUserState
+                ?.trustClubMember
+                ?.status ??
+              null,
+
+            subscriptionStatus:
+              registeredUserState
+                ?.trustClubMember
+                ?.subscriptionStatus ??
+              null,
 
             status:
               invitation.status,

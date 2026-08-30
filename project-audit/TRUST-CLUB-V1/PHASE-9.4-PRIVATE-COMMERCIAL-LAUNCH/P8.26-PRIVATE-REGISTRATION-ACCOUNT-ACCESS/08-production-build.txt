@@ -1,0 +1,84 @@
+TRUST CLUB V1
+PHASE 9.4-P8.26
+
+EVIDENCE 08
+PRODUCTION BUILD
+
+EXIT CODE:
+0
+
+STDOUT:
+Î“Ã»â–“ Next.js 16.2.9 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+Î“Â£Ã´ Compiled successfully in 16.4s
+  Running TypeScript ...
+  Finished TypeScript in 8.1s ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/40) ...
+  Generating static pages using 15 workers (10/40)
+  Generating static pages using 15 workers (20/40)
+  Generating static pages using 15 workers (30/40)
+Î“Â£Ã´ Generating static pages using 15 workers (40/40) in 823ms
+  Finalizing page optimization ...
+
+Route (app)
+Î“Ã¶Ã® â•žÃ† /
+Î“Ã¶Â£ Î“Ã¹Ã¯ /_not-found
+Î“Ã¶Â£ â•žÃ† /api/auth/[...all]
+Î“Ã¶Â£ â•žÃ† /api/trust-club/actions
+Î“Ã¶Â£ â•žÃ† /api/trust-club/admin/eligibility/decision
+Î“Ã¶Â£ â•žÃ† /api/trust-club/admin/formations/standard-trust/complete
+Î“Ã¶Â£ â•žÃ† /api/trust-club/admin/formations/standard-trust/establish-canonical-trust
+Î“Ã¶Â£ â•žÃ† /api/trust-club/admin/formations/standard-trust/recover-trust-id
+Î“Ã¶Â£ â•žÃ† /api/trust-club/admin/formations/standard-trust/review
+Î“Ã¶Â£ â•žÃ† /api/trust-club/admin/invitations
+Î“Ã¶Â£ â•žÃ† /api/trust-club/admin/invitations/[invitationId]/issue-token
+Î“Ã¶Â£ â•žÃ† /api/trust-club/admin/invitations/[invitationId]/payment-access-token
+Î“Ã¶Â£ â•žÃ† /api/trust-club/admin/invitations/[invitationId]/payment-intent
+Î“Ã¶Â£ â•žÃ† /api/trust-club/admin/membership/activate
+Î“Ã¶Â£ â•žÃ† /api/trust-club/admin/payments/settlements
+Î“Ã¶Â£ â•žÃ† /api/trust-club/admin/payments/settlements/confirm
+Î“Ã¶Â£ â•žÃ† /api/trust-club/canonical-trusts
+Î“Ã¶Â£ â•žÃ† /api/trust-club/formations/standard-trust
+Î“Ã¶Â£ â•žÃ† /api/trust-club/formations/standard-trust/external-pending
+Î“Ã¶Â£ â•žÃ† /api/trust-club/formations/standard-trust/internal-complete
+Î“Ã¶Â£ â•žÃ† /api/trust-club/formations/standard-trust/printable-record
+Î“Ã¶Â£ â•žÃ† /api/trust-club/formations/standard-trust/ready
+Î“Ã¶Â£ â•žÃ† /api/trust-club/formations/standard-trust/start
+Î“Ã¶Â£ â•žÃ† /api/trust-club/formations/standard-trust/submit-review
+Î“Ã¶Â£ â•žÃ† /api/trust-club/invitations/payment-intent
+Î“Ã¶Â£ â•žÃ† /api/trust-club/invitations/redeem
+Î“Ã¶Â£ â•žÃ† /api/trust-club/invitations/request
+Î“Ã¶Â£ â•žÃ† /api/trust-club/membership
+Î“Ã¶Â£ â•žÃ† /api/trust-club/registration/admission
+Î“Ã¶Â£ â•žÃ† /api/trust-club/requests/standard-trust
+Î“Ã¶Â£ â•žÃ† /api/trust-club/status
+Î“Ã¶Â£ Î“Ã¹Ã¯ /exchange
+Î“Ã¶Â£ Î“Ã¹Ã¯ /trust-club
+Î“Ã¶Â£ Î“Ã¹Ã¯ /trust-club/admin
+Î“Ã¶Â£ Î“Ã¹Ã¯ /trust-club/dashboard
+Î“Ã¶Â£ Î“Ã¹Ã¯ /trust-club/login
+Î“Ã¶Â£ Î“Ã¹Ã¯ /trust-club/payment
+Î“Ã¶Â£ Î“Ã¹Ã¯ /trust-club/printable-record
+Î“Ã¶Â£ Î“Ã¹Ã¯ /trust-club/register
+Î“Ã¶Â£ Î“Ã¹Ã¯ /trust-club/start
+Î“Ã¶Â£ â•žÃ† /trust-club/trust/[trustId]
+Î“Ã¶Â£ Î“Ã¹Ã¯ /vault
+Î“Ã¶Ã¶ Î“Ã¹Ã¯ /wallet
+
+
+Î“Ã¹Ã¯  (Static)   prerendered as static content
+â•žÃ†  (Dynamic)  server-rendered on demand
+
+
+
+STDERR:
+$ next build
+Î“ÃœÃ¡ Warning: Next.js inferred your workspace root, but it may not be correct.
+ We detected multiple lockfiles and selected the directory of C:\Users\yasha\package-lock.json as the root directory.
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+ Detected additional lockfiles:
+   * C:\Users\yasha\Desktop\genesis-public-portal\pnpm-workspace.yaml

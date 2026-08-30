@@ -23,6 +23,14 @@ import {
   trustClubInvitationPersistence,
 } from '@/trust-club/invitation/trust-club-invitation.persistence';
 
+import {
+  ensureTrustClubEligibilityForUser,
+} from '@/trust-club/server/trust-club-eligibility.service';
+
+import {
+  ensureTrustClubMemberForUser,
+} from '@/trust-club/server/trust-club-production-membership.service';
+
 /**
  * TRUST-CLUB-V1
  * PHASE 5.25 / PHASE 7.2
@@ -274,6 +282,28 @@ export const auth =
 
                   message:
                     'Trust Club registration identity binding could not be persisted.',
+                },
+              );
+            }
+
+            try {
+              await ensureTrustClubEligibilityForUser(
+                registeredUserId,
+              );
+
+              await ensureTrustClubMemberForUser(
+                registeredUserId,
+              );
+            }
+            catch {
+              throw APIError.from(
+                'INTERNAL_SERVER_ERROR',
+                {
+                  code:
+                    'TRUST_CLUB_REGISTRATION_BOOTSTRAP_FAILED',
+
+                  message:
+                    'Trust Club post-registration provisioning could not be completed.',
                 },
               );
             }
